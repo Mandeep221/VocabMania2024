@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/scorerl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="Score"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    app:fontName="Nunito-Regular.ttf" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMarks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="12dp"
+                    android:text="5/5"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    app:fontName="Nunito-Regular.ttf" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#CCCCCC" />
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+<!--                <com.txusballesteros.widgets.FitChart-->
+<!--                    android:id="@+id/fitChart"-->
+<!--                    android:layout_width="104dp"-->
+<!--                    android:layout_height="104dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    app:animationMode="overdraw"-->
+<!--                    app:backStrokeColor="#F2F2F2"-->
+<!--                    app:strokeSize="8dp"-->
+<!--                    app:valueStrokeColor="#F2F2F2" />-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPercentMarks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="100%"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    app:fontName="Nunito-Regular.ttf" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_alignParentBottom="true"
+                android:background="#CCCCCC" />
+
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAnswersLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="Answers"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    app:fontName="Nunito-Regular.ttf" />
+
+
+                <LinearLayout
+                    android:id="@+id/btnCompare"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp">
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:text="MATCH ANSWERS"
+                        android:textColor="@color/pink_five"
+                        android:textSize="16sp"
+                        app:NameOfFont="Nunito-Regular.ttf" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/forward" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#CCCCCC" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/scrollrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rqa1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvQ1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="Life is a quagmire of worries, worries come out of choices that we make, so choose wisely"
+                            android:textColor="@color/colorSecondaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Light.ttf" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvA1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvQ1"
+                            android:padding="8dp"
+                            android:text="ANSWER"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/s1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+
+                        <ImageView
+                            android:id="@+id/fav1"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/star_red" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rqa2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvQ2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="this is a QUESTION"
+                            android:textColor="@color/colorSecondaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Light.ttf" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvA2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvQ2"
+                            android:padding="8dp"
+                            android:text="ANSWER"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:fontName="Nunito-Regular.ttf" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/s2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1">
+
+                        <ImageView
+                            android:id="@+id/fav2"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/star_red" />
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="3"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rqa3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvQ3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="this is a QUESTION"
+                            android:textColor="#666666"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Light.ttf" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvA3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvQ3"
+                            android:padding="8dp"
+                            android:text="ANSWER"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/s3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1">
+
+                        <ImageView
+                            android:id="@+id/fav3"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/star_red" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="4"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rqa4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvQ4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="this is a QUESTION"
+                            android:textColor="@color/colorSecondaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Light.ttf" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvA4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvQ4"
+                            android:padding="8dp"
+                            android:text="ANSWER"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:fontName="Nunito-Regular.ttf" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/s4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1">
+
+                        <ImageView
+                            android:id="@+id/fav4"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/star_red" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Regular.ttf" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rqa5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvQ5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="this is a QUESTION"
+                            android:textColor="@color/colorSecondaryText"
+                            android:textSize="16sp"
+                            app:fontName="Nunito-Light.ttf" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvA5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvQ5"
+                            android:padding="8dp"
+                            android:text="ANSWER"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:fontName="Nunito-Regular.ttf" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/s5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1">
+
+                        <ImageView
+                            android:id="@+id/fav5"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/star_red" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

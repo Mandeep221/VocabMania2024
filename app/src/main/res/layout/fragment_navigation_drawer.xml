@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.msarangal.vocabmania.NavigationDrawerFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/containerDrawerImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/multi_color">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="1dp"
+            android:maxLines="5"
+            android:padding="2dp"
+            android:shadowColor="#212121"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="Vocab Mania"
+            android:textColor="#F2F2F2"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:fontName="Nunito-Bold.ttf" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/subtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TitleText"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#212121"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="Fun     with     words"
+            android:textColor="#BBFFFFFF"
+            android:textSize="15sp"
+            app:fontName="Nunito-Light.ttf" />
+
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/containerDrawerImage"
+        android:scrollbarDefaultDelayBeforeFade="2000"
+        android:scrollbarFadeDuration="2000"
+        android:scrollbarSize="3dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@color/colorScrollbar"
+        android:scrollbars="vertical">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</RelativeLayout>

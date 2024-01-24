@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/NoRevisionData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:maxLines="5"
+        android:text="No words to REVISE yet"
+        android:textColor="#CCCCCC"
+        android:textSize="25sp"
+
+        app:fontName="Cabin-Regular.otf" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/NoRev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/NoRevisionData"
+        android:layout_centerHorizontal="true"
+        android:maxLines="5"
+        android:text="please take a test first"
+        android:textColor="#B6B6B6"
+        android:textSize="15sp"
+        app:fontName="Cabin-Regular.otf" />
+
+</RelativeLayout>

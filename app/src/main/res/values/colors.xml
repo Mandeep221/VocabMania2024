@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#F6F6F6</color>
+    <color name="colorPrimaryDark">#BDBDBD</color>
+    <color name="colorPrimaryLght">#CFD8DC</color>
+    <color name="colorAccent">#F1C50E</color>
+    <color name="colorHighlight">#B6B6B6</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+    <color name="colorRandomText">#666666</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="light_grey">#E6E6E6</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorScrollbar">#A8A8A8</color>
+    <color name="tabTextColor">#B6B6B6</color>
+    <color name="soothing_green">#00C161</color>
+    <color name="resultScrollbarColor">#BBFFFFFF</color>
+    <color name="colorRipple">#9917ACAA</color>
+    <color name="exp2_primary_light">#5EE0E0</color>
+    <color name="exp2_primary">#117694</color>
+    <color name="exp2_primary_dark">#0B5065</color>
+    <color name="exp2_accent">#fae069</color>
+    <color name="prim">#E91E63</color>
+    <color name="prim_dark">#C2185B</color>
+    <color name="graph_color">#66FF7B7C</color>
+    <color name="pink_one">#FFDFE0</color>
+    <color name="pink_two">#FFC8C7</color>
+    <color name="pink_three">#FF999A</color>
+    <color name="pink_four">#FF7B7C</color>
+    <color name="pink_five">#E25453</color>
+    <color name="pink_six">#B65252</color>
+
+</resources>

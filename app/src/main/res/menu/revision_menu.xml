@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.msarangal.vocab.UserInfo">
+
+    <item
+        android:id="@+id/overflow"
+        android:icon="@drawable/overflow_black"
+        android:orderInCategory="3"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+
+            <group android:checkableBehavior="none">
+
+                <item
+                    android:id="@+id/find_a_word"
+                    android:orderInCategory="3"
+                    android:title="find a word"
+                    app:showAsAction="always|withText">
+
+                </item>
+
+                <item
+                    android:id="@+id/see_all_words"
+                    android:orderInCategory="3"
+                    android:title="see all words"
+                    app:showAsAction="always|withText">
+
+                </item>
+
+
+                <item
+                    android:id="@+id/go_to_last"
+                    android:orderInCategory="3"
+                    android:title="jump to last"
+                    app:showAsAction="always|withText">
+
+                </item>
+
+                <item
+                    android:id="@+id/go_to_first"
+                    android:orderInCategory="3"
+                    android:title="jump to first"
+                    app:showAsAction="always|withText">
+
+                </item>
+
+
+                <item
+                    android:id="@+id/share_this_"
+                    android:orderInCategory="3"
+                    android:title="share this word"
+                    app:showAsAction="always|withText">
+
+                </item>
+
+            </group>
+        </menu>
+
+    </item>
+
+</menu>

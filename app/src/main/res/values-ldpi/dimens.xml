@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- For questions activity -->
+    <dimen name="qtext">12sp</dimen>
+    <dimen name="otext">10sp</dimen>
+    <dimen name="timerdimen">58dp</dimen>
+    <dimen name="timertextdimen">14sp</dimen>
+
+    <!-- For main activity -->
+    <dimen name="axis">10sp</dimen>
+    <dimen name="graphmsg">12sp</dimen>
+
+    <!-- For Revise Activity -->
+    <dimen name="meaning">16sp</dimen>
+    <dimen name="usage">15sp</dimen>
+    <dimen name="word">16sp</dimen>
+    <dimen name="usageheading">15sp</dimen>
+
+    <!-- For Result Activity -->
+    <dimen name="ques">16sp</dimen>
+    <dimen name="ans">15sp</dimen>
+
+    <!-- For Match Activity -->
+    <dimen name="matchtextsize">14sp</dimen>
+    <dimen name="matchcontexttitle">14sp</dimen>
+    <dimen name="matchresttitle">13sp</dimen>
+
+
+    <!-- For Result Activity -->
+    <dimen name="drawerTitle">17sp</dimen>
+    <dimen name="drawerSubTitle">9sp</dimen>
+</resources>

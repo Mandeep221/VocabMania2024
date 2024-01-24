@@ -1,0 +1,34 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- For questions activity -->
+    <dimen name="qtext">18sp</dimen>
+    <dimen name="otext">16sp</dimen>
+    <dimen name="timerdimen">70dp</dimen>
+    <dimen name="timertextdimen">17sp</dimen>
+
+    <!-- For main activity -->
+    <dimen name="axis">14sp</dimen>
+    <dimen name="graphmsg">16sp</dimen>
+
+    <!-- For Revise Activity -->
+    <dimen name="meaning">22sp</dimen>
+    <dimen name="usage">20sp</dimen>
+    <dimen name="word">24sp</dimen>
+    <dimen name="usageheading">20sp</dimen>
+
+    <!-- For Result Activity -->
+    <dimen name="ques">18sp</dimen>
+    <dimen name="ans">17sp</dimen>
+
+    <!-- For Match Activity -->
+    <dimen name="matchtextsize">18sp</dimen>
+    <dimen name="matchcontexttitle">18sp</dimen>
+    <dimen name="matchresttitle">16sp</dimen>
+
+    <!-- For Result Activity -->
+    <dimen name="drawerTitle">20sp</dimen>
+    <dimen name="drawerSubTitle">12sp</dimen>
+</resources>

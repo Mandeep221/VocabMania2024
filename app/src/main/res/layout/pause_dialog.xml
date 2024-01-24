@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:text="Test Paused"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="16sp"
+        app:fontName="Nunito-Bold.ttf" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#E6E6E6" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:text="Click RESUME whenever you are ready to continue"
+        android:textColor="@color/colorHighlight"
+        android:textSize="16sp"
+        app:fontName="Nunito-Regular.ttf" />
+
+    <com.msarangal.vocabmania.MyButton
+        android:id="@+id/btnOk"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Resume"
+        android:textColor="@color/pink_five"
+        app:FontButton="Nunito-Bold.ttf" />
+
+</LinearLayout>

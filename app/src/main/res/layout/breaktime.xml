@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/app_bar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvTakeBreak"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#cccccc"
+            android:textSize="16sp"
+            app:fontName="Nunito-Regular.ttf" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTakeBreak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/timeCircle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Time Remaining"
+            android:textColor="#666666"
+            android:textSize="24sp"
+            app:fontName="Nunito-Regular.ttf" />
+
+        <RelativeLayout
+            android:id="@+id/timeCircle"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_centerInParent="true"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_timer_break" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHoursLabel"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvHours"
+                android:layout_alignLeft="@+id/tvHours"
+                android:gravity="center"
+                android:text="hh"
+                android:textColor="#B3B3B3"
+                android:textSize="20sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMinLabel"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvMin"
+                android:layout_alignLeft="@+id/tvMin"
+                android:gravity="center"
+                android:text="mm"
+                android:textColor="#B3B3B3"
+                android:textSize="20sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSecsLabel"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvSecs"
+                android:layout_alignLeft="@id/tvSecs"
+                android:gravity="center"
+                android:text="ss"
+                android:textColor="#B3B3B3"
+                android:textSize="20sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHours"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="4dp"
+                android:layout_toLeftOf="@+id/tvMin"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMin"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSecs"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:layout_toRightOf="@+id/tvMin"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+        </RelativeLayout>
+
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_v"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeCircle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="10dp"
+            card_view:cardCornerRadius="1dp"
+            card_view:cardElevation="2dp">
+
+            <Button
+                android:id="@+id/btnRevise"
+                android:layout_width="match_parent"
+                style="?attr/borderlessButtonStyle"
+                android:layout_height="44dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="REVISE"
+                android:textColor="@color/pink_five"
+                android:textSize="20sp"
+                app:NameOfFont="Nunito-Regular.ttf"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

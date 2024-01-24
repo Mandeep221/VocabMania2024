@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_viewSearch"
+        android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        card_view:cardElevation="3dp">
+
+        <com.msarangal.vocabmania.MyEditText
+            android:id="@+id/etSearchFav"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_edittextfav"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="20dp"
+            android:ellipsize="end"
+            android:hint="search your favorite word"
+            android:inputType="text"
+            android:maxLength="250"
+            android:textColor="#666666"
+            android:textColorHint="#CCCCCC"
+            android:textCursorDrawable="@null"
+            app:FontN="Nunito-Regular.ttf" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_viewSearch"
+        android:layout_marginTop="2dp"
+        android:scrollbarSize="3dp"
+        android:scrollbarDefaultDelayBeforeFade="2000"
+        android:scrollbarFadeDuration="2000"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@color/colorScrollbar"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/NoFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:maxLines="5"
+        android:text="No Favorites to show"
+        android:textColor="#CCCCCC"
+        android:textSize="22sp"
+        android:visibility="gone"
+        app:fontName="Nunito-Bold.ttf" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/NoFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/NoFavorites"
+        android:layout_centerHorizontal="true"
+        android:maxLines="5"
+        android:text="add when you take a test"
+        android:textColor="#B6B6B6"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:fontName="Nunito-Bold.ttf" />
+
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="MyTextView">
+        <attr name="fontName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="MyEditText">
+        <attr name="FontN" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MyAutoCompleteEditText">
+        <attr name="FontAuto" format="string" />
+    </declare-styleable>
+    <declare-styleable name="MyButton">
+        <attr name="FontButton" format="string" />
+    </declare-styleable>
+    <declare-styleable name="MyHomeButton">
+        <attr name="fName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="MyQuestionButton">
+        <attr name="NameOfFont" format="string" />
+    </declare-styleable>
+    <declare-styleable name="ShimmerView">
+        <attr name="reflectionColor" format="color" />
+    </declare-styleable>
+
+
+</resources>

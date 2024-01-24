@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvFaqs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="FAQs"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp"
+        app:fontName="Roboto-Regular.ttf" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#F2F2F2" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:scrollbarDefaultDelayBeforeFade="1800"
+        android:scrollbarFadeDuration="1800"
+        android:scrollbarSize="3dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@color/colorScrollbar"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.1 What can this app do for me?"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- It can increase your vocabulary at an incredible pace."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.2 How does this app work?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- It is very simple. Take Vocabulary tests and keep learning new words. While taking a test, target the word in CAPITAL letters inside every contextual statement. After test, all the words will get added to your REVISION where you can keep revising."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.3 How does this app cater to the vocabulary needs of different people?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- By making three categories of tests. BEGINNER, INTERMEDIATE and ADVANCE."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.4 What is in BEGINNER category?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- BEGINNER, as the name suggests, is for people who are beginners at english language, looking to learn some simple words they can use in their day to day life."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.5 What is in INTERMEDIATE category?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- INTERMEDIATE is for those who already have a decent vocabulary for their day to day english usage, but want to add new words to their english arsenal."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.6 What is in ADVANCE category?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- ADVANCE is for people who already are well equipped with alot of eloquent english words , but they want to take things to the next level."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line6"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.7 Can I learn words in all three categories?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, definitely!"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line7"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.8 Can I pause or discard a test while i am on it?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, You most certainly can."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line8"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.9 After taking a test, Can I match my answers with the Correct ones?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, You can. There is an option to MATCH ANSWERS on the result page for every test you take."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line9"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.10 Is there a way i can measure my progress in the tests i take?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, You can. The Progress button on the homepage shows your progress in each category."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line10"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.11 what if i want to revise all the words?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Just so you can revise the words side by side, you can take only 3 tests in one go in each category. After 3 tests, there will be a 12 hours window which you can use to revise words. Your REVISION Words will keep on increasing as you take more and more tests."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line11"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.12 what else can I do while I am REVISING?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- On REVISE page of each category,you can SEARCH a specific word among the Revision words, SEE ALL Revision words in that category, Jump to FIRST or LAST word while revising, also SHARE the word currently being displayed."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line12"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.13 what if i want to know more about the word?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- There is an option to LEARN MORE about each and every word you come across in this app."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line13"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.14 Can i share a word and its meaning with a friend?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, you can. There is an option to SHARE each and every word you come across in this app."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line14"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvQues15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Q.15 Can i make a collection of FAVORITE words?"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                app:fontName="Nunito-Regular.ttf" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAns15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:text="Ans- Yes, you can. In the list of Favorite words, TAP any word to get options to LEARN MORE about the word or SHARE the word."
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontName="Roboto-Light.ttf" />
+
+            <View
+                android:id="@+id/line15"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#cccccc" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/concerns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="For any other concerns or feedback, please feel free to drop a mail"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            app:fontName="Roboto-Light.ttf" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="vocabmania100@gmail.com"
+            android:textColor="@color/pink_five"
+            android:textSize="18sp"
+            app:fontName="Roboto-Light.ttf" />
+    </LinearLayout>
+
+</LinearLayout>
