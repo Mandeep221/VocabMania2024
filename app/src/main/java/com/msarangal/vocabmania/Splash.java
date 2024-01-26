@@ -4,14 +4,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.firebase.client.DataSnapshot;
 //import com.firebase.client.Firebase;
@@ -25,7 +38,7 @@ public class Splash extends AppCompatActivity implements AnimationListener {
     private Boolean isBackPressed;
     private ImageView image;
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 4000;
     private int eCap, mCap, tCap;
     private LinearLayout container;
     Animation animScaleOut;
@@ -88,13 +101,10 @@ public class Splash extends AppCompatActivity implements AnimationListener {
                 if (isBackPressed == false) {
                     // Message.message(Splash.this, "User is not new");
 
-//                    FirebaseRequest();
+                    FirebaseRequest();
                     container.setVisibility(View.GONE);
                     Intent i = new Intent(Splash.this, TestActivity.class);
                     i.putExtra("update_flag", update);
-                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.WORD, word_of_the_day).apply();
-                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.MEANING, meaning).apply();
-                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.USAGE, usage).apply();
                     startActivity(i);
                     finish();
 
@@ -113,68 +123,65 @@ public class Splash extends AppCompatActivity implements AnimationListener {
     }
 
     public void FirebaseRequest() {
-//        if (Utility.CheckConnectivity(Splash.this)) {
-//
-//            Firebase mRef = new Firebase("https://boiling-torch-469.firebaseio.com/vocabmania/randomize");
-//            mRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                    int level = 0;
-//
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        if (level == 0) {
-//                            eCap = snapshot.child("capvalue").getValue(Integer.class);
-//                        } else if (level == 1) {
-//                            mCap = snapshot.child("capvalue").getValue(Integer.class);
-//                        } else if (level == 2) {
-//                            tCap = snapshot.child("capvalue").getValue(Integer.class);
-//                        } else if (level == 3) {
-//                            update = snapshot.child("update").getValue(Integer.class);
-//                        } else {
-//                            word_of_the_day = snapshot.child("word").getValue(String.class);
-//                            meaning = snapshot.child("meaning").getValue(String.class);
-//                            usage = snapshot.child("usage").getValue(String.class);
-//                        }
-//
-//                        level++;
-//                    }
-//
-//                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("eCapValue", eCap).apply();
-//                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("mCapValue", mCap).apply();
-//                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("tCapValue", tCap).apply();
-//
-//                    container.startAnimation(animScaleOut);
-//                }
-//
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//
-//                }
-//            });
-//        } else {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
-//
-//            LayoutInflater inflater = (LayoutInflater) Splash.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-//
-//            View v = inflater.inflate(R.layout.no_intent_dialog, null, false);
-//
-//            Button ok = (Button) v.findViewById(R.id.btnOk);
-//
-//            ok.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    finish();
-//                }
-//            });
-//
-//            builder.setView(v);
-//
-//            AlertDialog dialog = builder.create();
-//            dialog.setCanceledOnTouchOutside(false);
-//            dialog.setCancelable(false);
-//            dialog.show();
-//        }
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://boiling-torch-469.firebaseio.com");
+        Query query = firebaseDatabase.getReference("/vocabmania/randomize");
+
+        if(Utility.CheckConnectivity(Splash.this)) {
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    int level = 0;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (level == 0) {
+                            eCap = Integer.parseInt(snapshot.child("capvalue").getValue(String.class));
+                        } else if (level == 1) {
+                            mCap = Integer.parseInt(snapshot.child("capvalue").getValue(String.class));
+                        } else if (level == 2) {
+                            tCap = Integer.parseInt(snapshot.child("capvalue").getValue(String.class));
+                        } else if (level == 3) {
+                            update = snapshot.child("update").getValue(Integer.class);
+                        } else {
+                            word_of_the_day = snapshot.child("word").getValue(String.class);
+                            meaning = snapshot.child("meaning").getValue(String.class);
+                            usage = snapshot.child("usage").getValue(String.class);
+                        }
+                        level++;
+                    }
+
+                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("eCapValue", eCap).apply();
+                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("mCapValue", mCap).apply();
+                    getSharedPreferences("UserName", MODE_PRIVATE).edit().putInt("tCapValue", tCap).apply();
+                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.WORD, word_of_the_day).apply();
+                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.MEANING, meaning).apply();
+                    getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.USAGE, usage).apply();
+                    container.startAnimation(animScaleOut);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
+
+            LayoutInflater inflater = (LayoutInflater) Splash.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            View v = inflater.inflate(R.layout.no_intent_dialog, null, false);
+
+            Button ok = (Button) v.findViewById(R.id.btnOk);
+
+            ok.setOnClickListener(v1 -> finish());
+
+            builder.setView(v);
+
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
     }
 
     @Override
@@ -188,9 +195,6 @@ public class Splash extends AppCompatActivity implements AnimationListener {
         container.setVisibility(View.GONE);
         Intent i = new Intent(Splash.this, TestActivity.class);
         i.putExtra("update_flag", update);
-        getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.WORD, word_of_the_day).apply();
-        getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.MEANING, meaning).apply();
-        getSharedPreferences(Constants.SP, MODE_PRIVATE).edit().putString(Constants.USAGE, usage).apply();
         startActivity(i);
         finish();
     }

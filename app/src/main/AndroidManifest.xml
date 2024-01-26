@@ -60,6 +60,30 @@
             android:label="@string/app_name">
         </activity>
 
+        <activity
+            android:name=".Result"
+            android:exported="true"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".Match"
+            android:exported="true"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".Favorites"
+            android:exported="true"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".Revise"
+            android:exported="true"
+            android:label="@string/app_name">
+        </activity>
+
     </application>
 
 </manifest>
