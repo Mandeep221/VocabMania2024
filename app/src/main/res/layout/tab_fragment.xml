@@ -24,7 +24,7 @@
                 android:padding="8dp"
                 android:text="No progress to show yet"
                 android:textColor="@color/colorSecondaryText"
-                app:fontName="Nunito-Light.ttf"
+                android:fontFamily="@font/nunito_light"
                 android:textSize="16sp" />
 
             <FrameLayout
@@ -99,7 +99,7 @@
             android:text="Performance in  last"
             android:textColor="@color/colorSecondaryText"
             android:textSize="14sp"
-            app:fontName="Nunito-Light.ttf" />
+            android:fontFamily="@font/nunito_light" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvposition"
@@ -111,7 +111,7 @@
             android:text="tap on the data points to know more"
             android:textColor="#B6B6B6"
             android:textSize="@dimen/graphmsg"
-            app:fontName="Nunito-Light.ttf" />
+            android:fontFamily="@font/nunito_light" />
 
 
     </LinearLayout>
@@ -136,7 +136,7 @@
     <!--android:text="Vertical-Axis : marks scored"-->
     <!--android:textColor="#727272"-->
     <!--android:textSize="@dimen/axis"-->
-    <!--app:fontName="Nunito-Light.ttf" />-->
+    <!--app:fontName="nunito_light.ttf" />-->
 
     <!--<androidx.appcompat.widget.AppCompatTextView-->
     <!--android:id="@+id/tvHorizontalAxis"-->
@@ -151,7 +151,7 @@
     <!--android:text="Horizontal-Axis : last five tests taken"-->
     <!--android:textColor="#727272"-->
     <!--android:textSize="@dimen/axis"-->
-    <!--app:fontName="Nunito-Light.ttf" />-->
+    <!--app:fontName="nunito_light.ttf" />-->
 
 
     <!--<androidx.appcompat.widget.AppCompatTextView-->
@@ -164,7 +164,7 @@
     <!--android:text="tap on the data points to now more"-->
     <!--android:textColor="#727272"-->
     <!--android:textSize="@dimen/graphmsg"-->
-    <!--app:fontName="Nunito-Light.ttf" />-->
+    <!--app:fontName="nunito_light.ttf" />-->
 
     <!--</RelativeLayout>-->
 

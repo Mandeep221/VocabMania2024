@@ -38,7 +38,7 @@ public class Splash extends AppCompatActivity implements AnimationListener {
     private Boolean isBackPressed;
     private ImageView image;
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 4000;
+    private static int SPLASH_TIME_OUT = 3000;
     private int eCap, mCap, tCap;
     private LinearLayout container;
     Animation animScaleOut;

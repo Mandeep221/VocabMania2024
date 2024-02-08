@@ -63,7 +63,7 @@
         android:textColor="#CCCCCC"
         android:textSize="25sp"
         android:visibility="gone"
-        app:fontName="Nunito-Bold.ttf" />
+        android:fontFamily="@font/nunito_bold" />
 
 
 </RelativeLayout>

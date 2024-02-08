@@ -45,7 +45,7 @@ public class MyMatchFragment extends Fragment {
         yourAnswer = (TextView) layout.findViewById(R.id.tvYourAns);
         right = (TextView) layout.findViewById(R.id.tvTick);
         wrong = (TextView) layout.findViewById(R.id.tvCross);
-        //unanswered = (TextView) layout.findViewById(R.id.tvUnanswerd);
+        unanswered = (TextView) layout.findViewById(R.id.tvQueMark);
 
         Bundle bundleFromMatch;
         Bundle bundleArgs = getArguments();
@@ -59,7 +59,7 @@ public class MyMatchFragment extends Fragment {
             } else if (rightwrong == 0) {
                 wrong.setVisibility(View.VISIBLE);
             } else {
-                //unanswered.setVisibility(View.VISIBLE);
+                unanswered.setVisibility(View.VISIBLE);
             }
             Que = bundleFromMatch.getString("Q");
             CorrectAns = bundleFromMatch.getString("C");
@@ -77,7 +77,7 @@ public class MyMatchFragment extends Fragment {
             } else if (rightwrong == 0) {
                 wrong.setVisibility(View.VISIBLE);
             } else {
-               // unanswered.setVisibility(View.VISIBLE);
+                unanswered.setVisibility(View.VISIBLE);
             }
 
             Que = bundleFromMatch.getString("Q");
@@ -97,7 +97,7 @@ public class MyMatchFragment extends Fragment {
             } else if (rightwrong == 0) {
                 wrong.setVisibility(View.VISIBLE);
             } else {
-               // unanswered.setVisibility(View.VISIBLE);
+                unanswered.setVisibility(View.VISIBLE);
             }
 
             Que = bundleFromMatch.getString("Q");
@@ -117,7 +117,7 @@ public class MyMatchFragment extends Fragment {
             } else if (rightwrong == 0) {
                 wrong.setVisibility(View.VISIBLE);
             } else {
-               // unanswered.setVisibility(View.VISIBLE);
+                unanswered.setVisibility(View.VISIBLE);
             }
 
             Que = bundleFromMatch.getString("Q");
@@ -137,7 +137,7 @@ public class MyMatchFragment extends Fragment {
             } else if (rightwrong == 0) {
                 wrong.setVisibility(View.VISIBLE);
             } else {
-               // unanswered.setVisibility(View.VISIBLE);
+                unanswered.setVisibility(View.VISIBLE);
             }
 
             Que = bundleFromMatch.getString("Q");

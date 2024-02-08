@@ -50,11 +50,9 @@ public class Result extends AppCompatActivity implements OnClickListener {
     private boolean fav4Status = false;
     private boolean fav5Status = false;
     private Animation animScale, fadeIn;
-//    private FitChart fitChart;
+    //    private FitChart fitChart;
     private LinearLayout analyze;
     MySQLiteAdapter mySQLiteAdapter;
-//    public TourGuide mTutorialHandler;
-    private boolean tip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +60,6 @@ public class Result extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.new_result);
-
-        tip = getSharedPreferences(Constants.SP_TIPS, MODE_PRIVATE).getBoolean(Constants.TIP_FAV, false);
 
         animScale = AnimationUtils.loadAnimation(this, R.anim.scale_anim);
         fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadin);
@@ -142,23 +138,14 @@ public class Result extends AppCompatActivity implements OnClickListener {
         analyze.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!tip) {
-//                    mTutorialHandler.cleanUp();
-//                    mTutorialHandler.setToolTip(new ToolTip().setTitle("FAVORITE").setDescription("Click here to add the word to favorites.").setBackgroundColor(Color.parseColor("#FF999A"))
-//                            .setShadow(true)
-//                            .setGravity(Gravity.BOTTOM | Gravity.LEFT)).playOn(fav1);
-                } else {
-                    Intent in = new Intent(Result.this, Match.class);
-                    in.putExtra("bundleForMatch", b);
-                    startActivity(in);
-                    overridePendingTransition(R.anim.card_slide_right_in, R.anim.card_slide_left_out);
-
-                }
+                Intent in = new Intent(Result.this, Match.class);
+                in.putExtra("bundleForMatch", b);
+                startActivity(in);
+                overridePendingTransition(R.anim.card_slide_right_in, R.anim.card_slide_left_out);
             }
         });
 
-         /* setup enter and exit animation */
+        /* setup enter and exit animation */
         Animation enterAnimation = new AlphaAnimation(0f, 1f);
         enterAnimation.setDuration(600);
         enterAnimation.setFillAfter(true);
@@ -166,26 +153,6 @@ public class Result extends AppCompatActivity implements OnClickListener {
         Animation exitAnimation = new AlphaAnimation(1f, 0f);
         exitAnimation.setDuration(600);
         exitAnimation.setFillAfter(true);
-
-        if (!tip) {
-
-         /* initialize TourGuide without playOn() */
-//            mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-//                    .setPointer(new Pointer().setColor(ContextCompat.getColor(Result.this, R.color.colorWhite)))
-//                    .setToolTip(new ToolTip()
-//                                    .setTitle("MATCH ANSWERS")
-//                                    .setDescription("Click here to  compare your answers with the correct ones.")
-//                                    .setBackgroundColor(Color.parseColor("#FF999A"))
-//                                    .setShadow(true)
-//                                    .setGravity(Gravity.LEFT)
-//                    )
-//                    .setOverlay(new Overlay()
-//                                    .setEnterAnimation(enterAnimation)
-//                                    .setExitAnimation(exitAnimation)
-//                    );
-//
-//            mTutorialHandler.playOn(analyze);
-        }
     }
 
 
@@ -212,59 +179,51 @@ public class Result extends AppCompatActivity implements OnClickListener {
         v.startAnimation(animScale);
 
         if (v.getId() == R.id.fav1) {
+            if (fav1Status == false) {
+                fav1Status = true;
+                fav1.setImageResource(R.drawable.star_red_filled);
+                long l = SaveToDB(words[0], answersArray[0]);
+                if (l != -1) {
 
-            if (!tip) {
-                //mTutorialHandler.cleanUp();
-                tip = true;
-                getSharedPreferences(Constants.SP_TIPS, MODE_PRIVATE).edit().putBoolean(Constants.TIP_FAV, true).apply();
-            } else {
-                if (fav1Status == false) {
-                    fav1Status = true;
-                    fav1.setImageResource(R.drawable.star_red_filled);
-                    long l = SaveToDB(words[0], answersArray[0]);
-                    if (l != -1) {
+                    final Toast toast = Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT);
+                    toast.show();
 
-                        final Toast toast = Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT);
-                        toast.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast.cancel();
+                        }
+                    }, 1000);
 
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                toast.cancel();
-                            }
-                        }, 1000);
-
-                    } else {
-
-                        Toast.makeText(this, "Not Added to favorites", Toast.LENGTH_SHORT)
-                                .show();
-                    }
                 } else {
-                    fav1Status = false;
-                    fav1.setImageResource(R.drawable.star_red);
-                    int d = delete(words[0]);
-                    if (d != -1) {
 
-                        final Toast toast = Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT);
-                        toast.show();
+                    Toast.makeText(this, "Not Added to favorites", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            } else {
+                fav1Status = false;
+                fav1.setImageResource(R.drawable.star_red);
+                int d = delete(words[0]);
+                if (d != -1) {
 
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                toast.cancel();
-                            }
-                        }, 1000);
+                    final Toast toast = Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT);
+                    toast.show();
 
-                    } else {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            toast.cancel();
+                        }
+                    }, 1000);
 
-                        Toast.makeText(this, "Not Removed from favorites",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+
+                    Toast.makeText(this, "Not Removed from favorites",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else if (v.getId() == R.id.fav2) {
             if (fav2Status == false) {
                 fav2Status = true;
@@ -456,6 +415,7 @@ public class Result extends AppCompatActivity implements OnClickListener {
     @Override
     public void onBackPressed() {
         // Do Here what ever you want do on back press;
+        super.onBackPressed();
         Intent i = new Intent(this, TestActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -482,7 +442,6 @@ public class Result extends AppCompatActivity implements OnClickListener {
 
         marks.setText("" + testmarks + "/5");
         pectangeMarks.setText("" + percentage + "%");
-        pectangeMarks.setVisibility(View.GONE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

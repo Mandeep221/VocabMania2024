@@ -50,7 +50,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private int updateFlag = 0;
 //    public TourGuide mTutorialHandler;
     private int counter = 0;
-    private boolean tipTest, tipHelp, tipWod;
     private int exit = 0;
     private Animation fadein, fadeout;
 
@@ -58,8 +57,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_design);
-
-        tipTest = getSharedPreferences(Constants.SP_TIPS, MODE_PRIVATE).getBoolean(Constants.TIP_TEST, false);
 
         fadein = AnimationUtils.loadAnimation(this, R.anim.fadin);
         fadeout = AnimationUtils.loadAnimation(this, R.anim.fadeout);
@@ -81,18 +78,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!tipTest) {
-//                    mTutorialHandler.cleanUp();
-//                    mTutorialHandler.setToolTip(new ToolTip().setTitle("TEST").setDescription("Take test here").setBackgroundColor(Color.parseColor("#FF999A"))
-//                            .setShadow(true)
-//                            .setEnterAnimation(fadein)
-//                            .setGravity(Gravity.TOP | Gravity.RIGHT)).playOn(take_test);
-                } else {
-                    Intent i = new Intent(TestActivity.this, Help.class);
-                    TestActivity.this.startActivity(i);
-                    overridePendingTransition(R.anim.card_slide_right_in, R.anim.card_slide_left_out);
-                }
+                Intent i = new Intent(TestActivity.this, Help.class);
+                TestActivity.this.startActivity(i);
+                overridePendingTransition(R.anim.card_slide_right_in, R.anim.card_slide_left_out);
             }
         });
 
@@ -100,16 +88,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         wordOfTheDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!tipTest) {
-                    //mTutorialHandler.cleanUp();
-                    //mTutorialHandler.setToolTip(new ToolTip().setTitle("HELP").setDescription("You can click here for FAQs").setBackgroundColor(Color.parseColor("#FF999A"))
-//                            .setShadow(true)
-//                            .setEnterAnimation(fadein)
-//                            .setGravity(Gravity.BOTTOM | Gravity.LEFT)).playOn(help);
-                } else {
-                    wordOfTheDay();
-                }
+                wordOfTheDay();
             }
         });
 
@@ -130,14 +109,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         take_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!tipTest) {
-                   // mTutorialHandler.cleanUp();
-                    getSharedPreferences(Constants.SP_TIPS, MODE_PRIVATE).edit().putBoolean(Constants.TIP_TEST, true).apply();
-                    tipTest = true;
-                } else {
-                    test_options();
-                }
+                test_options();
             }
         });
 
@@ -212,27 +184,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         Animation exitAnimation = new AlphaAnimation(1f, 0f);
         exitAnimation.setDuration(600);
         exitAnimation.setFillAfter(true);
-
-        if (!tipTest) {
-
-         /* initialize TourGuide without playOn() */
-//            mTutorialHandler = TourGuide.init(this).with(TourGuide.Technique.Click)
-//                    .setPointer(new Pointer().setColor(ContextCompat.getColor(TestActivity.this, R.color.colorWhite)))
-//                    .setToolTip(new ToolTip()
-//                                    .setTitle("WORD OF THE DAY")
-//                                    .setDescription("Click here for a special word everyday!")
-//                                    .setBackgroundColor(Color.parseColor("#FF999A"))
-//                                    .setShadow(true)
-//                                    .setEnterAnimation(fadein)
-//                                    .setGravity(Gravity.LEFT)
-//                    )
-//                    .setOverlay(new Overlay()
-//                                    .setEnterAnimation(enterAnimation)
-//                                    .setExitAnimation(exitAnimation)
-//                    );
-//
-//            mTutorialHandler.playOn(wordOfTheDay);
-        }
     }
 
 
@@ -822,11 +773,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         exit += 1;
 
         if (exit == 2) {
-
-            if (!tipTest) {
-
-                getSharedPreferences(Constants.SP_TIPS, MODE_PRIVATE).edit().putBoolean(Constants.TIP_TEST, false).apply();
-            }
             finish();
         }
 

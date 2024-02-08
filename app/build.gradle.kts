@@ -62,7 +62,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    //implementation("com.google.firebase:firebase-crashlytics:18.6.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -71,9 +70,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.multidex:multidex:2.0.1")
-
-    // Vocab mania dependencies
-    //noinspection GradleCompatible
+    
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.6.0")
     implementation("androidx.cardview:cardview:1.0.0")
@@ -81,21 +78,10 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("com.mcxiaoke.volley:library:1.0.+")
     implementation("com.jjoe64:graphview:4.0.1")
-    //implementation 'com.google.android.gms:play-services-ads:7.8.0'
+
     //progress bar
     implementation("com.github.rahatarmanahmed:circularprogressview:2.4.0")
     implementation("com.pkmmte.view:circularimageview:1.1")
-//    implementation 'com.firebase:firebase-client-android:2.5.0+'
-//    implementation('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-//        transitive = true;
-//    }
-    //for tour
-    // implementation("com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar")
-
-    // Firebase
-//    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1@aar")
-//    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
-//    implementation("com.google.firebase:firebase-analytics")
 
 // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
@@ -105,5 +91,4 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
-    //implementation("com.google.firebase:firebase-crashlytics-gradle")
 }

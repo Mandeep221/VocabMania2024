@@ -14,7 +14,7 @@
         android:text="Test Paused"
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
-        app:fontName="Nunito-Bold.ttf" />
+        android:fontFamily="@font/nunito_bold" />
 
     <View
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:text="Click RESUME whenever you are ready to continue"
         android:textColor="@color/colorHighlight"
         android:textSize="16sp"
-        app:fontName="Nunito-Regular.ttf" />
+        android:fontFamily="@font/nunito_regular" />
 
     <com.msarangal.vocabmania.MyButton
         android:id="@+id/btnOk"

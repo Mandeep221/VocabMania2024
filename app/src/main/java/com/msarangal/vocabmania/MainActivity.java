@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnGett
         bundleGraphValuesM = mySQLiteAdapter.checkfive_returnArray("M");
         bundleGraphValuesT = mySQLiteAdapter.checkfive_returnArray("T");
 
-        //Typeface typeface= Typeface.createFromAsset(getAssets(),"fonts/Nunito-Regular.ttf");
+        //Typeface typeface= Typeface.createFromAsset(getAssets(),"fonts/nunito_regular.ttf");
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);

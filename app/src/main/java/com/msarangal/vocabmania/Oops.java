@@ -29,7 +29,7 @@ public class Oops extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SpannableString s = new SpannableString("Oops!");
-        s.setSpan(new TypefaceSpan(this, "Nunito-Light.ttf"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s.setSpan(new TypefaceSpan(this, "nunito_light.ttf"), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         // Update the action bar title with the TypefaceSpan instance
         getSupportActionBar().setTitle(s);

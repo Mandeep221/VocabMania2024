@@ -56,7 +56,7 @@
                 android:text="Q.1 What can this app do for me?"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,7 +88,7 @@
                 android:text="Q.2 How does this app work?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -119,7 +119,7 @@
                 android:text="Q.3 How does this app cater to the vocabulary needs of different people?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -151,7 +151,7 @@
                 android:text="Q.4 What is in BEGINNER category?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -183,7 +183,7 @@
                 android:text="Q.5 What is in INTERMEDIATE category?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -215,7 +215,7 @@
                 android:text="Q.6 What is in ADVANCE category?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -246,7 +246,7 @@
                 android:text="Q.7 Can I learn words in all three categories?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -278,7 +278,7 @@
                 android:text="Q.8 Can I pause or discard a test while i am on it?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -310,7 +310,7 @@
                 android:text="Q.9 After taking a test, Can I match my answers with the Correct ones?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -341,7 +341,7 @@
                 android:text="Q.10 Is there a way i can measure my progress in the tests i take?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -372,7 +372,7 @@
                 android:text="Q.11 what if i want to revise all the words?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -404,7 +404,7 @@
                 android:text="Q.12 what else can I do while I am REVISING?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -436,7 +436,7 @@
                 android:text="Q.13 what if i want to know more about the word?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -468,7 +468,7 @@
                 android:text="Q.14 Can i share a word and its meaning with a friend?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -500,7 +500,7 @@
                 android:text="Q.15 Can i make a collection of FAVORITE words?"
                 android:textColor="#666666"
                 android:textSize="18sp"
-                app:fontName="Nunito-Regular.ttf" />
+                android:fontFamily="@font/nunito_regular" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

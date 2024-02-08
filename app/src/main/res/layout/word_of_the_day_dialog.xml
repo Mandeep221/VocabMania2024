@@ -21,7 +21,7 @@
             android:text="Word Of The Day"
             android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
-            app:fontName="Nunito-Bold.ttf" />
+            android:fontFamily="@font/nunito_bold" />
 
         <View
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:text="Acerbic"
             android:textColor="@color/colorSecondaryText"
             android:textSize="18sp"
-            app:fontName="Nunito-Light.ttf" />
+            android:fontFamily="@font/nunito_light" />
 
         <View
             android:layout_width="0.5dp"
@@ -94,7 +94,7 @@
             android:text="Meaning"
             android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
-            app:fontName="Nunito-Bold.ttf" />
+            android:fontFamily="@font/nunito_bold" />
 
         <View
             android:layout_width="match_parent"
@@ -115,7 +115,7 @@
         android:text="Sour or bitter in taste"
         android:textColor="@color/colorSecondaryText"
         android:textSize="16sp"
-        app:fontName="Nunito-Light.ttf" />
+        android:fontFamily="@font/nunito_light" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
             android:text="Usage"
             android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
-            app:fontName="Nunito-Bold.ttf" />
+            android:fontFamily="@font/nunito_bold" />
 
         <View
             android:layout_width="match_parent"
@@ -152,7 +152,7 @@
         android:text="The pickles had a very acerbic taste"
         android:textColor="@color/colorSecondaryText"
         android:textSize="16sp"
-        app:fontName="Nunito-Light.ttf" />
+        android:fontFamily="@font/nunito_light" />
 
     <View
         android:layout_width="match_parent"

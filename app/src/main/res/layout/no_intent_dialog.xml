@@ -14,7 +14,7 @@
         android:text="No Internet"
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
-        app:fontName="Nunito-Bold.ttf" />
+        android:fontFamily="@font/nunito_bold" />
 
     <View
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:text="Network connection unavailable. \nPlease check that you have data connection and try again."
         android:textColor="@color/colorHighlight"
         android:textSize="16sp"
-        app:fontName="Nunito-Regular.ttf" />
+        android:fontFamily="@font/nunito_regular" />
 
     <com.msarangal.vocabmania.MyButton
         android:id="@+id/btnOk"

@@ -38,7 +38,6 @@ import androidx.core.view.MenuItemCompat;
 
 import com.android.volley.RequestQueue;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,7 +49,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Questions extends AppCompatActivity implements OnClickListener,
-        OnMenuItemClickListener, TextToSpeech.OnInitListener {
+        OnMenuItemClickListener {
     private androidx.appcompat.widget.Toolbar toolbar;
     private View v;
     private TextView Time, Question, QuestionNo;
@@ -203,9 +202,6 @@ public class Questions extends AppCompatActivity implements OnClickListener,
 
         Question.setMovementMethod(new ScrollingMovementMethod());
 
-
-        tts = new TextToSpeech(this, this);
-
         pronounce.setOnClickListener(this);
         option1_button.setOnClickListener(this);
         option2_button.setOnClickListener(this);
@@ -243,6 +239,19 @@ public class Questions extends AppCompatActivity implements OnClickListener,
             circularProgressView.setVisibility(View.GONE);
             isError = true;
         }
+
+        // create an object textToSpeech and adding features into it
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+
+                // if No error is found then only it will run
+                if(i!=TextToSpeech.ERROR){
+                    // To Choose language of speech
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
     }
 
 
@@ -271,37 +280,31 @@ public class Questions extends AppCompatActivity implements OnClickListener,
 
             LinearLayout pLayout = (LinearLayout) MenuItemCompat.getActionView(pause);
 
-            pLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    countDownTimer.cancel();
+            pLayout.setOnClickListener(v -> {
+                countDownTimer.cancel();
 
-                    if (tts.isSpeaking()) {
-                        tts.stop();
-                    }
-
-                    alertDialogBuilder = new AlertDialog.Builder(
-                            Questions.this);
-
-                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View layout = inflater.inflate(R.layout.pause_dialog, null, false);
-                    Button resume = (Button) layout.findViewById(R.id.btnOk);
-                    resume.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startTimer();
-                            alertDialog.dismiss();
-                        }
-                    });
-
-
-                    alertDialogBuilder.setView(layout);
-                    alertDialog = alertDialogBuilder.create();
-                    alertDialog.setCanceledOnTouchOutside(false);
-                    alertDialog.setCancelable(false);
-                    alertDialog.show();
-
+                if (tts.isSpeaking()) {
+                    tts.stop();
                 }
+
+                alertDialogBuilder = new AlertDialog.Builder(
+                        Questions.this);
+
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.pause_dialog, null, false);
+                Button resume = (Button) layout.findViewById(R.id.btnOk);
+                resume.setOnClickListener(v1 -> {
+                    startTimer();
+                    alertDialog.dismiss();
+                });
+
+
+                alertDialogBuilder.setView(layout);
+                alertDialog = alertDialogBuilder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+
             });
 
             final MenuItem discard = menu.findItem(R.id.discardtest);
@@ -310,18 +313,15 @@ public class Questions extends AppCompatActivity implements OnClickListener,
 
             LinearLayout dLayout = (LinearLayout) MenuItemCompat.getActionView(discard);
 
-            dLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            dLayout.setOnClickListener(v -> {
 
-                    countDownTimer.cancel();
+                countDownTimer.cancel();
 
-                    if (tts.isSpeaking()) {
-                        tts.stop();
-                    }
-
-                    discardDialog();
+                if (tts.isSpeaking()) {
+                    tts.stop();
                 }
+
+                discardDialog();
             });
 
             return true;
@@ -387,7 +387,7 @@ public class Questions extends AppCompatActivity implements OnClickListener,
                                     submit.setEnabled(false);
                                     SubmitAnswers();
                                 } else {
-                                    Toast.makeText(Questions.this, "DB already notified", Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(Questions.this, "DB already notified", Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -584,7 +584,7 @@ public class Questions extends AppCompatActivity implements OnClickListener,
             v.startAnimation(animScale);
             //tts.speak(Question.getText().toString(),TextToSpeech.QUEUE_FLUSH, null,"first");
             tts.speak(Question.getText().toString(), TextToSpeech.QUEUE_FLUSH,
-                    null);
+                    null, null);
         }
 
     }
@@ -876,25 +876,5 @@ public class Questions extends AppCompatActivity implements OnClickListener,
         alertDialog.setCancelable(false);
 
         alertDialog.show();
-    }
-
-    @Override
-    public void onInit(int status) {
-
-        if (status == TextToSpeech.SUCCESS) {
-
-            int result = tts.setLanguage(Locale.US);
-
-            if (result == TextToSpeech.LANG_MISSING_DATA
-                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-
-                Intent installIntent = new Intent();
-                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installIntent);
-                Toast.makeText(getApplicationContext(), "Language support has been installed", Toast.LENGTH_SHORT).show();
-
-            }
-
-        }
     }
 }
