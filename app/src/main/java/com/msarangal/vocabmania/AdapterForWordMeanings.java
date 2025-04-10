@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.msarangal.vocabmania.presentation.activity.FavoritesActivity;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class AdapterForWordMeanings extends RecyclerView.Adapter<AdapterForWordM
     List<WordMeaning> filteredData = Collections.emptyList();
 
 
-    public AdapterForWordMeanings(Context context, List<WordMeaning> data, Favorites f) {
+    public AdapterForWordMeanings(Context context, List<WordMeaning> data, FavoritesActivity f) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.filteredData = data;

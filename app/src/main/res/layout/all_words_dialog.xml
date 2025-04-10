@@ -18,7 +18,7 @@
         android:textSize="16sp"
         android:fontFamily="@font/nunito_regular" />
 
-    <com.msarangal.vocabmania.MyButton
+    <com.msarangal.vocabmania.presentation.custom.MyButton
         android:id="@+id/btnOk"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"

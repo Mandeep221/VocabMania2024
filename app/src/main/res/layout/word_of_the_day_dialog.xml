@@ -166,7 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <com.msarangal.vocabmania.MyButton
+        <com.msarangal.vocabmania.presentation.custom.MyButton
             android:id="@+id/btnGotIt"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"

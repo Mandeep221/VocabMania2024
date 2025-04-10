@@ -19,7 +19,7 @@
         android:layout_below="@+id/app_bar"
         card_view:cardElevation="3dp">
 
-        <com.msarangal.vocabmania.MyEditText
+        <com.msarangal.vocabmania.presentation.custom.MyEditText
             android:id="@+id/etSearchFav"
             android:layout_width="match_parent"
             android:layout_height="50dp"

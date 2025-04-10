@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.msarangal.vocabmania.presentation.activity.AllRevisionWordsActivity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +41,7 @@ public class AdapterForRevision extends RecyclerView.Adapter<AdapterForRevision.
         return filteredModelList;
     }
 
-    public AdapterForRevision(Context context, List<WordMeaning> filteredData, List<WordMeaning> unfilteredData, AllRevisionWords allRevisionWords) {
+    public AdapterForRevision(Context context, List<WordMeaning> filteredData, List<WordMeaning> unfilteredData, AllRevisionWordsActivity allRevisionWordsActivity) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.filteredData = filteredData;

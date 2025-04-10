@@ -1,15 +1,66 @@
-*.iml
-.gradle
+# Gradle files
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration files
 /local.properties
-/.idea
+/.idea/
+/*.iml
+/.gradle/
+/captures/
+/.externalNativeBuild
+
+# Keystore files (never commit your signing keys!)
+*.jks
+*.keystore
+
+# Android Studio config
+.idea/
+*.iml
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/.name
+.idea/codeStyles/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# OS-specific
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+Thumbs.db
 
-/app/.idea
+# Kotlin specific
+*.kotlin_module
 
-# Project exclude paths
-/buildSrc/build/
+# APK / AAB / Signing outputs
+*.apk
+*.ap_
+*.aab
+
+# Crashlytics / Firebase
+fabric.properties
+crashlytics-build.properties
+
+# Testing / Coverage
+/test-output/
+/code-coverage/
+*.ec
+
+# Jetpack Compose previews
+.idea/deploymentTargetDropDown.xml
+.idea/composePreview.xml
+
+# Local dev env variables
+.env
+.env.*
+
+# Custom rule: ignore secrets (if using any custom secrets.json or similar)
+secrets.json

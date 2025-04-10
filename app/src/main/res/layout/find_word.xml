@@ -22,7 +22,7 @@
                 android:layout_marginLeft="16dp"
                 android:src="@drawable/search_icon" />
 
-            <com.msarangal.vocabmania.MyAutoCompleteEditText
+            <com.msarangal.vocabmania.presentation.custom.MyAutoCompleteEditText
                 android:id="@+id/et_find"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
@@ -38,7 +38,7 @@
                 app:FontAuto="Cabin-Regular.otf">
 
 
-            </com.msarangal.vocabmania.MyAutoCompleteEditText>
+            </com.msarangal.vocabmania.presentation.custom.MyAutoCompleteEditText>
 
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:layout_gravity="right"
             android:layout_marginTop="16dp">
 
-            <com.msarangal.vocabmania.MyButton
+            <com.msarangal.vocabmania.presentation.custom.MyButton
                 android:id="@+id/btnCancel"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 android:textColor="@color/pink_five"
                 app:FontButton="Nunito-Bold.ttf" />
 
-            <com.msarangal.vocabmania.MyButton
+            <com.msarangal.vocabmania.presentation.custom.MyButton
                 android:id="@+id/btnFind"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
