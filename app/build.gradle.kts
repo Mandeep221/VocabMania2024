@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.msarangal.vocabmania"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.msarangal.vocabmania"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35
+        versionCode = 12
+        versionName = "12.0.1"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
