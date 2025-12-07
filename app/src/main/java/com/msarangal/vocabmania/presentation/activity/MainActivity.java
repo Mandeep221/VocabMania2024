@@ -28,10 +28,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnGett
     private TabLayout tabLayout;
     private MyPagerAdapter adapter;
     private MySQLiteAdapter mySQLiteAdapter;
-    private TextView tvTitle;
     private LinearLayout appbar_container;
-    private View v;
-    int exit = 0;
     Bundle bundleGraphValuesE;
     Bundle bundleGraphValuesM;
     Bundle bundleGraphValuesT;
@@ -59,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnGett
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        tabLayout.setTabsFromPagerAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -93,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnGett
     }
 
     @Override
-    public Bundle getGraphpoints  (int p) {
+    public Bundle getGraphpoints(int p) {
 
         if (p == 0) {
             return bundleGraphValuesE;
@@ -111,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnGett
         String[] tabs = {"Beginner", "Intermediate", "Advance"};
 
         public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

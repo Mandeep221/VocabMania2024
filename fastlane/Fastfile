@@ -1,0 +1,302 @@
+# Fastfile - Main configuration for Fastlane
+# Learn more: https://docs.fastlane.tools/
+
+default_platform(:android)
+
+platform :android do
+  
+  ###########################################
+  # LEVEL 1: Basic Lanes
+  ###########################################
+  
+  desc "Build debug APK"
+  lane :debug do
+    gradle(
+      task: "clean assembleDebug",
+      print_command: true
+    )
+    
+    puts "✅ Debug APK built successfully!"
+    puts "Location: #{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}"
+  end
+  
+  desc "Build release APK (unsigned)"
+  lane :release do
+    gradle(
+      task: "clean assembleRelease",
+      print_command: true
+    )
+    
+    puts "✅ Release APK built successfully!"
+  end
+  
+  ###########################################
+  # LEVEL 2: Testing & Quality
+  ###########################################
+  
+  desc "Run all unit tests"
+  lane :test do
+    gradle(
+      task: "test",
+      print_command: true
+    )
+    
+    puts "✅ All tests passed!"
+  end
+  
+  desc "Run lint checks"
+  lane :lint do
+    gradle(
+      task: "lint",
+      print_command: true
+    )
+    
+    puts "✅ Lint checks completed!"
+  end
+  
+  desc "Run tests and lint"
+  lane :check do
+    lint
+    test
+    
+    puts "✅ All quality checks passed!"
+  end
+  
+  ###########################################
+  # LEVEL 3: CI Lane
+  ###########################################
+  
+  desc "CI build - runs all checks and builds debug APK"
+  lane :ci do
+    # Run quality checks
+    check
+    
+    # Build debug APK
+    debug
+    
+    puts "✅ CI build completed successfully!"
+  end
+  
+  ###########################################
+  # LEVEL 4: Signed Release
+  ###########################################
+  
+  desc "Build signed release APK"
+  desc "Requires: KEYSTORE_PATH, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD env variables"
+  lane :release_signed do
+    # Validate environment variables
+    ensure_env_vars(
+      env_vars: [
+        "KEYSTORE_PATH",
+        "KEYSTORE_PASSWORD",
+        "KEY_ALIAS",
+        "KEY_PASSWORD"
+      ]
+    )
+    
+    gradle(
+      task: "clean assembleRelease",
+      print_command: true,
+      properties: {
+        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+    )
+    
+    puts "✅ Signed release APK built successfully!"
+  end
+  
+  desc "Build signed release AAB (for Play Store)"
+  lane :bundle_signed do
+    ensure_env_vars(
+      env_vars: [
+        "KEYSTORE_PATH",
+        "KEYSTORE_PASSWORD",
+        "KEY_ALIAS",
+        "KEY_PASSWORD"
+      ]
+    )
+    
+    gradle(
+      task: "clean bundleRelease",
+      print_command: true,
+      properties: {
+        "android.injected.signing.store.file" => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEY_PASSWORD"]
+      }
+    )
+    
+    puts "✅ Signed release AAB built successfully!"
+  end
+  
+  ###########################################
+  # LEVEL 5: Firebase Distribution
+  ###########################################
+  
+  desc "Build and distribute to Firebase App Distribution"
+  desc "Requires: FIREBASE_APP_ID, FIREBASE_GROUPS env variables"
+  lane :firebase_beta do
+    # Build debug APK
+    debug
+    
+    # Get version info
+    version_name = get_version_name
+    version_code = get_version_code
+    
+    # Upload to Firebase
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      groups: ENV.fetch("FIREBASE_GROUPS", "testers"),
+      release_notes: "Version: #{version_name} (#{version_code})\n\nBeta build for testing",
+      apk_path: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    )
+    
+    puts "✅ App distributed to Firebase successfully!"
+  end
+  
+  ###########################################
+  # LEVEL 6: Play Store Deployment
+  ###########################################
+  
+  desc "Deploy to Play Store Internal Track"
+  desc "Requires: GOOGLE_PLAY_JSON_KEY env variable"
+  lane :deploy_internal do
+    # Build signed AAB
+    bundle_signed
+    
+    # Upload to Play Store Internal Track
+    upload_to_play_store(
+      track: 'internal',
+      aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      json_key_data: ENV["GOOGLE_PLAY_JSON_KEY"]
+    )
+    
+    puts "✅ App deployed to Play Store Internal Track!"
+  end
+  
+  desc "Promote from internal to beta track"
+  lane :promote_to_beta do
+    upload_to_play_store(
+      track: 'internal',
+      track_promote_to: 'beta',
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      json_key_data: ENV["GOOGLE_PLAY_JSON_KEY"]
+    )
+    
+    puts "✅ App promoted to Beta Track!"
+  end
+  
+  desc "Promote from beta to production"
+  lane :promote_to_production do
+    upload_to_play_store(
+      track: 'beta',
+      track_promote_to: 'production',
+      rollout: '0.1',  # Start with 10% rollout
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      json_key_data: ENV["GOOGLE_PLAY_JSON_KEY"]
+    )
+    
+    puts "✅ App promoted to Production with 10% rollout!"
+  end
+  
+  ###########################################
+  # LEVEL 7: Advanced - Complete Release Pipeline
+  ###########################################
+  
+  desc "Complete release pipeline: Test → Build → Deploy"
+  desc "Options: env (staging/production), track (internal/beta/production)"
+  lane :release_pipeline do |options|
+    environment = options.fetch(:env, "staging")
+    track = options.fetch(:track, "internal")
+    
+    puts "🚀 Starting release pipeline..."
+    puts "Environment: #{environment}"
+    puts "Track: #{track}"
+    
+    # Step 1: Run all checks
+    puts "\n📋 Step 1: Running quality checks..."
+    check
+    
+    # Step 2: Build signed AAB
+    puts "\n🔨 Step 2: Building signed AAB..."
+    bundle_signed
+    
+    # Step 3: Deploy to Play Store
+    puts "\n📤 Step 3: Deploying to Play Store..."
+    upload_to_play_store(
+      track: track,
+      aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      json_key_data: ENV["GOOGLE_PLAY_JSON_KEY"]
+    )
+    
+    # Step 4: Send notification (optional)
+    puts "\n✅ Release pipeline completed successfully!"
+    puts "App deployed to #{track} track"
+    
+    # Optional: Send Slack notification
+    # slack(
+    #   message: "New release deployed to #{track} track!",
+    #   channel: "#mobile-releases",
+    #   success: true
+    # )
+  end
+  
+  ###########################################
+  # Helper Lanes
+  ###########################################
+  
+  private_lane :get_version_name do
+    # Read version name from build.gradle.kts
+    file = File.read("../app/build.gradle.kts")
+    version_name = file[/versionName = "(.*)"/, 1]
+    version_name || "Unknown"
+  end
+  
+  private_lane :get_version_code do
+    # Read version code from build.gradle.kts
+    file = File.read("../app/build.gradle.kts")
+    version_code = file[/versionCode = (\d+)/, 1]
+    version_code || "0"
+  end
+  
+  ###########################################
+  # Error Handling
+  ###########################################
+  
+  error do |lane, exception|
+    puts "❌ Error in lane '#{lane}': #{exception.message}"
+    
+    # Optional: Send error notification
+    # slack(
+    #   message: "Build failed in lane: #{lane}",
+    #   success: false
+    # )
+  end
+end
+
+###########################################
+# Custom Actions (Advanced)
+###########################################
+
+# You can define custom actions here
+# Example:
+# desc "Send custom notification"
+# private_lane :notify do |options|
+#   message = options[:message]
+#   # Custom notification logic
+# end
+

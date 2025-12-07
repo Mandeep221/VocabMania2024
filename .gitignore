@@ -1,22 +1,8 @@
-# Gradle files
-.gradle/
-build/
-**/build/
-!gradle/wrapper/gradle-wrapper.jar
+####################################################################################################
+# Android Studio / IntelliJ IDEA
+####################################################################################################
 
-# Local configuration files
-/local.properties
-/.idea/
-/*.iml
-/.gradle/
-/captures/
-/.externalNativeBuild
-
-# Keystore files (never commit your signing keys!)
-*.jks
-*.keystore
-
-# Android Studio config
+# Android Studio
 .idea/
 *.iml
 .idea/caches
@@ -27,40 +13,245 @@ build/
 .idea/assetWizardSettings.xml
 .idea/.name
 .idea/codeStyles/
+.idea/deploymentTargetDropDown.xml
+.idea/composePreview.xml
+.idea/dictionaries
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
 
-# Logs and temp files
-*.log
-*.tmp
-*.temp
+# IntelliJ IDEA (if using)
+*.iws
+out/
+.idea_modules/
 
-# OS-specific
-.DS_Store
-Thumbs.db
+####################################################################################################
+# Gradle
+####################################################################################################
 
-# Kotlin specific
-*.kotlin_module
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+.gradletasknamecache
 
-# APK / AAB / Signing outputs
+# Gradle cache
+gradle/
+!gradle/wrapper/
+
+####################################################################################################
+# Android Build Outputs
+####################################################################################################
+
+# APK / AAB outputs
 *.apk
 *.ap_
 *.aab
 
-# Crashlytics / Firebase
-fabric.properties
-crashlytics-build.properties
+# Release folder
+app/release/
+*/release/
+app/debug/
+*/debug/
 
-# Testing / Coverage
-/test-output/
-/code-coverage/
-*.ec
+# Generated files
+bin/
+gen/
+out/
+captures/
 
-# Jetpack Compose previews
-.idea/deploymentTargetDropDown.xml
-.idea/composePreview.xml
+# Build intermediates
+*.dex
+*.class
+.externalNativeBuild
+.cxx/
 
-# Local dev env variables
+# NDK
+obj/
+
+####################################################################################################
+# Local Configuration & Secrets (CRITICAL - NEVER COMMIT THESE)
+####################################################################################################
+
+# Local properties (SDK path, etc.)
+local.properties
+
+# Keystore files - NEVER COMMIT SIGNING KEYS!
+*.jks
+*.keystore
+key.properties
+keystore.properties
+
+# Firebase & Google Services
+google-services.json
+app/google-services.json
+
+# Environment variables
 .env
 .env.*
+!.env.example
 
-# Custom rule: ignore secrets (if using any custom secrets.json or similar)
+# Secrets
 secrets.json
+secrets.xml
+secret.properties
+
+####################################################################################################
+# Testing & Code Coverage
+####################################################################################################
+
+# JUnit
+test-output/
+*.ec
+
+# Code coverage
+code-coverage/
+*.exec
+jacoco.xml
+coverage/
+htmlcov/
+
+# Android Instrumentation Tests
+.android/
+
+####################################################################################################
+# Logs & Temporary Files
+####################################################################################################
+
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+####################################################################################################
+# OS-Specific Files
+####################################################################################################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+####################################################################################################
+# Kotlin & Java
+####################################################################################################
+
+*.kotlin_module
+.mtj.tmp/
+*.class
+
+####################################################################################################
+# Firebase & Crashlytics
+####################################################################################################
+
+fabric.properties
+crashlytics-build.properties
+crashlytics/
+com_crashlytics_export_strings.xml
+
+####################################################################################################
+# Fastlane (CI/CD)
+####################################################################################################
+
+# Fastlane specific
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/.env.*
+!fastlane/.env.example
+
+# Deliver temporary files
+fastlane/deliver/
+
+# Snapshot generated screenshots
+fastlane/screenshots/
+
+####################################################################################################
+# Version Control
+####################################################################################################
+
+# Git
+.git/
+.gitattributes
+*.orig
+*.rej
+
+# SVN (if migrating from SVN)
+.svn/
+
+####################################################################################################
+# Dependencies & Libraries
+####################################################################################################
+
+# Maven
+.mvn/
+
+# Node (if using React Native or other Node tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+####################################################################################################
+# Miscellaneous
+####################################################################################################
+
+# Backup files
+*.bak
+*~
+*.backup
+
+# Profiler output
+*.hprof
+
+# Navigation editor temp files
+.navigation/
+
+# Android Profiling
+*.trace
+
+####################################################################################################
+# CI/CD Artifacts
+####################################################################################################
+
+# CI/CD build outputs
+build-reports/
+lint-results/
+test-results/
+
+# SonarQube
+.sonar/
+.scannerwork/
+
+####################################################################################################
+# IMPORTANT NOTES:
+####################################################################################################
+# 1. If you've already committed sensitive files (like *.jks or google-services.json),
+#    you need to remove them from Git history using:
+#    git filter-branch or BFG Repo-Cleaner
+#
+# 2. For google-services.json, consider using:
+#    - Different configs for debug/release
+#    - CI/CD secrets management
+#
+# 3. For signing keys, ALWAYS store them securely:
+#    - Use CI/CD secrets (GitHub Secrets, Jenkins Credentials)
+#    - Never commit to version control
+####################################################################################################
