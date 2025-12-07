@@ -32,6 +32,51 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       
+      # Step 3.5: Create dummy google-services.json for CI builds
+      - name: Create dummy google-services.json
+        run: |
+          cat > app/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789",
+              "project_id": "dummy-project",
+              "storage_bucket": "dummy-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789:android:abcdef123456",
+                  "android_client_info": {
+                    "package_name": "com.msarangal.vocabmania"
+                  }
+                },
+                "oauth_client": [
+                  {
+                    "client_id": "123456789-abcdefghijklmnop.apps.googleusercontent.com",
+                    "client_type": 3
+                  }
+                ],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyDummyKeyForCIBuildsOnly123456789"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": [
+                      {
+                        "client_id": "123456789-abcdefghijklmnop.apps.googleusercontent.com",
+                        "client_type": 3
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+      
       # Step 4: Build debug APK
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
