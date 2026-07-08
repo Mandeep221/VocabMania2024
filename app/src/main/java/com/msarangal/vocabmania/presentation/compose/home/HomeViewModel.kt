@@ -1,0 +1,56 @@
+package com.msarangal.vocabmania.presentation.compose.home
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.msarangal.vocabmania.shared.VocabManiaShared
+import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class HomeViewModel(
+    private val shared: VocabManiaShared,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    init {
+        refresh()
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            try {
+                val now = System.currentTimeMillis()
+                val settings = shared.getUserSettingsUseCase()
+                val dueCount = shared.getDueWordsUseCase.countDue(now).toInt()
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        currentStreak = settings.currentStreak,
+                        dueCount = dueCount,
+                        dailyGoal = settings.dailyGoal,
+                        selectedLevelLabel = settings.selectedLevel.toDisplayLabel(),
+                    )
+                }
+            } catch (error: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = error.message ?: "Unable to load home data.",
+                    )
+                }
+            }
+        }
+    }
+
+    private fun DifficultyLevel.toDisplayLabel(): String = when (this) {
+        DifficultyLevel.EASY -> "Easy"
+        DifficultyLevel.MEDIUM -> "Medium"
+        DifficultyLevel.TOUGH -> "Tough"
+    }
+}

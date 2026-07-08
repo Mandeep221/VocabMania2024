@@ -1,0 +1,10 @@
+CREATE TABLE migration_state (
+    key TEXT PRIMARY KEY,
+    completed_at INTEGER NOT NULL
+);
+
+isCompleted:
+SELECT completed_at FROM migration_state WHERE key = ?;
+
+markCompleted:
+INSERT OR REPLACE INTO migration_state(key, completed_at) VALUES (?, ?);

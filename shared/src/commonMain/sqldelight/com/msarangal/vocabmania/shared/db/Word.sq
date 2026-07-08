@@ -1,0 +1,35 @@
+CREATE TABLE word (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT NOT NULL,
+    meaning TEXT NOT NULL,
+    usage_example TEXT,
+    level TEXT NOT NULL,
+    is_favorite INTEGER NOT NULL DEFAULT 0,
+    firebase_level_attempt TEXT,
+    UNIQUE(text, level)
+);
+
+selectAll:
+SELECT * FROM word ORDER BY text ASC;
+
+selectById:
+SELECT * FROM word WHERE id = ?;
+
+selectByLevel:
+SELECT * FROM word WHERE level = ? ORDER BY text ASC;
+
+countAll:
+SELECT COUNT(*) FROM word;
+
+countByLevel:
+SELECT COUNT(*) FROM word WHERE level = ?;
+
+insertWord:
+INSERT OR IGNORE INTO word(text, meaning, usage_example, level, is_favorite, firebase_level_attempt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+selectIdByTextAndLevel:
+SELECT id FROM word WHERE text = ? AND level = ?;
+
+updateFavorite:
+UPDATE word SET is_favorite = ? WHERE id = ?;

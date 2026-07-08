@@ -1,0 +1,37 @@
+---
+description: VocabMania rebuild context — KMP, SRS daily habit app, legacy do-not-touch rules
+alwaysApply: true
+---
+
+# VocabMania Project Context
+
+Read `docs/VISION.md` for full product/roadmap decisions.
+
+## North Star
+Ship a daily-habit vocab app people return to. KMP + AI workflows are how we build.
+
+## Planning
+- **Phase 0–3** = planning units (see VISION.md for goals, deliverables, done-when)
+- **Week N** = timing within a phase (one chat per week per AI_WORKFLOW.md)
+- Current: **Phase 2, Week 5** — SM-2 lite scheduler upgrade
+
+## Stack
+- `:shared` — KMP commonMain: domain, SQLDelight, SRS scheduler, repository interfaces
+- `:app` — new UI in Jetpack Compose; ViewModels call `:shared` use cases
+- Legacy — Java/XML Activities; back door only; **do not polish or extend**
+
+## Hard Rules
+1. New Compose screens serve the **new SRS concept** — not 1:1 ports of legacy screens
+2. Business logic in `:shared/commonMain` — never in Composables or legacy Java
+3. SQLDelight in commonMain for data; expect/actual only when platform requires it
+4. Don't modify legacy Java/XML unless blocking migration (bug fix only)
+5. Minimize scope — one week at a time per `docs/AI_WORKFLOW.md`
+
+## v1 Flow (Phase 1)
+Onboarding → Home (streak, due count) → Review (Again/Hard/Good/Easy) → Session complete
+
+## When Stuck
+Use grill-me (`.cursor/skills/grill-me.md`): one question at a time, with recommendation.
+
+## Skill Promotion
+If a pattern repeats twice, flag "Skill promotion opportunity" per `docs/AI_WORKFLOW.md`.

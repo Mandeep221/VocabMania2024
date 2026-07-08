@@ -1,0 +1,32 @@
+CREATE TABLE user_settings (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    onboarding_complete INTEGER NOT NULL DEFAULT 0,
+    selected_level TEXT NOT NULL DEFAULT 'E',
+    daily_goal INTEGER NOT NULL DEFAULT 15,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    longest_streak INTEGER NOT NULL DEFAULT 0,
+    last_session_epoch_day INTEGER
+);
+
+selectSettings:
+SELECT * FROM user_settings WHERE id = 1;
+
+insertDefaultSettings:
+INSERT OR IGNORE INTO user_settings(id) VALUES (1);
+
+updateSettings:
+UPDATE user_settings
+SET onboarding_complete = ?,
+    selected_level = ?,
+    daily_goal = ?,
+    current_streak = ?,
+    longest_streak = ?,
+    last_session_epoch_day = ?
+WHERE id = 1;
+
+updateStreak:
+UPDATE user_settings
+SET current_streak = ?,
+    longest_streak = ?,
+    last_session_epoch_day = ?
+WHERE id = 1;

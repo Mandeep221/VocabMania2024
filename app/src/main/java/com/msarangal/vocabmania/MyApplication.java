@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.multidex.MultiDex;
 
+import com.msarangal.vocabmania.shared.SharedBootstrap;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 //import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -26,6 +27,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         myApplicationInstance = this;
+        SharedBootstrap.initialize(this);
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
     }
 
