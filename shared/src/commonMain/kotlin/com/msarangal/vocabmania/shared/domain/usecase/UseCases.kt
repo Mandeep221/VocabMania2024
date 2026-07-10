@@ -3,6 +3,7 @@ package com.msarangal.vocabmania.shared.domain.usecase
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 import com.msarangal.vocabmania.shared.domain.model.DueWord
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.model.ReviewSchedule
 import com.msarangal.vocabmania.shared.domain.model.SessionSummary
 import com.msarangal.vocabmania.shared.domain.model.UserSettings
 import com.msarangal.vocabmania.shared.domain.repository.ReviewRepository
@@ -31,9 +32,7 @@ class ApplyReviewRatingUseCase(
         wordId: Long,
         rating: ReviewRating,
         nowEpochMillis: Long,
-    ) {
-        reviewRepository.applyRating(wordId, rating, nowEpochMillis)
-    }
+    ): ReviewSchedule = reviewRepository.applyRating(wordId, rating, nowEpochMillis)
 }
 
 class CompleteReviewSessionUseCase(

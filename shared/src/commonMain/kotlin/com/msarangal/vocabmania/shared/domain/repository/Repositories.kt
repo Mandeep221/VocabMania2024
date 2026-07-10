@@ -3,6 +3,7 @@ package com.msarangal.vocabmania.shared.domain.repository
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 import com.msarangal.vocabmania.shared.domain.model.DueWord
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.model.ReviewSchedule
 import com.msarangal.vocabmania.shared.domain.model.SessionSummary
 import com.msarangal.vocabmania.shared.domain.model.UserSettings
 import com.msarangal.vocabmania.shared.domain.model.Word
@@ -36,7 +37,7 @@ interface ReviewRepository {
         wordId: Long,
         rating: ReviewRating,
         nowEpochMillis: Long,
-    )
+    ): ReviewSchedule
 
     suspend fun ensureReviewCard(
         wordId: Long,

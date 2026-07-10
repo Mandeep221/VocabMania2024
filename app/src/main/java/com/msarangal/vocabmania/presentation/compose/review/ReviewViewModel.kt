@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msarangal.vocabmania.shared.VocabManiaShared
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +44,7 @@ class ReviewViewModel(
                         text = dueWord.word.text,
                         meaning = dueWord.word.meaning,
                         usageExample = dueWord.word.usageExample,
+                        intervalDays = dueWord.reviewCard.intervalDays,
                     )
                 }
                 _uiState.update {
@@ -66,29 +69,40 @@ class ReviewViewModel(
         _uiState.update { it.copy(isMeaningRevealed = true) }
     }
 
-    fun rate(rating: ReviewRating, onSessionComplete: (reviewedCount: Int) -> Unit) {
+    fun rate(
+        rating: ReviewRating,
+        onSessionComplete: (reviewedCount: Int, lastScheduleFeedback: String?) -> Unit,
+    ) {
         val state = _uiState.value
         if (state.isApplyingRating || state.words.isEmpty()) return
 
         val currentWord = state.words[state.currentIndex]
         viewModelScope.launch {
-            _uiState.update { it.copy(isApplyingRating = true, errorMessage = null) }
+            _uiState.update { it.copy(isApplyingRating = true, errorMessage = null, scheduleFeedback = null) }
             try {
-                shared.applyReviewRatingUseCase(
+                val schedule = shared.applyReviewRatingUseCase(
                     wordId = currentWord.wordId,
                     rating = rating,
                     nowEpochMillis = System.currentTimeMillis(),
                 )
+                val feedback = ReviewIntervalFormatter.formatNextReview(schedule.intervalDays)
                 val reviewedCount = state.currentIndex + 1
                 val nextIndex = state.currentIndex + 1
+                _uiState.update {
+                    it.copy(
+                        isApplyingRating = false,
+                        scheduleFeedback = feedback,
+                    )
+                }
+                delay(SCHEDULE_FEEDBACK_DELAY_MS)
                 if (nextIndex >= state.words.size) {
-                    onSessionComplete(reviewedCount)
+                    onSessionComplete(reviewedCount, feedback)
                 } else {
                     _uiState.update {
                         it.copy(
                             currentIndex = nextIndex,
                             isMeaningRevealed = false,
-                            isApplyingRating = false,
+                            scheduleFeedback = null,
                         )
                     }
                 }
@@ -101,5 +115,9 @@ class ReviewViewModel(
                 }
             }
         }
+    }
+
+    companion object {
+        private const val SCHEDULE_FEEDBACK_DELAY_MS = 1_200L
     }
 }

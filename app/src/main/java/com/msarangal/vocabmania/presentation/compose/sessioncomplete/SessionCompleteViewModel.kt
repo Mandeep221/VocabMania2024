@@ -17,8 +17,16 @@ class SessionCompleteViewModel(
 ) : ViewModel() {
 
     private val reviewedCount: Int = savedStateHandle.get<Int>(Routes.REVIEWED_COUNT_ARG) ?: 0
+    private val lastScheduleFeedback: String? = savedStateHandle
+        .get<String>(Routes.LAST_SCHEDULE_FEEDBACK_ARG)
+        ?.takeIf { it.isNotBlank() }
 
-    private val _uiState = MutableStateFlow(SessionCompleteUiState(reviewedCount = reviewedCount))
+    private val _uiState = MutableStateFlow(
+        SessionCompleteUiState(
+            reviewedCount = reviewedCount,
+            lastScheduleFeedback = lastScheduleFeedback,
+        ),
+    )
     val uiState: StateFlow<SessionCompleteUiState> = _uiState.asStateFlow()
 
     init {

@@ -34,6 +34,7 @@ data class ReviewCard(
     val intervalDays: Double,
     val lastReviewedAtEpochMillis: Long?,
     val reviewCount: Int,
+    val easeFactor: Double,
 )
 
 data class DueWord(
@@ -54,6 +55,7 @@ data class ReviewSchedule(
     val nextReviewAtEpochMillis: Long,
     val intervalDays: Double,
     val reviewCount: Int,
+    val easeFactor: Double,
 )
 
 data class SessionSummary(

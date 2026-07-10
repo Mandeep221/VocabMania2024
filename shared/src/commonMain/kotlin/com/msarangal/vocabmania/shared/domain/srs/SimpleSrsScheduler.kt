@@ -2,6 +2,7 @@ package com.msarangal.vocabmania.shared.domain.srs
 
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
 import com.msarangal.vocabmania.shared.domain.model.ReviewSchedule
+import com.msarangal.vocabmania.shared.domain.srs.Sm2LiteScheduler
 
 /**
  * v1 SRS scheduler (weeks 1–4).
@@ -27,6 +28,7 @@ class SimpleSrsScheduler {
             nextReviewAtEpochMillis = nextReviewAt,
             intervalDays = intervalDays,
             reviewCount = currentReviewCount + 1,
+            easeFactor = Sm2LiteScheduler.DEFAULT_EASE_FACTOR,
         )
     }
 

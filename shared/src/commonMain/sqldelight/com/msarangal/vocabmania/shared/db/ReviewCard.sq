@@ -3,7 +3,8 @@ CREATE TABLE review_card (
     next_review_at INTEGER NOT NULL,
     interval_days REAL NOT NULL DEFAULT 0,
     last_reviewed_at INTEGER,
-    review_count INTEGER NOT NULL DEFAULT 0
+    review_count INTEGER NOT NULL DEFAULT 0,
+    ease_factor REAL NOT NULL DEFAULT 2.5
 );
 
 selectByWordId:
@@ -21,7 +22,8 @@ SELECT
     review_card.next_review_at,
     review_card.interval_days,
     review_card.last_reviewed_at,
-    review_card.review_count
+    review_card.review_count,
+    review_card.ease_factor
 FROM review_card
 INNER JOIN word ON word.id = review_card.word_id
 WHERE review_card.next_review_at <= ?
@@ -37,10 +39,10 @@ WHERE review_card.next_review_at <= ?
 AND word.level = ?;
 
 insertReviewCard:
-INSERT OR REPLACE INTO review_card(word_id, next_review_at, interval_days, last_reviewed_at, review_count)
-VALUES (?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO review_card(word_id, next_review_at, interval_days, last_reviewed_at, review_count, ease_factor)
+VALUES (?, ?, ?, ?, ?, ?);
 
 updateReviewCard:
 UPDATE review_card
-SET next_review_at = ?, interval_days = ?, last_reviewed_at = ?, review_count = ?
+SET next_review_at = ?, interval_days = ?, last_reviewed_at = ?, review_count = ?, ease_factor = ?
 WHERE word_id = ?;

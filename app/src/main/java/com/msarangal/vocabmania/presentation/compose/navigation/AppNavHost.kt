@@ -81,8 +81,8 @@ fun AppNavHost(
             val viewModel: ReviewViewModel = viewModel(factory = viewModelFactory)
             ReviewScreen(
                 viewModel = viewModel,
-                onSessionComplete = { reviewedCount ->
-                    navController.navigate(Routes.sessionComplete(reviewedCount)) {
+                onSessionComplete = { reviewedCount, lastScheduleFeedback ->
+                    navController.navigate(Routes.sessionComplete(reviewedCount, lastScheduleFeedback)) {
                         popUpTo(Routes.REVIEW) { inclusive = true }
                     }
                 },
@@ -93,6 +93,10 @@ fun AppNavHost(
             route = Routes.SESSION_COMPLETE,
             arguments = listOf(
                 navArgument(Routes.REVIEWED_COUNT_ARG) { type = NavType.IntType },
+                navArgument(Routes.LAST_SCHEDULE_FEEDBACK_ARG) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
             ),
         ) {
             val viewModel: SessionCompleteViewModel = viewModel(factory = viewModelFactory)

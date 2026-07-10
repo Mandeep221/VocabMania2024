@@ -31,12 +31,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReviewScreen(
     viewModel: ReviewViewModel,
-    onSessionComplete: (reviewedCount: Int) -> Unit,
+    onSessionComplete: (reviewedCount: Int, lastScheduleFeedback: String?) -> Unit,
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -86,6 +87,7 @@ fun ReviewScreen(
                     totalCount = uiState.words.size,
                     isMeaningRevealed = uiState.isMeaningRevealed,
                     isApplyingRating = uiState.isApplyingRating,
+                    scheduleFeedback = uiState.scheduleFeedback,
                     errorMessage = uiState.errorMessage,
                     onRevealMeaning = viewModel::revealMeaning,
                     onRate = { rating -> viewModel.rate(rating, onSessionComplete) },
@@ -133,6 +135,7 @@ private fun ReviewContent(
     totalCount: Int,
     isMeaningRevealed: Boolean,
     isApplyingRating: Boolean,
+    scheduleFeedback: String?,
     errorMessage: String?,
     onRevealMeaning: () -> Unit,
     onRate: (ReviewRating) -> Unit,
@@ -143,6 +146,14 @@ private fun ReviewContent(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        ReviewIntervalFormatter.formatCurrentInterval(word.intervalDays)?.let { intervalLabel ->
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = intervalLabel,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         Card(
@@ -209,9 +220,20 @@ private fun ReviewContent(
         if (isMeaningRevealed) {
             Spacer(modifier = Modifier.height(16.dp))
             RatingButtons(
-                enabled = !isApplyingRating,
+                enabled = !isApplyingRating && scheduleFeedback == null,
                 onRate = onRate,
             )
+            scheduleFeedback?.let { feedback ->
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = feedback,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+            }
             if (isApplyingRating) {
                 Spacer(modifier = Modifier.height(12.dp))
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))

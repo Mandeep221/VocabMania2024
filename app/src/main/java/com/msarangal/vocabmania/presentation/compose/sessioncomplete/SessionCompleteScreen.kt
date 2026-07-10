@@ -64,6 +64,16 @@ fun SessionCompleteScreen(
                         currentStreak = uiState.currentStreak,
                         longestStreak = uiState.longestStreak,
                     )
+                    uiState.lastScheduleFeedback?.let { feedback ->
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = feedback,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                     uiState.errorMessage?.let { message ->
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(

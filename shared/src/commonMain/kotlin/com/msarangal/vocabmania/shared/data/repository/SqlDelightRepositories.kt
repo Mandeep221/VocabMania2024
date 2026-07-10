@@ -6,13 +6,15 @@ import com.msarangal.vocabmania.shared.db.VocabManiaDatabase
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 import com.msarangal.vocabmania.shared.domain.model.DueWord
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.model.ReviewSchedule
 import com.msarangal.vocabmania.shared.domain.model.SessionSummary
 import com.msarangal.vocabmania.shared.domain.model.UserSettings
 import com.msarangal.vocabmania.shared.domain.repository.MigrationRepository
 import com.msarangal.vocabmania.shared.domain.repository.ReviewRepository
 import com.msarangal.vocabmania.shared.domain.repository.UserSettingsRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordRepository
-import com.msarangal.vocabmania.shared.domain.srs.SimpleSrsScheduler
+import com.msarangal.vocabmania.shared.domain.srs.SpacedRepetitionScheduler
+import com.msarangal.vocabmania.shared.domain.srs.Sm2LiteScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -53,7 +55,7 @@ class SqlDelightWordRepository(
 
 class SqlDelightReviewRepository(
     private val database: VocabManiaDatabase,
-    private val scheduler: SimpleSrsScheduler = SimpleSrsScheduler(),
+    private val scheduler: SpacedRepetitionScheduler = Sm2LiteScheduler(),
 ) : ReviewRepository {
 
     override suspend fun getDueWords(
@@ -78,10 +80,18 @@ class SqlDelightReviewRepository(
         wordId: Long,
         rating: ReviewRating,
         nowEpochMillis: Long,
-    ) = withContext(Dispatchers.IO) {
+    ): ReviewSchedule = withContext(Dispatchers.IO) {
         val existing = database.reviewCardQueries.selectByWordId(wordId).executeAsOneOrNull()
         val currentCount = existing?.review_count?.toInt() ?: 0
-        val schedule = scheduler.schedule(rating, nowEpochMillis, currentCount)
+        val currentInterval = existing?.interval_days ?: 0.0
+        val currentEase = existing?.ease_factor ?: Sm2LiteScheduler.DEFAULT_EASE_FACTOR
+        val schedule = scheduler.schedule(
+            rating = rating,
+            nowEpochMillis = nowEpochMillis,
+            currentIntervalDays = currentInterval,
+            currentEaseFactor = currentEase,
+            reviewCount = currentCount,
+        )
 
         database.reviewCardQueries.insertReviewCard(
             word_id = wordId,
@@ -89,7 +99,9 @@ class SqlDelightReviewRepository(
             interval_days = schedule.intervalDays,
             last_reviewed_at = nowEpochMillis,
             review_count = schedule.reviewCount.toLong(),
+            ease_factor = schedule.easeFactor,
         )
+        schedule
     }
 
     override suspend fun ensureReviewCard(wordId: Long, nowEpochMillis: Long) = withContext(Dispatchers.IO) {
@@ -101,6 +113,7 @@ class SqlDelightReviewRepository(
                 interval_days = 0.0,
                 last_reviewed_at = null,
                 review_count = 0,
+                ease_factor = Sm2LiteScheduler.DEFAULT_EASE_FACTOR,
             )
         }
     }

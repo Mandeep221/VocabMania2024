@@ -25,6 +25,7 @@ fun Review_card.toDomain(): ReviewCard = ReviewCard(
     intervalDays = interval_days,
     lastReviewedAtEpochMillis = last_reviewed_at,
     reviewCount = review_count.toInt(),
+    easeFactor = ease_factor,
 )
 
 fun SelectDue.toDueWord(): DueWord = DueWord(
@@ -42,6 +43,7 @@ fun SelectDue.toDueWord(): DueWord = DueWord(
         intervalDays = interval_days,
         lastReviewedAtEpochMillis = last_reviewed_at,
         reviewCount = review_count.toInt(),
+        easeFactor = ease_factor,
     ),
 )
 

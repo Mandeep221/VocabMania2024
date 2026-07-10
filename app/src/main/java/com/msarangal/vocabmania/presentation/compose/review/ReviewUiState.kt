@@ -5,6 +5,7 @@ data class ReviewWordUi(
     val text: String,
     val meaning: String,
     val usageExample: String?,
+    val intervalDays: Double,
 )
 
 data class ReviewUiState(
@@ -15,4 +16,5 @@ data class ReviewUiState(
     val isApplyingRating: Boolean = false,
     val isEmpty: Boolean = false,
     val errorMessage: String? = null,
+    val scheduleFeedback: String? = null,
 )
