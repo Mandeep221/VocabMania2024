@@ -6,6 +6,7 @@ import com.msarangal.vocabmania.shared.data.catalog.FirebaseWordCatalogRepositor
 import com.msarangal.vocabmania.shared.data.firebase.FirebaseWordCatalogImporter
 import com.msarangal.vocabmania.shared.data.migration.LegacyDatabaseMigrator
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightMigrationRepository
+import com.msarangal.vocabmania.shared.data.repository.SqlDelightProgressRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightReviewRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightUserSettingsRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordRepository
@@ -47,6 +48,7 @@ object SharedBootstrap {
             userSettingsRepository = userSettingsRepository,
             migrationRepository = migrationRepository,
             wordCatalogRepository = wordCatalogRepository,
+            progressRepository = SqlDelightProgressRepository(database),
         )
         shared = instance
 

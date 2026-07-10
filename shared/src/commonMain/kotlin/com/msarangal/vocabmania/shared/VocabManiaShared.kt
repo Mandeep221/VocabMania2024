@@ -3,11 +3,13 @@ package com.msarangal.vocabmania.shared
 import com.msarangal.vocabmania.shared.data.DatabaseDriverFactory
 import com.msarangal.vocabmania.shared.data.catalog.NoOpWordCatalogRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightMigrationRepository
+import com.msarangal.vocabmania.shared.data.repository.SqlDelightProgressRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightReviewRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightUserSettingsRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordRepository
 import com.msarangal.vocabmania.shared.db.VocabManiaDatabase
 import com.msarangal.vocabmania.shared.domain.repository.MigrationRepository
+import com.msarangal.vocabmania.shared.domain.repository.ProgressRepository
 import com.msarangal.vocabmania.shared.domain.repository.ReviewRepository
 import com.msarangal.vocabmania.shared.domain.repository.UserSettingsRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordCatalogRepository
@@ -17,6 +19,7 @@ import com.msarangal.vocabmania.shared.domain.usecase.CompleteOnboardingUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteReviewSessionUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetDueWordsUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetWordCatalogStatusUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.GetProgressDashboardUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetUserSettingsUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ImportWordCatalogUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.SaveUserSettingsUseCase
@@ -28,6 +31,7 @@ class VocabManiaShared private constructor(
     val userSettingsRepository: UserSettingsRepository,
     val migrationRepository: MigrationRepository,
     val wordCatalogRepository: WordCatalogRepository,
+    val progressRepository: ProgressRepository,
 ) {
     val getDueWordsUseCase = GetDueWordsUseCase(reviewRepository, userSettingsRepository)
     val importWordCatalogUseCase = ImportWordCatalogUseCase(wordCatalogRepository)
@@ -37,6 +41,7 @@ class VocabManiaShared private constructor(
     val getUserSettingsUseCase = GetUserSettingsUseCase(userSettingsRepository)
     val saveUserSettingsUseCase = SaveUserSettingsUseCase(userSettingsRepository)
     val completeOnboardingUseCase = CompleteOnboardingUseCase(userSettingsRepository)
+    val getProgressDashboardUseCase = GetProgressDashboardUseCase(progressRepository, userSettingsRepository)
 
     val databaseInstance: VocabManiaDatabase = database
 
@@ -54,6 +59,7 @@ class VocabManiaShared private constructor(
                 userSettingsRepository = SqlDelightUserSettingsRepository(database),
                 migrationRepository = SqlDelightMigrationRepository(database),
                 wordCatalogRepository = wordCatalogRepository ?: NoOpWordCatalogRepository(wordRepository),
+                progressRepository = SqlDelightProgressRepository(database),
             )
         }
 
@@ -64,6 +70,7 @@ class VocabManiaShared private constructor(
             userSettingsRepository: UserSettingsRepository,
             migrationRepository: MigrationRepository,
             wordCatalogRepository: WordCatalogRepository,
+            progressRepository: ProgressRepository,
         ): VocabManiaShared = VocabManiaShared(
             database = database,
             wordRepository = wordRepository,
@@ -71,6 +78,7 @@ class VocabManiaShared private constructor(
             userSettingsRepository = userSettingsRepository,
             migrationRepository = migrationRepository,
             wordCatalogRepository = wordCatalogRepository,
+            progressRepository = progressRepository,
         )
     }
 }

@@ -4,6 +4,7 @@ object Routes {
     const val ONBOARDING = "onboarding"
     const val HOME = "home"
     const val REVIEW = "review"
+    const val PROGRESS = "progress"
     const val SESSION_COMPLETE = "session_complete/{reviewedCount}?lastScheduleFeedback={lastScheduleFeedback}"
 
     const val REVIEWED_COUNT_ARG = "reviewedCount"

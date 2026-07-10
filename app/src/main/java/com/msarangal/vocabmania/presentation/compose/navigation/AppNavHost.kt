@@ -23,6 +23,8 @@ import com.msarangal.vocabmania.presentation.compose.home.HomeScreen
 import com.msarangal.vocabmania.presentation.compose.home.HomeViewModel
 import com.msarangal.vocabmania.presentation.compose.onboarding.OnboardingScreen
 import com.msarangal.vocabmania.presentation.compose.onboarding.OnboardingViewModel
+import com.msarangal.vocabmania.presentation.compose.progress.ProgressScreen
+import com.msarangal.vocabmania.presentation.compose.progress.ProgressViewModel
 import com.msarangal.vocabmania.presentation.compose.review.ReviewScreen
 import com.msarangal.vocabmania.presentation.compose.review.ReviewViewModel
 import com.msarangal.vocabmania.presentation.compose.sessioncomplete.SessionCompleteScreen
@@ -75,6 +77,16 @@ fun AppNavHost(
                 onStartReview = {
                     navController.navigate(Routes.REVIEW)
                 },
+                onOpenProgress = {
+                    navController.navigate(Routes.PROGRESS)
+                },
+            )
+        }
+        composable(Routes.PROGRESS) {
+            val viewModel: ProgressViewModel = viewModel(factory = viewModelFactory)
+            ProgressScreen(
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Routes.REVIEW) {

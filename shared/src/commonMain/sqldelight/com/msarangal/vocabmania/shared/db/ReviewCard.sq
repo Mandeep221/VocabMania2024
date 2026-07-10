@@ -46,3 +46,34 @@ updateReviewCard:
 UPDATE review_card
 SET next_review_at = ?, interval_days = ?, last_reviewed_at = ?, review_count = ?, ease_factor = ?
 WHERE word_id = ?;
+
+countReviewedByLevel:
+SELECT COUNT(*)
+FROM review_card
+INNER JOIN word ON word.id = review_card.word_id
+WHERE word.level = ?
+AND review_card.review_count > 0;
+
+countMatureByLevel:
+SELECT COUNT(*)
+FROM review_card
+INNER JOIN word ON word.id = review_card.word_id
+WHERE word.level = ?
+AND review_card.review_count > 0
+AND review_card.interval_days >= ?;
+
+countActivitySince:
+SELECT COUNT(*)
+FROM review_card
+INNER JOIN word ON word.id = review_card.word_id
+WHERE word.level = ?
+AND review_card.last_reviewed_at IS NOT NULL
+AND review_card.last_reviewed_at >= ?;
+
+countReviewedOnDay:
+SELECT COUNT(*)
+FROM review_card
+INNER JOIN word ON word.id = review_card.word_id
+WHERE word.level = ?
+AND review_card.last_reviewed_at >= ?
+AND review_card.last_reviewed_at < ?;

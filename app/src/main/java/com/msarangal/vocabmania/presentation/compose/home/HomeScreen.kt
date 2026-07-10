@@ -1,6 +1,7 @@
 package com.msarangal.vocabmania.presentation.compose.home
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -46,6 +47,7 @@ import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onStartReview: () -> Unit,
+    onOpenProgress: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -123,6 +125,8 @@ fun HomeScreen(
                 totalWordCount = uiState.totalWordCount,
             )
 
+            ProgressEntryCard(onClick = onOpenProgress)
+
             CatalogStatusMessage(importState = uiState.catalogImportState)
 
             uiState.errorMessage?.let { message ->
@@ -196,6 +200,29 @@ private fun CatalogStatusMessage(importState: WordCatalogImportState) {
             )
         }
         WordCatalogImportState.COMPLETE -> Unit
+    }
+}
+
+@Composable
+private fun ProgressEntryCard(onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = "Your progress",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Mastery, activity, and streak",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
     }
 }
 
