@@ -6,7 +6,20 @@ Read `docs/VISION.md` before every session.
 
 ---
 
-## Weekly Rhythm (~8–10 hrs)
+## Planning pipeline (team-simulation)
+
+Use this sequence when starting a **new phase** (office-prep workflow):
+
+```
+1. grill-me          → lock decisions (one question at a time)
+2. to-prd-vocabmania → docs/prds/phase-N-<slug>.md
+3. to-vertical-slices → docs/prds/phase-N-<slug>-tickets.md + update week table below
+4. Implement         → one ticket per week, one chat per ticket
+```
+
+Skills live in `.cursor/skills/`. Phase 0–1 shipped without formal PRDs; use the pipeline from **Phase 2** onward.
+
+---
 
 | Block | Time | Activity |
 |-------|------|----------|
@@ -135,29 +148,31 @@ Skills live in `.cursor/skills/` (project) or personal skills folder.
 
 ## Phase Backlog
 
-| Phase | Weeks | Focus | Status |
-|-------|-------|-------|--------|
+| Phase | Weeks (absolute) | Focus | Status |
+|-------|------------------|-------|--------|
 | **0 — Foundation** | 1 | SQLDelight, migration, simple SRS, docs + rules | **done** |
 | **1 — Core flow** | 2–4 | Onboarding, Home, Review session → shippable debug build | **done** |
-| **2 — Deepen** | 5–8 | SM-2 lite, progress dashboard, favorites, WOTD, polish | pending |
-| **3 — Cohesive app** | 9–12 | Delete legacy UI, notifications, release prep, AI playbook | pending |
+| **2 — Deepen** | 5–11 | Firebase catalog, SM-2 lite, progress, favorites, WOTD — see tickets | pending |
+| **3 — Cohesive app** | 12+ | Delete legacy UI, notifications, release prep, AI playbook | pending |
+
+**Phase 2 tickets:** `docs/prds/phase-2-deepen-tickets.md` (6 vertical slices, forward weeks 1–7 within Phase 2).
 
 ### Week-level detail
 
-| Week | Phase | Focus | Status |
-|------|-------|-------|--------|
-| 1 | 0 | Foundation — SQLDelight, migration, simple SRS | done |
-| 2 | 1 | Onboarding + navigation shell | done |
-| 3 | 1 | Home + due queue | done |
-| 4 | 1 | Review session + session complete | done |
-| 5 | 2 | SM-2 lite scheduler upgrade | pending |
-| 6 | 2 | Progress / mastery dashboard | pending |
-| 7 | 2 | Favorites reimagined | pending |
-| 8 | 2 | WOTD + polish | pending |
-| 9 | 3 | Delete legacy test flow | pending |
-| 10 | 3 | Notifications + habit hooks | pending |
-| 11 | 3 | Release prep | pending |
-| 12 | 3 | AI playbook finalize + skills | pending |
+| Week | Phase | Focus | Ticket | Status |
+|------|-------|-------|--------|--------|
+| 1 | 0 | Foundation — SQLDelight, migration, simple SRS | — | done |
+| 2 | 1 | Onboarding + navigation shell | — | done |
+| 3 | 1 | Home + due queue | — | done |
+| 4 | 1 | Review session + session complete | — | done |
+| 5 | 2·W1 | Real vocabulary library (Firebase import) | 1 | pending |
+| 6 | 2·W2 | Reviews adapt to ratings (SM-2 lite) | 2 | pending |
+| 7 | 2·W3 | See my progress — activity + mastery | 3 | pending |
+| 8 | 2·W4 | See my progress (continued) | 3 | pending |
+| 9 | 2·W5 | Save and browse favorites | 4 | pending |
+| 10 | 2·W6 | Word of the day on Home | 5 | pending |
+| 11 | 2·W7 | Review favorites only + polish | 6 | pending |
+| 12 | 3·W1 | Phase 3 — TBD (separate PRD) | — | pending |
 
 Update **Status** as work completes: `pending` → `in progress` → `done`.
 

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msarangal.vocabmania.shared.VocabManiaShared
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
+import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +30,7 @@ class HomeViewModel(
                 val now = System.currentTimeMillis()
                 val settings = shared.getUserSettingsUseCase()
                 val dueCount = shared.getDueWordsUseCase.countDue(now).toInt()
+                val catalogStatus = shared.getWordCatalogStatusUseCase()
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -35,7 +38,16 @@ class HomeViewModel(
                         dueCount = dueCount,
                         dailyGoal = settings.dailyGoal,
                         selectedLevelLabel = settings.selectedLevel.toDisplayLabel(),
+                        totalWordCount = catalogStatus.totalWordCount.toInt(),
+                        catalogImportState = catalogStatus.importState,
                     )
+                }
+
+                if (catalogStatus.importState == WordCatalogImportState.IMPORTING ||
+                    catalogStatus.importState == WordCatalogImportState.PENDING
+                ) {
+                    delay(1_500)
+                    refresh()
                 }
             } catch (error: Exception) {
                 _uiState.update {

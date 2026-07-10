@@ -115,28 +115,40 @@ Legacy test flow: reachable from settings/overflow only until Phase 3 deletion.
 
 ---
 
-### Phase 2 — Deepen · Weeks 5–8 · **PENDING**
+### Phase 2 — Deepen · Weeks 1–7 (forward) · **PENDING**
 
-**Goal:** Richer learning loop — SM-2 lite, progress, favorites, WOTD.
+**Goal:** Richer learning loop — Firebase catalog, SM-2 lite spaced repetition, progress dashboard, favorites, WOTD.
 
-| Week | Focus |
-|------|-------|
-| 5 | SM-2 lite scheduler upgrade |
-| 6 | Progress / mastery dashboard |
-| 7 | Favorites reimagined |
-| 8 | WOTD + polish |
+**Grill decisions:** See `docs/prds/phase-2-deepen.md` (approved July 9, 2026).
+
+**Primary outcome:** Motivation & progress; SM-2 lite engine underneath.
+
+| Week (forward) | Focus | Ticket | Status |
+|----------------|-------|--------|--------|
+| 1 | Real vocabulary library (Firebase + seed fallback) | 1 | pending |
+| 2 | Reviews adapt to ratings (SM-2 lite) | 2 | pending |
+| 3–4 | See my progress (activity + mastery + level tabs) | 3 | pending |
+| 5 | Save and browse favorites | 4 | pending |
+| 6 | Word of the day on Home | 5 | pending |
+| 7 | Review favorites only + polish | 6 | pending |
+
+Tickets: `docs/prds/phase-2-deepen-tickets.md`
+
+**If time slips:** Defer WOTD first; never cut Firebase import.
 
 **Deliverables:**
-- SM-2 lite replaces simple intervals (with migration path for existing cards)
-- Mastery dashboard (replaces `MainActivity` graphs concept)
-- Favorites tied to SRS state
-- Word of the day + Firebase bulk import (if time)
+- Full Firebase word catalog in SQLDelight
+- SM-2 lite scheduler with ease factor + migration
+- Combined progress dashboard with level tabs
+- Compose favorites + WOTD on Home
+- Legacy favorites/progress paths replaced in new UI
 
 **Done when:**
-- [ ] Scheduler upgrade tested; existing review history preserved
-- [ ] Progress view shows meaningful mastery signal
-- [ ] Favorites flow usable without legacy `FavoritesActivity`
-- [ ] App feels polished for daily use
+- [ ] Catalog import works; seed fallback on offline
+- [ ] SM-2 lite tested; Phase 1 review history preserved
+- [ ] Progress dashboard shows mastery + activity per level
+- [ ] Favorites usable without legacy FavoritesActivity
+- [ ] WOTD on Home (or explicitly deferred per cut order)
 
 ---
 

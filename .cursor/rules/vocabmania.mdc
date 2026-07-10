@@ -13,7 +13,7 @@ Ship a daily-habit vocab app people return to. KMP + AI workflows are how we bui
 ## Planning
 - **Phase 0–3** = planning units (see VISION.md for goals, deliverables, done-when)
 - **Week N** = timing within a phase (one chat per week per AI_WORKFLOW.md)
-- Current: **Phase 2, Week 5** — SM-2 lite scheduler upgrade
+- Current: **Phase 2, Week 1** — Ticket 1: Real vocabulary library (see `docs/prds/phase-2-deepen-tickets.md`)
 
 ## Stack
 - `:shared` — KMP commonMain: domain, SQLDelight, SRS scheduler, repository interfaces
@@ -35,3 +35,6 @@ Use grill-me (`.cursor/skills/grill-me.md`): one question at a time, with recomm
 
 ## Skill Promotion
 If a pattern repeats twice, flag "Skill promotion opportunity" per `docs/AI_WORKFLOW.md`.
+
+## Planning pipeline
+`grill-me` → `to-prd-vocabmania` → `to-vertical-slices` → implement one ticket/week. See `docs/AI_WORKFLOW.md`.

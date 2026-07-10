@@ -30,6 +30,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("app.cash.sqldelight:android-driver:2.0.2")
+                implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+                implementation("com.google.firebase:firebase-database")
             }
         }
     }

@@ -18,6 +18,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,6 +39,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msarangal.vocabmania.presentation.activity.TestActivity
+import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,7 +120,10 @@ fun HomeScreen(
             RowStatCards(
                 streak = uiState.currentStreak,
                 dueCount = uiState.dueCount,
+                totalWordCount = uiState.totalWordCount,
             )
+
+            CatalogStatusMessage(importState = uiState.catalogImportState)
 
             uiState.errorMessage?.let { message ->
                 Text(
@@ -159,10 +164,38 @@ fun HomeScreen(
 private fun RowStatCards(
     streak: Int,
     dueCount: Int,
+    totalWordCount: Int,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         StatCard(title = "Current streak", value = "$streak days")
         StatCard(title = "Due today", value = dueCount.toString())
+        StatCard(title = "Words in library", value = totalWordCount.toString())
+    }
+}
+
+@Composable
+private fun CatalogStatusMessage(importState: WordCatalogImportState) {
+    when (importState) {
+        WordCatalogImportState.IMPORTING,
+        WordCatalogImportState.PENDING,
+        -> {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                Text(
+                    text = "Importing vocabulary library…",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        WordCatalogImportState.FAILED -> {
+            Text(
+                text = "Using offline catalog. Connect to the internet and restart to download the full library.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        WordCatalogImportState.COMPLETE -> Unit
     }
 }
 
