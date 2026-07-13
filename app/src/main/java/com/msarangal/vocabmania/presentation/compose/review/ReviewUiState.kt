@@ -16,6 +16,7 @@ data class ReviewUiState(
     val isMeaningRevealed: Boolean = false,
     val isApplyingRating: Boolean = false,
     val isEmpty: Boolean = false,
+    val favoritesOnly: Boolean = false,
     val errorMessage: String? = null,
     val scheduleFeedback: String? = null,
 )

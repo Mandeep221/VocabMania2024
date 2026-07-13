@@ -29,11 +29,13 @@ interface ReviewRepository {
         level: DifficultyLevel,
         nowEpochMillis: Long,
         limit: Int,
+        favoritesOnly: Boolean = false,
     ): List<DueWord>
 
     suspend fun countDueWords(
         level: DifficultyLevel,
         nowEpochMillis: Long,
+        favoritesOnly: Boolean = false,
     ): Long
 
     suspend fun applyRating(

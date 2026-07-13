@@ -1,0 +1,17 @@
+CREATE TABLE word_of_the_day (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    word TEXT NOT NULL,
+    meaning TEXT NOT NULL,
+    usage_example TEXT,
+    fetched_at INTEGER NOT NULL
+);
+
+selectCached:
+SELECT * FROM word_of_the_day WHERE id = 1;
+
+upsertCached:
+INSERT OR REPLACE INTO word_of_the_day(id, word, meaning, usage_example, fetched_at)
+VALUES (1, ?, ?, ?, ?);
+
+clearCached:
+DELETE FROM word_of_the_day WHERE id = 1;

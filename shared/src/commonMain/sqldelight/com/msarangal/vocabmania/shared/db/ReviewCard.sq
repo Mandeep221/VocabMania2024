@@ -26,17 +26,19 @@ SELECT
     review_card.ease_factor
 FROM review_card
 INNER JOIN word ON word.id = review_card.word_id
-WHERE review_card.next_review_at <= ?
-AND word.level = ?
+WHERE review_card.next_review_at <= :nowEpochMillis
+AND word.level = :level
+AND (:favoritesOnlyFilter = 0 OR word.is_favorite = 1)
 ORDER BY review_card.next_review_at ASC
-LIMIT ?;
+LIMIT :limit;
 
 countDue:
 SELECT COUNT(*)
 FROM review_card
 INNER JOIN word ON word.id = review_card.word_id
-WHERE review_card.next_review_at <= ?
-AND word.level = ?;
+WHERE review_card.next_review_at <= :nowEpochMillis
+AND word.level = :level
+AND (:favoritesOnlyFilter = 0 OR word.is_favorite = 1);
 
 insertReviewCard:
 INSERT OR REPLACE INTO review_card(word_id, next_review_at, interval_days, last_reviewed_at, review_count, ease_factor)

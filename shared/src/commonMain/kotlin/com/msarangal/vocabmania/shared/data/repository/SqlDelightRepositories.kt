@@ -78,9 +78,15 @@ class SqlDelightReviewRepository(
         level: DifficultyLevel,
         nowEpochMillis: Long,
         limit: Int,
+        favoritesOnly: Boolean,
     ): List<DueWord> = withContext(Dispatchers.IO) {
         database.reviewCardQueries
-            .selectDue(nowEpochMillis, level.code, limit.toLong())
+            .selectDue(
+                nowEpochMillis = nowEpochMillis,
+                level = level.code,
+                favoritesOnlyFilter = if (favoritesOnly) 1L else 0L,
+                limit = limit.toLong(),
+            )
             .executeAsList()
             .map { it.toDueWord() }
     }
@@ -88,8 +94,15 @@ class SqlDelightReviewRepository(
     override suspend fun countDueWords(
         level: DifficultyLevel,
         nowEpochMillis: Long,
+        favoritesOnly: Boolean,
     ): Long = withContext(Dispatchers.IO) {
-        database.reviewCardQueries.countDue(nowEpochMillis, level.code).executeAsOne()
+        database.reviewCardQueries
+            .countDue(
+                nowEpochMillis = nowEpochMillis,
+                level = level.code,
+                favoritesOnlyFilter = if (favoritesOnly) 1L else 0L,
+            )
+            .executeAsOne()
     }
 
     override suspend fun applyRating(

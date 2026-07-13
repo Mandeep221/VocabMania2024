@@ -48,7 +48,9 @@ fun ReviewScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Review") },
+                title = {
+                    Text(if (uiState.favoritesOnly) "Review favorites" else "Review")
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -98,6 +100,7 @@ fun ReviewScreen(
                         .fillMaxSize()
                         .padding(innerPadding)
                         .padding(24.dp),
+                    favoritesOnly = uiState.favoritesOnly,
                     onBack = onBack,
                 )
             }
@@ -125,6 +128,7 @@ fun ReviewScreen(
 @Composable
 private fun EmptyReviewState(
     modifier: Modifier = Modifier,
+    favoritesOnly: Boolean,
     onBack: () -> Unit,
 ) {
     Column(
@@ -133,14 +137,22 @@ private fun EmptyReviewState(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "All caught up!",
+            text = if (favoritesOnly) {
+                "No favorites due"
+            } else {
+                "All caught up!"
+            },
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "No words are due right now. Check back later.",
+            text = if (favoritesOnly) {
+                "None of your favorited words are due right now. Favorite words during review, then check back here."
+            } else {
+                "No words are due right now. Check back later."
+            },
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,

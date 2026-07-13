@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
@@ -21,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -47,6 +50,7 @@ import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onStartReview: () -> Unit,
+    onReviewFavorites: () -> Unit,
     onOpenProgress: () -> Unit,
     onOpenFavorites: () -> Unit,
 ) {
@@ -113,7 +117,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
@@ -131,6 +136,11 @@ fun HomeScreen(
                 streak = uiState.currentStreak,
                 dueCount = uiState.dueCount,
                 totalWordCount = uiState.totalWordCount,
+            )
+
+            WordOfTheDaySection(
+                wordOfTheDay = uiState.wordOfTheDay,
+                isLoading = uiState.isWordOfTheDayLoading,
             )
 
             ProgressEntryCard(onClick = onOpenProgress)
@@ -153,7 +163,7 @@ fun HomeScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = onStartReview,
@@ -168,7 +178,88 @@ fun HomeScreen(
                     },
                 )
             }
+
+            OutlinedButton(
+                onClick = onReviewFavorites,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = if (uiState.favoriteDueCount > 0) {
+                        "Review favorites (${uiState.favoriteDueCount} due)"
+                    } else {
+                        "Review favorites"
+                    },
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun WordOfTheDaySection(
+    wordOfTheDay: WordOfTheDayUi?,
+    isLoading: Boolean,
+) {
+    when {
+        isLoading && wordOfTheDay == null -> {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "Word of the day",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CircularProgressIndicator()
+                }
+            }
+        }
+        wordOfTheDay != null -> {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Word of the day",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = wordOfTheDay.word,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = wordOfTheDay.meaning,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                    wordOfTheDay.usageExample?.let { usage ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "\"$usage\"",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    if (wordOfTheDay.isFromCache) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Showing cached word — connect for a fresh one.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+        // Hidden: offline cold start with no cache — leave Home intact.
+        else -> Unit
     }
 }
 

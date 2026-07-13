@@ -2,10 +2,12 @@ package com.msarangal.vocabmania.shared
 
 import com.msarangal.vocabmania.shared.data.DatabaseDriverFactory
 import com.msarangal.vocabmania.shared.data.catalog.NoOpWordCatalogRepository
+import com.msarangal.vocabmania.shared.data.repository.CachedWordOfTheDayRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightMigrationRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightProgressRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightReviewRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightUserSettingsRepository
+import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordOfTheDayCache
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordRepository
 import com.msarangal.vocabmania.shared.db.VocabManiaDatabase
 import com.msarangal.vocabmania.shared.domain.repository.MigrationRepository
@@ -13,15 +15,17 @@ import com.msarangal.vocabmania.shared.domain.repository.ProgressRepository
 import com.msarangal.vocabmania.shared.domain.repository.ReviewRepository
 import com.msarangal.vocabmania.shared.domain.repository.UserSettingsRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordCatalogRepository
+import com.msarangal.vocabmania.shared.domain.repository.WordOfTheDayRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordRepository
 import com.msarangal.vocabmania.shared.domain.usecase.ApplyReviewRatingUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteOnboardingUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteReviewSessionUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetDueWordsUseCase
-import com.msarangal.vocabmania.shared.domain.usecase.GetWordCatalogStatusUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetFavoritesUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetProgressDashboardUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetUserSettingsUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.GetWordCatalogStatusUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.GetWordOfTheDayUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ImportWordCatalogUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.SaveUserSettingsUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ToggleFavoriteUseCase
@@ -34,6 +38,7 @@ class VocabManiaShared private constructor(
     val migrationRepository: MigrationRepository,
     val wordCatalogRepository: WordCatalogRepository,
     val progressRepository: ProgressRepository,
+    val wordOfTheDayRepository: WordOfTheDayRepository,
 ) {
     val getDueWordsUseCase = GetDueWordsUseCase(reviewRepository, userSettingsRepository)
     val importWordCatalogUseCase = ImportWordCatalogUseCase(wordCatalogRepository)
@@ -46,6 +51,7 @@ class VocabManiaShared private constructor(
     val getProgressDashboardUseCase = GetProgressDashboardUseCase(progressRepository, userSettingsRepository)
     val getFavoritesUseCase = GetFavoritesUseCase(wordRepository)
     val toggleFavoriteUseCase = ToggleFavoriteUseCase(wordRepository)
+    val getWordOfTheDayUseCase = GetWordOfTheDayUseCase(wordOfTheDayRepository)
 
     val databaseInstance: VocabManiaDatabase = database
 
@@ -53,9 +59,11 @@ class VocabManiaShared private constructor(
         fun create(
             driverFactory: DatabaseDriverFactory,
             wordCatalogRepository: WordCatalogRepository? = null,
+            wordOfTheDayRepository: WordOfTheDayRepository? = null,
         ): VocabManiaShared {
             val database = VocabManiaDatabase(driverFactory.createDriver())
             val wordRepository = SqlDelightWordRepository(database)
+            val cache = SqlDelightWordOfTheDayCache(database)
             return create(
                 database = database,
                 wordRepository = wordRepository,
@@ -64,6 +72,7 @@ class VocabManiaShared private constructor(
                 migrationRepository = SqlDelightMigrationRepository(database),
                 wordCatalogRepository = wordCatalogRepository ?: NoOpWordCatalogRepository(wordRepository),
                 progressRepository = SqlDelightProgressRepository(database),
+                wordOfTheDayRepository = wordOfTheDayRepository ?: CachedWordOfTheDayRepository(cache),
             )
         }
 
@@ -75,6 +84,7 @@ class VocabManiaShared private constructor(
             migrationRepository: MigrationRepository,
             wordCatalogRepository: WordCatalogRepository,
             progressRepository: ProgressRepository,
+            wordOfTheDayRepository: WordOfTheDayRepository,
         ): VocabManiaShared = VocabManiaShared(
             database = database,
             wordRepository = wordRepository,
@@ -83,6 +93,7 @@ class VocabManiaShared private constructor(
             migrationRepository = migrationRepository,
             wordCatalogRepository = wordCatalogRepository,
             progressRepository = progressRepository,
+            wordOfTheDayRepository = wordOfTheDayRepository,
         )
     }
 }

@@ -77,7 +77,10 @@ fun AppNavHost(
             HomeScreen(
                 viewModel = viewModel,
                 onStartReview = {
-                    navController.navigate(Routes.REVIEW)
+                    navController.navigate(Routes.review(favoritesOnly = false))
+                },
+                onReviewFavorites = {
+                    navController.navigate(Routes.review(favoritesOnly = true))
                 },
                 onOpenProgress = {
                     navController.navigate(Routes.PROGRESS)
@@ -101,7 +104,15 @@ fun AppNavHost(
                 onBack = { navController.popBackStack() },
             )
         }
-        composable(Routes.REVIEW) {
+        composable(
+            route = Routes.REVIEW,
+            arguments = listOf(
+                navArgument(Routes.FAVORITES_ONLY_ARG) {
+                    type = NavType.BoolType
+                    defaultValue = false
+                },
+            ),
+        ) {
             val viewModel: ReviewViewModel = viewModel(factory = viewModelFactory)
             ReviewScreen(
                 viewModel = viewModel,

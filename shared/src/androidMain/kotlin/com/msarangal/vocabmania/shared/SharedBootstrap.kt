@@ -4,13 +4,16 @@ import android.content.Context
 import com.msarangal.vocabmania.shared.data.AndroidDatabaseDriverFactory
 import com.msarangal.vocabmania.shared.data.catalog.FirebaseWordCatalogRepository
 import com.msarangal.vocabmania.shared.data.firebase.FirebaseWordCatalogImporter
+import com.msarangal.vocabmania.shared.data.firebase.FirebaseWordOfTheDayFetcher
 import com.msarangal.vocabmania.shared.data.migration.LegacyDatabaseMigrator
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightMigrationRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightProgressRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightReviewRepository
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightUserSettingsRepository
+import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordOfTheDayCache
 import com.msarangal.vocabmania.shared.data.repository.SqlDelightWordRepository
 import com.msarangal.vocabmania.shared.data.seed.SeedDataLoader
+import com.msarangal.vocabmania.shared.data.wotd.FirebaseWordOfTheDayRepository
 import com.msarangal.vocabmania.shared.db.VocabManiaDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +44,10 @@ object SharedBootstrap {
             migrationRepository = migrationRepository,
             seedDataLoader = seedDataLoader,
         )
+        val wordOfTheDayRepository = FirebaseWordOfTheDayRepository(
+            fetcher = FirebaseWordOfTheDayFetcher(),
+            cache = SqlDelightWordOfTheDayCache(database),
+        )
         val instance = VocabManiaShared.create(
             database = database,
             wordRepository = wordRepository,
@@ -49,6 +56,7 @@ object SharedBootstrap {
             migrationRepository = migrationRepository,
             wordCatalogRepository = wordCatalogRepository,
             progressRepository = SqlDelightProgressRepository(database),
+            wordOfTheDayRepository = wordOfTheDayRepository,
         )
         shared = instance
 

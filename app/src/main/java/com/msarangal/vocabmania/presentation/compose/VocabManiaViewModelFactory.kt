@@ -25,7 +25,7 @@ class VocabManiaViewModelFactory(
             modelClass.isAssignableFrom(HomeViewModel::class.java) ->
                 HomeViewModel(shared) as T
             modelClass.isAssignableFrom(ReviewViewModel::class.java) ->
-                ReviewViewModel(shared) as T
+                ReviewViewModel(shared, savedStateHandle) as T
             modelClass.isAssignableFrom(SessionCompleteViewModel::class.java) ->
                 SessionCompleteViewModel(shared, savedStateHandle) as T
             modelClass.isAssignableFrom(ProgressViewModel::class.java) ->

@@ -13,15 +13,24 @@ class GetDueWordsUseCase(
     private val reviewRepository: ReviewRepository,
     private val userSettingsRepository: UserSettingsRepository,
 ) {
-    suspend fun countDue(nowEpochMillis: Long): Long {
+    suspend fun countDue(nowEpochMillis: Long, favoritesOnly: Boolean = false): Long {
         val level = userSettingsRepository.getSettings().selectedLevel
-        return reviewRepository.countDueWords(level, nowEpochMillis)
+        return reviewRepository.countDueWords(level, nowEpochMillis, favoritesOnly)
     }
 
-    suspend fun getDueWords(nowEpochMillis: Long, limit: Int? = null): List<DueWord> {
+    suspend fun getDueWords(
+        nowEpochMillis: Long,
+        limit: Int? = null,
+        favoritesOnly: Boolean = false,
+    ): List<DueWord> {
         val settings = userSettingsRepository.getSettings()
         val effectiveLimit = limit ?: settings.dailyGoal
-        return reviewRepository.getDueWords(settings.selectedLevel, nowEpochMillis, effectiveLimit)
+        return reviewRepository.getDueWords(
+            level = settings.selectedLevel,
+            nowEpochMillis = nowEpochMillis,
+            limit = effectiveLimit,
+            favoritesOnly = favoritesOnly,
+        )
     }
 }
 

@@ -1,7 +1,9 @@
 package com.msarangal.vocabmania.presentation.compose.review
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.msarangal.vocabmania.presentation.compose.navigation.Routes
 import com.msarangal.vocabmania.shared.VocabManiaShared
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
 import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
@@ -14,9 +16,13 @@ import kotlinx.coroutines.launch
 
 class ReviewViewModel(
     private val shared: VocabManiaShared,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ReviewUiState())
+    private val favoritesOnly: Boolean =
+        savedStateHandle.get<Boolean>(Routes.FAVORITES_ONLY_ARG) ?: false
+
+    private val _uiState = MutableStateFlow(ReviewUiState(favoritesOnly = favoritesOnly))
     val uiState: StateFlow<ReviewUiState> = _uiState.asStateFlow()
 
     init {
@@ -32,12 +38,17 @@ class ReviewViewModel(
                     isEmpty = false,
                     currentIndex = 0,
                     isMeaningRevealed = false,
+                    favoritesOnly = favoritesOnly,
                 )
             }
             try {
                 val now = System.currentTimeMillis()
                 val settings = shared.getUserSettingsUseCase()
-                val dueWords = shared.getDueWordsUseCase.getDueWords(now, limit = settings.dailyGoal)
+                val dueWords = shared.getDueWordsUseCase.getDueWords(
+                    nowEpochMillis = now,
+                    limit = settings.dailyGoal,
+                    favoritesOnly = favoritesOnly,
+                )
                 val words = dueWords.map { dueWord ->
                     ReviewWordUi(
                         wordId = dueWord.word.id,

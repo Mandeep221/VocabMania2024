@@ -30,18 +30,22 @@ class HomeViewModel(
                 val now = System.currentTimeMillis()
                 val settings = shared.getUserSettingsUseCase()
                 val dueCount = shared.getDueWordsUseCase.countDue(now).toInt()
+                val favoriteDueCount = shared.getDueWordsUseCase.countDue(now, favoritesOnly = true).toInt()
                 val catalogStatus = shared.getWordCatalogStatusUseCase()
                 _uiState.update {
                     it.copy(
                         isLoading = false,
                         currentStreak = settings.currentStreak,
                         dueCount = dueCount,
+                        favoriteDueCount = favoriteDueCount,
                         dailyGoal = settings.dailyGoal,
                         selectedLevelLabel = settings.selectedLevel.toDisplayLabel(),
                         totalWordCount = catalogStatus.totalWordCount.toInt(),
                         catalogImportState = catalogStatus.importState,
                     )
                 }
+
+                loadWordOfTheDay(now)
 
                 if (catalogStatus.importState == WordCatalogImportState.IMPORTING ||
                     catalogStatus.importState == WordCatalogImportState.PENDING
@@ -57,6 +61,31 @@ class HomeViewModel(
                     )
                 }
             }
+        }
+    }
+
+    private suspend fun loadWordOfTheDay(nowEpochMillis: Long) {
+        val showLoading = _uiState.value.wordOfTheDay == null
+        if (showLoading) {
+            _uiState.update { it.copy(isWordOfTheDayLoading = true) }
+        }
+        try {
+            val wotd = shared.getWordOfTheDayUseCase(nowEpochMillis)
+            _uiState.update {
+                it.copy(
+                    isWordOfTheDayLoading = false,
+                    wordOfTheDay = wotd?.let { word ->
+                        WordOfTheDayUi(
+                            word = word.word,
+                            meaning = word.meaning,
+                            usageExample = word.usageExample,
+                            isFromCache = word.isFromCache,
+                        )
+                    },
+                )
+            }
+        } catch (_: Exception) {
+            _uiState.update { it.copy(isWordOfTheDayLoading = false) }
         }
     }
 
