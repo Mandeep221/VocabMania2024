@@ -19,6 +19,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.msarangal.vocabmania.presentation.compose.VocabManiaViewModelFactory
+import com.msarangal.vocabmania.presentation.compose.favorites.FavoritesScreen
+import com.msarangal.vocabmania.presentation.compose.favorites.FavoritesViewModel
 import com.msarangal.vocabmania.presentation.compose.home.HomeScreen
 import com.msarangal.vocabmania.presentation.compose.home.HomeViewModel
 import com.msarangal.vocabmania.presentation.compose.onboarding.OnboardingScreen
@@ -80,11 +82,21 @@ fun AppNavHost(
                 onOpenProgress = {
                     navController.navigate(Routes.PROGRESS)
                 },
+                onOpenFavorites = {
+                    navController.navigate(Routes.FAVORITES)
+                },
             )
         }
         composable(Routes.PROGRESS) {
             val viewModel: ProgressViewModel = viewModel(factory = viewModelFactory)
             ProgressScreen(
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable(Routes.FAVORITES) {
+            val viewModel: FavoritesViewModel = viewModel(factory = viewModelFactory)
+            FavoritesScreen(
                 viewModel = viewModel,
                 onBack = { navController.popBackStack() },
             )

@@ -45,6 +45,7 @@ class ReviewViewModel(
                         meaning = dueWord.word.meaning,
                         usageExample = dueWord.word.usageExample,
                         intervalDays = dueWord.reviewCard.intervalDays,
+                        isFavorite = dueWord.word.isFavorite,
                     )
                 }
                 _uiState.update {
@@ -67,6 +68,26 @@ class ReviewViewModel(
 
     fun revealMeaning() {
         _uiState.update { it.copy(isMeaningRevealed = true) }
+    }
+
+    fun toggleFavorite() {
+        val state = _uiState.value
+        if (state.words.isEmpty() || state.isApplyingRating) return
+        val currentWord = state.words[state.currentIndex]
+        viewModelScope.launch {
+            try {
+                val newState = shared.toggleFavoriteUseCase(currentWord.wordId) ?: return@launch
+                _uiState.update { ui ->
+                    val updatedWords = ui.words.toMutableList()
+                    updatedWords[ui.currentIndex] = currentWord.copy(isFavorite = newState)
+                    ui.copy(words = updatedWords, errorMessage = null)
+                }
+            } catch (error: Exception) {
+                _uiState.update {
+                    it.copy(errorMessage = error.message ?: "Unable to update favorite.")
+                }
+            }
+        }
     }
 
     fun rate(

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,6 +43,7 @@ fun ReviewScreen(
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val currentWord = uiState.words.getOrNull(uiState.currentIndex)
 
     Scaffold(
         topBar = {
@@ -49,6 +52,29 @@ fun ReviewScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    if (currentWord != null && !uiState.isEmpty && !uiState.isLoading) {
+                        IconButton(onClick = viewModel::toggleFavorite) {
+                            Icon(
+                                imageVector = if (currentWord.isFavorite) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Filled.FavoriteBorder
+                                },
+                                contentDescription = if (currentWord.isFavorite) {
+                                    "Remove from favorites"
+                                } else {
+                                    "Add to favorites"
+                                },
+                                tint = if (currentWord.isFavorite) {
+                                    MaterialTheme.colorScheme.secondary
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface
+                                },
+                            )
+                        }
                     }
                 },
             )
@@ -76,13 +102,12 @@ fun ReviewScreen(
                 )
             }
             else -> {
-                val currentWord = uiState.words[uiState.currentIndex]
                 ReviewContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
                         .padding(24.dp),
-                    word = currentWord,
+                    word = currentWord!!,
                     currentIndex = uiState.currentIndex,
                     totalCount = uiState.words.size,
                     isMeaningRevealed = uiState.isMeaningRevealed,

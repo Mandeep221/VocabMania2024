@@ -11,6 +11,9 @@ import com.msarangal.vocabmania.shared.domain.model.Word
 interface WordRepository {
     suspend fun countWords(): Long
     suspend fun countWords(level: DifficultyLevel): Long
+    suspend fun getFavorites(): List<Word>
+    suspend fun getWord(wordId: Long): Word?
+    suspend fun setFavorite(wordId: Long, isFavorite: Boolean)
     suspend fun insertWord(
         text: String,
         meaning: String,

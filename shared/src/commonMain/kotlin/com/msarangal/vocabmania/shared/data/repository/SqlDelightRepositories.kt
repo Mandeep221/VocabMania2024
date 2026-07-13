@@ -9,6 +9,7 @@ import com.msarangal.vocabmania.shared.domain.model.ReviewRating
 import com.msarangal.vocabmania.shared.domain.model.ReviewSchedule
 import com.msarangal.vocabmania.shared.domain.model.SessionSummary
 import com.msarangal.vocabmania.shared.domain.model.UserSettings
+import com.msarangal.vocabmania.shared.domain.model.Word
 import com.msarangal.vocabmania.shared.domain.repository.MigrationRepository
 import com.msarangal.vocabmania.shared.domain.repository.ReviewRepository
 import com.msarangal.vocabmania.shared.domain.repository.UserSettingsRepository
@@ -31,6 +32,21 @@ class SqlDelightWordRepository(
 
     override suspend fun countWords(level: DifficultyLevel): Long = withContext(Dispatchers.IO) {
         database.wordQueries.countByLevel(level.code).executeAsOne()
+    }
+
+    override suspend fun getFavorites(): List<Word> = withContext(Dispatchers.IO) {
+        database.wordQueries.selectFavorites().executeAsList().map { it.toDomain() }
+    }
+
+    override suspend fun getWord(wordId: Long): Word? = withContext(Dispatchers.IO) {
+        database.wordQueries.selectById(wordId).executeAsOneOrNull()?.toDomain()
+    }
+
+    override suspend fun setFavorite(wordId: Long, isFavorite: Boolean) = withContext(Dispatchers.IO) {
+        database.wordQueries.updateFavorite(
+            is_favorite = if (isFavorite) 1 else 0,
+            id = wordId,
+        )
     }
 
     override suspend fun insertWord(

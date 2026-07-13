@@ -18,6 +18,9 @@ SELECT * FROM word WHERE id = ?;
 selectByLevel:
 SELECT * FROM word WHERE level = ? ORDER BY text ASC;
 
+selectFavorites:
+SELECT * FROM word WHERE is_favorite = 1 ORDER BY text ASC;
+
 countAll:
 SELECT COUNT(*) FROM word;
 

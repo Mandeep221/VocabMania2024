@@ -5,6 +5,7 @@ object Routes {
     const val HOME = "home"
     const val REVIEW = "review"
     const val PROGRESS = "progress"
+    const val FAVORITES = "favorites"
     const val SESSION_COMPLETE = "session_complete/{reviewedCount}?lastScheduleFeedback={lastScheduleFeedback}"
 
     const val REVIEWED_COUNT_ARG = "reviewedCount"

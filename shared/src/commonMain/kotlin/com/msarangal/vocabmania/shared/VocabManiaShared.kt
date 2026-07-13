@@ -19,10 +19,12 @@ import com.msarangal.vocabmania.shared.domain.usecase.CompleteOnboardingUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteReviewSessionUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetDueWordsUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetWordCatalogStatusUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.GetFavoritesUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetProgressDashboardUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetUserSettingsUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ImportWordCatalogUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.SaveUserSettingsUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.ToggleFavoriteUseCase
 
 class VocabManiaShared private constructor(
     private val database: VocabManiaDatabase,
@@ -42,6 +44,8 @@ class VocabManiaShared private constructor(
     val saveUserSettingsUseCase = SaveUserSettingsUseCase(userSettingsRepository)
     val completeOnboardingUseCase = CompleteOnboardingUseCase(userSettingsRepository)
     val getProgressDashboardUseCase = GetProgressDashboardUseCase(progressRepository, userSettingsRepository)
+    val getFavoritesUseCase = GetFavoritesUseCase(wordRepository)
+    val toggleFavoriteUseCase = ToggleFavoriteUseCase(wordRepository)
 
     val databaseInstance: VocabManiaDatabase = database
 

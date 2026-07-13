@@ -48,6 +48,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onStartReview: () -> Unit,
     onOpenProgress: () -> Unit,
+    onOpenFavorites: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -76,6 +77,13 @@ fun HomeScreen(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false },
                     ) {
+                        DropdownMenuItem(
+                            text = { Text("Favorites") },
+                            onClick = {
+                                menuExpanded = false
+                                onOpenFavorites()
+                            },
+                        )
                         DropdownMenuItem(
                             text = { Text("Legacy app") },
                             onClick = {

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.msarangal.vocabmania.presentation.compose.favorites.FavoritesViewModel
 import com.msarangal.vocabmania.presentation.compose.home.HomeViewModel
 import com.msarangal.vocabmania.presentation.compose.onboarding.OnboardingViewModel
 import com.msarangal.vocabmania.presentation.compose.progress.ProgressViewModel
@@ -29,6 +30,8 @@ class VocabManiaViewModelFactory(
                 SessionCompleteViewModel(shared, savedStateHandle) as T
             modelClass.isAssignableFrom(ProgressViewModel::class.java) ->
                 ProgressViewModel(shared) as T
+            modelClass.isAssignableFrom(FavoritesViewModel::class.java) ->
+                FavoritesViewModel(shared) as T
             else -> error("Unknown ViewModel class: ${modelClass.name}")
         }
     }
