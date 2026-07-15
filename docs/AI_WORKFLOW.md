@@ -153,10 +153,12 @@ Skills live in `.cursor/skills/` (project) or personal skills folder.
 | **0 — Foundation** | 1 | SQLDelight, migration, simple SRS, docs + rules | **done** |
 | **1 — Core flow** | 2–4 | Onboarding, Home, Review session → shippable debug build | **done** |
 | **2 — Deepen** | 5–11 | Firebase catalog, SM-2 lite, progress, favorites, WOTD — see tickets | **done** |
-| **3 — Cohesive app** | 12+ | Seal legacy door, reminders, redesign, RC, AI playbook | pending |
+| **3 — Cohesive app** | 12–17 | Seal legacy door, reminders, redesign, RC, AI playbook | pending (playbook) / mostly done |
+| **4 — Practice UX** | 18–23 | Materials, Home hero, new/repeat session, loop restyle | **pending** |
 
 **Phase 2 tickets:** `docs/prds/phase-2-deepen-tickets.md` (6 vertical slices — **done**).  
-**Phase 3 tickets:** `docs/prds/phase-3-cohesive-tickets.md` (6 vertical slices; solo `1→2→3→4→5→6`, optional `2∥3` after 1).
+**Phase 3 tickets:** `docs/prds/phase-3-cohesive-tickets.md` (6 vertical slices; solo `1→2→3→4→5→6`).  
+**Phase 4 tickets:** `docs/prds/phase-4-practice-ux-tickets.md` (6 vertical slices; solo `1→2→3→4→5→6`).
 
 ### Week-level detail
 
@@ -173,12 +175,18 @@ Skills live in `.cursor/skills/` (project) or personal skills folder.
 | 9 | 2·W5 | Save and browse favorites | 4 | done |
 | 10 | 2·W6 | Word of the day on Home | 5 | done |
 | 11 | 2·W7 | Review favorites only + polish | 6 | done |
-| 12 | 3·W1 | Seal the legacy door + Share/Rate | 1 | pending |
-| 13 | 3·W2 | Opt-in daily reminder at 7 PM | 2 | pending |
-| 14 | 3·W3 | Warm-scholar theme + system dark | 3 | pending |
-| 15 | 3·W4 | Empty-state art + intentional motion | 4 | pending |
-| 16 | 3·W5 | Signed RC + Play listing draft | 5 | pending |
+| 12 | 3·W1 | Seal the legacy door + Share/Rate | 1 | done |
+| 13 | 3·W2 | Opt-in daily reminder at 7 PM | 2 | done |
+| 14 | 3·W3 | Warm-scholar theme + system dark | 3 | done |
+| 15 | 3·W4 | Empty-state art + intentional motion | 4 | done |
+| 16 | 3·W5 | Signed RC + Play listing draft | 5 | done |
 | 17 | 3·W6 | AI playbook + case study + 2 skills | 6 | pending |
+| 18 | 4·W1 | Prefactor — Practice materials | 1 | pending |
+| 19 | 4·W2 | Redesign the Home door | 2 | pending |
+| 20 | 4·W3 | Practice session — new vs repeat | 3 | pending |
+| 21 | 4·W4 | Session complete pride hero | 4 | pending |
+| 22 | 4·W5 | Progress + Favorites visual / light IA | 5 | pending |
+| 23 | 4·W6 | Onboarding look / copy | 6 | pending |
 
 Update **Status** as work completes: `pending` → `in progress` → `done`.
 

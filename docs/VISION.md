@@ -34,19 +34,23 @@ KMP and AI workflows are **how we build**, not what we optimize for.
 - **Shared logic in `:shared`** (domain, SQLDelight, SRS scheduler)
 - Legacy app stays in the APK until a post–Phase 3 deletion pass (Compose door sealed in Phase 3)
 
-## Target User Flow (Phase 1)
+## Target User Flow (Phase 1 → Phase 4 Practice UX)
 
 ```
 Splash
   → Onboarding (first launch only)
        Welcome → pick level (E/M/T) → set daily goal (10/15/20 words)
   → Home
-       Streak · due count · "Start review"
-  → Review Session
-       Show word → reveal meaning → rate (Again / Hard / Good / Easy)
+       Lean practice hero · N = min(due, goal) · "Start today’s practice"
+       Soft "{count} in your queue" when backlog > goal
+  → Practice Session
+       New (reviewCount == 0): reveal → Got it
+       Repeat: reveal → Missed / Almost / Got it
   → Session Complete
-       Summary · streak updated
+       Pride hero · streak · Back to Today
 ```
+
+See `docs/prds/phase-4-practice-ux.md` for full Phase 4 contract.
 
 Legacy test flow: sealed from Compose (Phase 3 Ticket 1); file deletion later.
 
@@ -184,6 +188,39 @@ Tickets: `docs/prds/phase-3-cohesive-tickets.md`
 
 **Explicitly later (post–Phase 3):** Delete legacy Activities/XML from the repo.
 
+### Phase 4 — Practice UX · Weeks 1–6+ (forward) · **PENDING**
+
+**Goal:** Premium daily door + honest Practice session — lean hero, Practice language (not Review), new vs repeat UX, full-loop material roles.
+
+**Grill decisions:** See `docs/prds/phase-4-practice-ux.md` (approved July 15, 2026).
+
+**Primary order:** Materials/components → Home → Practice session → Session complete → Progress/Favorites → Onboarding.
+
+| Slice (forward) | Focus | Status |
+|-----------------|-------|--------|
+| Ticket 1 | Theme materials (PracticeHero, PaperContent, UtilityRow + dark roles) | pending |
+| Ticket 2 | Home door (hero, CTA/queue, caught-up, utilities, Practice copy) | pending |
+| Ticket 3 | Practice session (builder + new/repeat UX) | pending |
+| Ticket 4 | Session complete (pride hero) | pending |
+| Ticket 5 | Progress + Favorites (visual + light IA) | pending |
+| Ticket 6 | Onboarding look/copy | pending |
+
+Tickets: `docs/prds/phase-4-practice-ux-tickets.md`
+
+**Deliverables:**
+- Home converts when due; caught-up uses empty art — no card soup
+- User-facing Practice language across the daily loop
+- Session: new = reveal → Got it; repeats = Missed/Almost/Got it; new-first + new-cap
+- Material roles consistent in light and dark across loop screens
+
+**Done when:**
+- [ ] Home first viewport matches PRD composition
+- [ ] Session builder + rating maps covered in `commonTest`
+- [ ] New vs repeat UX ships on device
+- [ ] Loop screens (complete, progress, favorites, onboarding) share materials + Practice copy
+
+**Explicitly later:** Legacy file deletion; Easy rating in UI; onboarding step changes.
+
 ### When Time Is Tight — Cut In This Order
 
 1. **Never cut:** `:shared` domain + SQLDelight + Review session
@@ -218,4 +255,5 @@ Track unresolved decisions here. Resolve via grill-me before implementing.
 
 - [x] Notification copy and timing (Phase 3) — 7 PM; VocabMania + due-count / Words are waiting; see phase-3-cohesive.md
 - [x] Compose theme / color palette for new UI — warm scholar + system dark (Phase 3 redesign)
-- [ ] Exact daily goal options in onboarding (still open; not Phase 3)
+- [x] Practice UX language + Home hero + new/repeat session (Phase 4) — see `docs/prds/phase-4-practice-ux.md`
+- [ ] Exact daily goal options in onboarding (still open; not Phase 4)

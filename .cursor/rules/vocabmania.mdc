@@ -11,9 +11,9 @@ Read `docs/VISION.md` for full product/roadmap decisions.
 Ship a daily-habit vocab app people return to. KMP + AI workflows are how we build.
 
 ## Planning
-- **Phase 0–3** = planning units (see VISION.md for goals, deliverables, done-when)
+- **Phase 0–4** = planning units (see VISION.md for goals, deliverables, done-when)
 - **Week N** = timing within a phase (one chat per week per AI_WORKFLOW.md)
-- Current: **Phase 3, Week 6** — Ticket 6: Finalize AI playbook + two skills (see `docs/prds/phase-3-cohesive-tickets.md`)
+- Current: **Phase 4, Week 1** — Ticket 1: Prefactor — ship Practice materials (see `docs/prds/phase-4-practice-ux-tickets.md`). Phase 3 Ticket 6 (playbook/skills) may still be open in parallel.
 
 ## Stack
 - `:shared` — KMP commonMain: domain, SQLDelight, SRS scheduler, repository interfaces
@@ -27,8 +27,8 @@ Ship a daily-habit vocab app people return to. KMP + AI workflows are how we bui
 4. Don't modify legacy Java/XML unless blocking migration (bug fix only)
 5. Minimize scope — one week at a time per `docs/AI_WORKFLOW.md`
 
-## v1 Flow (Phase 1)
-Onboarding → Home (streak, due count) → Review (Again/Hard/Good/Easy) → Session complete
+## Daily flow (Phase 4 contract)
+Onboarding → Home (practice hero, N = min(due, goal)) → Practice (new: Got it; repeats: Missed/Almost/Got it) → Session complete
 
 ## When Stuck
 Use grill-me (`.cursor/skills/grill-me.md`): one question at a time, with recommendation.
