@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.msarangal.vocabmania.shared.VocabManiaShared
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
+import com.msarangal.vocabmania.shared.domain.reminder.DailyReminderScheduler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val shared: VocabManiaShared,
+    private val reminderScheduler: DailyReminderScheduler,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -32,6 +34,11 @@ class HomeViewModel(
                 val dueCount = shared.getDueWordsUseCase.countDue(now).toInt()
                 val favoriteDueCount = shared.getDueWordsUseCase.countDue(now, favoritesOnly = true).toInt()
                 val catalogStatus = shared.getWordCatalogStatusUseCase()
+
+                if (settings.dailyReminderEnabled) {
+                    reminderScheduler.scheduleDaily()
+                }
+
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -42,6 +49,7 @@ class HomeViewModel(
                         selectedLevelLabel = settings.selectedLevel.toDisplayLabel(),
                         totalWordCount = catalogStatus.totalWordCount.toInt(),
                         catalogImportState = catalogStatus.importState,
+                        dailyReminderEnabled = settings.dailyReminderEnabled,
                     )
                 }
 
@@ -61,6 +69,53 @@ class HomeViewModel(
                     )
                 }
             }
+        }
+    }
+
+    /** Optimistic UI while the system permission dialog is open. */
+    fun markReminderPendingPermission() {
+        _uiState.update { it.copy(dailyReminderEnabled = true, errorMessage = null) }
+    }
+
+    /**
+     * Called after permission grant (when enabling) or immediately when disabling.
+     * Permission denial should call [revertReminderOff] instead of this with enabled=true.
+     */
+    fun setDailyReminderEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    dailyReminderEnabled = enabled,
+                    isReminderUpdating = true,
+                    errorMessage = null,
+                )
+            }
+            try {
+                shared.setDailyReminderEnabledUseCase(enabled)
+                if (enabled) {
+                    reminderScheduler.scheduleDaily()
+                } else {
+                    reminderScheduler.cancel()
+                }
+                _uiState.update { it.copy(isReminderUpdating = false) }
+            } catch (error: Exception) {
+                _uiState.update {
+                    it.copy(
+                        dailyReminderEnabled = !enabled,
+                        isReminderUpdating = false,
+                        errorMessage = error.message ?: "Unable to update reminder.",
+                    )
+                }
+            }
+        }
+    }
+
+    fun revertReminderOff() {
+        _uiState.update {
+            it.copy(
+                dailyReminderEnabled = false,
+                isReminderUpdating = false,
+            )
         }
     }
 

@@ -1,0 +1,1 @@
+ALTER TABLE user_settings ADD COLUMN daily_reminder_enabled INTEGER NOT NULL DEFAULT 0;

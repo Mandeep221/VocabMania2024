@@ -1,5 +1,6 @@
 package com.msarangal.vocabmania.presentation.compose.onboarding
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -24,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.msarangal.vocabmania.presentation.compose.components.motion.StepCrossfade
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 
 @Composable
@@ -33,29 +38,33 @@ fun OnboardingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
+                .padding(VocabDimens.ScreenPadding),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                when (uiState.step) {
-                    OnboardingStep.WELCOME -> WelcomeStep()
-                    OnboardingStep.LEVEL -> LevelStep(
-                        selectedLevel = uiState.selectedLevel,
-                        onLevelSelected = viewModel::selectLevel,
-                    )
-                    OnboardingStep.DAILY_GOAL -> DailyGoalStep(
-                        selectedDailyGoal = uiState.selectedDailyGoal,
-                        onGoalSelected = viewModel::selectDailyGoal,
-                    )
+                StepCrossfade(targetState = uiState.step) { step ->
+                    when (step) {
+                        OnboardingStep.WELCOME -> WelcomeStep()
+                        OnboardingStep.LEVEL -> LevelStep(
+                            selectedLevel = uiState.selectedLevel,
+                            onLevelSelected = viewModel::selectLevel,
+                        )
+                        OnboardingStep.DAILY_GOAL -> DailyGoalStep(
+                            selectedDailyGoal = uiState.selectedDailyGoal,
+                            onGoalSelected = viewModel::selectDailyGoal,
+                        )
+                    }
                 }
 
                 uiState.errorMessage?.let { message ->
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
                     Text(
                         text = message,
                         color = MaterialTheme.colorScheme.error,
@@ -80,6 +89,7 @@ fun OnboardingScreen(
                     CircularProgressIndicator(
                         modifier = Modifier.height(20.dp),
                         strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 } else {
                     Text(
@@ -105,14 +115,15 @@ private fun WelcomeStep() {
             text = "VocabMania",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
         Text(
             text = "5 minutes a day. Words that stick.",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.SectionGap + VocabDimens.TightGap))
         Text(
             text = "Build a daily habit with spaced repetition — words come back right when you're about to forget them.",
             style = MaterialTheme.typography.bodyLarge,
@@ -130,30 +141,29 @@ private fun LevelStep(
         Text(
             text = "Pick your starting level",
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.TightGap))
         Text(
-            text = "You can change this later in settings.",
+            text = "We'll tailor words to this level from the start.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        LevelOption(
+        Spacer(modifier = Modifier.height(VocabDimens.SectionGap + VocabDimens.TightGap))
+        SelectableOptionCard(
             label = "Easy",
             description = "Everyday vocabulary",
             selected = selectedLevel == DifficultyLevel.EASY,
             onClick = { onLevelSelected(DifficultyLevel.EASY) },
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        LevelOption(
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+        SelectableOptionCard(
             label = "Medium",
             description = "Stronger word knowledge",
             selected = selectedLevel == DifficultyLevel.MEDIUM,
             onClick = { onLevelSelected(DifficultyLevel.MEDIUM) },
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        LevelOption(
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+        SelectableOptionCard(
             label = "Tough",
             description = "Advanced and rare words",
             selected = selectedLevel == DifficultyLevel.TOUGH,
@@ -163,35 +173,52 @@ private fun LevelStep(
 }
 
 @Composable
-private fun LevelOption(
+private fun SelectableOptionCard(
     label: String,
     description: String,
     selected: Boolean,
     onClick: () -> Unit,
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .selectable(
                 selected = selected,
                 onClick = onClick,
                 role = Role.RadioButton,
-            )
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = if (selected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
+        ),
+        border = if (selected) {
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.35f))
+        },
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = label, style = MaterialTheme.typography.titleMedium)
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(VocabDimens.CardPadding),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = label, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            RadioButton(
+                selected = selected,
+                onClick = null,
             )
         }
-        RadioButton(
-            selected = selected,
-            onClick = null,
-        )
     }
 }
 
@@ -205,37 +232,26 @@ private fun DailyGoalStep(
         Text(
             text = "Set your daily goal",
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.TightGap))
         Text(
             text = "How many words do you want to review each day?",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.SectionGap + VocabDimens.TightGap))
         options.forEach { goal ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .selectable(
-                        selected = selectedDailyGoal == goal,
-                        onClick = { onGoalSelected(goal) },
-                        role = Role.RadioButton,
-                    )
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                RadioButton(
-                    selected = selectedDailyGoal == goal,
-                    onClick = null,
-                )
-                Text(
-                    text = "$goal words per day",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(start = 8.dp),
-                )
-            }
+            SelectableOptionCard(
+                label = "$goal words per day",
+                description = when (goal) {
+                    10 -> "A gentle daily pace"
+                    15 -> "Recommended for most learners"
+                    else -> "A stronger daily push"
+                },
+                selected = selectedDailyGoal == goal,
+                onClick = { onGoalSelected(goal) },
+            )
+            Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
         }
     }
 }

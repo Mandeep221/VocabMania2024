@@ -20,5 +20,7 @@ data class HomeUiState(
     val catalogImportState: WordCatalogImportState = WordCatalogImportState.PENDING,
     val wordOfTheDay: WordOfTheDayUi? = null,
     val isWordOfTheDayLoading: Boolean = false,
+    val dailyReminderEnabled: Boolean = false,
+    val isReminderUpdating: Boolean = false,
     val errorMessage: String? = null,
 )

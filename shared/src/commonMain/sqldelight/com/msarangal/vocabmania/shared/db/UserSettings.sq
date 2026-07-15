@@ -5,7 +5,8 @@ CREATE TABLE user_settings (
     daily_goal INTEGER NOT NULL DEFAULT 15,
     current_streak INTEGER NOT NULL DEFAULT 0,
     longest_streak INTEGER NOT NULL DEFAULT 0,
-    last_session_epoch_day INTEGER
+    last_session_epoch_day INTEGER,
+    daily_reminder_enabled INTEGER NOT NULL DEFAULT 0
 );
 
 selectSettings:
@@ -21,7 +22,8 @@ SET onboarding_complete = ?,
     daily_goal = ?,
     current_streak = ?,
     longest_streak = ?,
-    last_session_epoch_day = ?
+    last_session_epoch_day = ?,
+    daily_reminder_enabled = ?
 WHERE id = 1;
 
 updateStreak:

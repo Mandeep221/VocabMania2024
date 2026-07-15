@@ -1,9 +1,18 @@
 package com.msarangal.vocabmania.presentation.compose.home
 
+import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +34,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -35,14 +45,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.msarangal.vocabmania.presentation.activity.TestActivity
+import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
+import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.components.motion.EnterFadeSlide
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
+import com.msarangal.vocabmania.presentation.compose.theme.VocabMotion
+import com.msarangal.vocabmania.presentation.compose.theme.rememberReduceMotion
+import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +77,16 @@ fun HomeScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     var menuExpanded by remember { mutableStateOf(false) }
 
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            viewModel.setDailyReminderEnabled(true)
+        } else {
+            viewModel.revertReminderOff()
+        }
+    }
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -70,9 +98,11 @@ fun HomeScreen(
     }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("Today") },
+                colors = vocabTopAppBarColors(),
                 actions = {
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "Menu")
@@ -89,10 +119,17 @@ fun HomeScreen(
                             },
                         )
                         DropdownMenuItem(
-                            text = { Text("Legacy app") },
+                            text = { Text("Share") },
                             onClick = {
                                 menuExpanded = false
-                                context.startActivity(Intent(context, TestActivity::class.java))
+                                shareApp(context)
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Rate") },
+                            onClick = {
+                                menuExpanded = false
+                                rateApp(context)
                             },
                         )
                     }
@@ -117,14 +154,14 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp)
+                .padding(VocabDimens.ScreenPadding)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
         ) {
             Text(
                 text = "Daily review",
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
                 text = "${uiState.selectedLevelLabel} level · goal ${uiState.dailyGoal} words/day",
@@ -132,18 +169,43 @@ fun HomeScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RowStatCards(
-                streak = uiState.currentStreak,
-                dueCount = uiState.dueCount,
-                totalWordCount = uiState.totalWordCount,
-            )
+            EnterFadeSlide(delayIndex = 0) {
+                RowStatCards(
+                    streak = uiState.currentStreak,
+                    dueCount = uiState.dueCount,
+                    totalWordCount = uiState.totalWordCount,
+                )
+            }
 
-            WordOfTheDaySection(
-                wordOfTheDay = uiState.wordOfTheDay,
-                isLoading = uiState.isWordOfTheDayLoading,
-            )
+            EnterFadeSlide(delayIndex = 1) {
+                DailyReminderRow(
+                    enabled = uiState.dailyReminderEnabled,
+                    updating = uiState.isReminderUpdating,
+                    onToggle = { wantEnabled ->
+                        if (!wantEnabled) {
+                            viewModel.setDailyReminderEnabled(false)
+                            return@DailyReminderRow
+                        }
+                        if (needsNotificationPermission(context)) {
+                            viewModel.markReminderPendingPermission()
+                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        } else {
+                            viewModel.setDailyReminderEnabled(true)
+                        }
+                    },
+                )
+            }
 
-            ProgressEntryCard(onClick = onOpenProgress)
+            EnterFadeSlide(delayIndex = 2) {
+                WordOfTheDaySection(
+                    wordOfTheDay = uiState.wordOfTheDay,
+                    isLoading = uiState.isWordOfTheDayLoading,
+                )
+            }
+
+            EnterFadeSlide(delayIndex = 3) {
+                ProgressEntryCard(onClick = onOpenProgress)
+            }
 
             CatalogStatusMessage(importState = uiState.catalogImportState)
 
@@ -156,14 +218,16 @@ fun HomeScreen(
             }
 
             if (uiState.dueCount == 0) {
-                Text(
-                    text = "You're all caught up for now. Words will appear here when they're due again.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                EnterFadeSlide(delayIndex = 4) {
+                    VocabEmptyState(
+                        illustration = EmptyIllustration.CAUGHT_UP,
+                        title = "All caught up",
+                        body = "You're clear for now. Words will appear here when they're due again.",
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
 
             Button(
                 onClick = onStartReview,
@@ -196,6 +260,84 @@ fun HomeScreen(
 }
 
 @Composable
+private fun DailyReminderRow(
+    enabled: Boolean,
+    updating: Boolean,
+    onToggle: (Boolean) -> Unit,
+) {
+    val reduceMotion = rememberReduceMotion()
+    val switchScale by animateFloatAsState(
+        targetValue = if (enabled && !reduceMotion) 1.06f else 1f,
+        animationSpec = VocabMotion.floatSpring(reduceMotion),
+        label = "reminderToggleScale",
+    )
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = VocabDimens.CardPadding, vertical = VocabDimens.MediumGap),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Remind me daily at 7 PM",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Local reminder when words are due or your streak is at risk.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Switch(
+                checked = enabled,
+                onCheckedChange = onToggle,
+                enabled = !updating,
+                modifier = Modifier.scale(switchScale),
+            )
+        }
+    }
+}
+
+private fun needsNotificationPermission(context: Context): Boolean {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return false
+    return ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.POST_NOTIFICATIONS,
+    ) != PackageManager.PERMISSION_GRANTED
+}
+
+private fun playStoreWebUrl(packageName: String): String =
+    "https://play.google.com/store/apps/details?id=$packageName"
+
+private fun shareApp(context: Context) {
+    val storeUrl = playStoreWebUrl(context.packageName)
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "Build a daily vocab habit with VocabMania.\n$storeUrl",
+        )
+    }
+    context.startActivity(Intent.createChooser(sendIntent, "Share VocabMania"))
+}
+
+private fun rateApp(context: Context) {
+    val packageName = context.packageName
+    try {
+        context.startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")),
+        )
+    } catch (_: ActivityNotFoundException) {
+        context.startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse(playStoreWebUrl(packageName))),
+        )
+    }
+}
+
+@Composable
 private fun WordOfTheDaySection(
     wordOfTheDay: WordOfTheDayUi?,
     isLoading: Boolean,
@@ -206,7 +348,7 @@ private fun WordOfTheDaySection(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(VocabDimens.CardPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
@@ -215,32 +357,32 @@ private fun WordOfTheDaySection(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.fillMaxWidth(),
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
                     CircularProgressIndicator()
                 }
             }
         }
         wordOfTheDay != null -> {
             Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(VocabDimens.CardPadding)) {
                     Text(
                         text = "Word of the day",
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                     Text(
                         text = wordOfTheDay.word,
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                     Text(
                         text = wordOfTheDay.meaning,
                         style = MaterialTheme.typography.bodyLarge,
                     )
                     wordOfTheDay.usageExample?.let { usage ->
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                         Text(
                             text = "\"$usage\"",
                             style = MaterialTheme.typography.bodyMedium,
@@ -248,7 +390,7 @@ private fun WordOfTheDaySection(
                         )
                     }
                     if (wordOfTheDay.isFromCache) {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                         Text(
                             text = "Showing cached word — connect for a fresh one.",
                             style = MaterialTheme.typography.bodySmall,
@@ -269,7 +411,7 @@ private fun RowStatCards(
     dueCount: Int,
     totalWordCount: Int,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap)) {
         StatCard(title = "Current streak", value = "$streak days")
         StatCard(title = "Due today", value = dueCount.toString())
         StatCard(title = "Words in library", value = totalWordCount.toString())
@@ -309,17 +451,16 @@ private fun ProgressEntryCard(onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable(onClick = onClick),
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(VocabDimens.CardPadding)) {
             Text(
                 text = "Your progress",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             Text(
                 text = "Mastery, activity, and streak",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
             )
         }
     }
@@ -331,17 +472,17 @@ private fun StatCard(
     value: String,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(VocabDimens.CardPadding)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             Text(
                 text = value,
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }

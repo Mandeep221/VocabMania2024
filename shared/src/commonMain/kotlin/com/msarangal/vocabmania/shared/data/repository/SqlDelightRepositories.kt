@@ -166,6 +166,7 @@ class SqlDelightUserSettingsRepository(
             current_streak = settings.currentStreak.toLong(),
             longest_streak = settings.longestStreak.toLong(),
             last_session_epoch_day = settings.lastSessionEpochDay,
+            daily_reminder_enabled = if (settings.dailyReminderEnabled) 1 else 0,
         )
     }
 

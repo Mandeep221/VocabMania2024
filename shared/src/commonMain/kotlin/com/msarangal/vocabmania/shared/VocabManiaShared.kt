@@ -28,6 +28,7 @@ import com.msarangal.vocabmania.shared.domain.usecase.GetWordCatalogStatusUseCas
 import com.msarangal.vocabmania.shared.domain.usecase.GetWordOfTheDayUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ImportWordCatalogUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.SaveUserSettingsUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.SetDailyReminderEnabledUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.ToggleFavoriteUseCase
 
 class VocabManiaShared private constructor(
@@ -47,6 +48,7 @@ class VocabManiaShared private constructor(
     val completeReviewSessionUseCase = CompleteReviewSessionUseCase(userSettingsRepository)
     val getUserSettingsUseCase = GetUserSettingsUseCase(userSettingsRepository)
     val saveUserSettingsUseCase = SaveUserSettingsUseCase(userSettingsRepository)
+    val setDailyReminderEnabledUseCase = SetDailyReminderEnabledUseCase(userSettingsRepository)
     val completeOnboardingUseCase = CompleteOnboardingUseCase(userSettingsRepository)
     val getProgressDashboardUseCase = GetProgressDashboardUseCase(progressRepository, userSettingsRepository)
     val getFavoritesUseCase = GetFavoritesUseCase(wordRepository)

@@ -11,9 +11,11 @@ import com.msarangal.vocabmania.presentation.compose.progress.ProgressViewModel
 import com.msarangal.vocabmania.presentation.compose.review.ReviewViewModel
 import com.msarangal.vocabmania.presentation.compose.sessioncomplete.SessionCompleteViewModel
 import com.msarangal.vocabmania.shared.VocabManiaShared
+import com.msarangal.vocabmania.shared.domain.reminder.DailyReminderScheduler
 
 class VocabManiaViewModelFactory(
     private val shared: VocabManiaShared,
+    private val reminderScheduler: DailyReminderScheduler,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -23,7 +25,7 @@ class VocabManiaViewModelFactory(
             modelClass.isAssignableFrom(OnboardingViewModel::class.java) ->
                 OnboardingViewModel(shared) as T
             modelClass.isAssignableFrom(HomeViewModel::class.java) ->
-                HomeViewModel(shared) as T
+                HomeViewModel(shared, reminderScheduler) as T
             modelClass.isAssignableFrom(ReviewViewModel::class.java) ->
                 ReviewViewModel(shared, savedStateHandle) as T
             modelClass.isAssignableFrom(SessionCompleteViewModel::class.java) ->

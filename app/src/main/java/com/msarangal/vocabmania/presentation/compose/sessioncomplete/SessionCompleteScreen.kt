@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.msarangal.vocabmania.presentation.compose.components.motion.EnterFadeSlide
+import com.msarangal.vocabmania.presentation.compose.components.motion.animateSettlingInt
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
 
 @Composable
 fun SessionCompleteScreen(
@@ -29,12 +31,14 @@ fun SessionCompleteScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
+                .padding(VocabDimens.ScreenPadding),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(
@@ -45,37 +49,44 @@ fun SessionCompleteScreen(
                 if (uiState.isLoading) {
                     CircularProgressIndicator()
                 } else {
-                    Text(
-                        text = "Session complete!",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Nice work — keep the streak going.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                    )
-                    Spacer(modifier = Modifier.height(32.dp))
-                    SummaryCard(
-                        reviewedCount = uiState.reviewedCount,
-                        currentStreak = uiState.currentStreak,
-                        longestStreak = uiState.longestStreak,
-                    )
-                    uiState.lastScheduleFeedback?.let { feedback ->
-                        Spacer(modifier = Modifier.height(16.dp))
+                    EnterFadeSlide {
                         Text(
-                            text = feedback,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
+                            text = "Session complete!",
+                            style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
                         )
                     }
+                    Spacer(modifier = Modifier.height(VocabDimens.TightGap))
+                    EnterFadeSlide(delayIndex = 1) {
+                        Text(
+                            text = "Nice work — keep the streak going.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(VocabDimens.SectionGap * 2))
+                    EnterFadeSlide(delayIndex = 2) {
+                        SummaryCard(
+                            reviewedCount = uiState.reviewedCount,
+                            currentStreak = uiState.currentStreak,
+                            longestStreak = uiState.longestStreak,
+                        )
+                    }
+                    uiState.lastScheduleFeedback?.let { feedback ->
+                        Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
+                        EnterFadeSlide(delayIndex = 3) {
+                            Text(
+                                text = feedback,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
                     uiState.errorMessage?.let { message ->
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
                         Text(
                             text = message,
                             color = MaterialTheme.colorScheme.error,
@@ -103,13 +114,18 @@ private fun SummaryCard(
     currentStreak: Int,
     longestStreak: Int,
 ) {
+    val settledStreak = animateSettlingInt(currentStreak)
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(VocabDimens.CardPadding),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
         ) {
             SummaryRow(label = "Words reviewed", value = reviewedCount.toString())
-            SummaryRow(label = "Current streak", value = "$currentStreak days")
+            SummaryRow(
+                label = "Current streak",
+                value = "$settledStreak days",
+                highlight = true,
+            )
             SummaryRow(label = "Longest streak", value = "$longestStreak days")
         }
     }
@@ -119,6 +135,7 @@ private fun SummaryCard(
 private fun SummaryRow(
     label: String,
     value: String,
+    highlight: Boolean = false,
 ) {
     Column {
         Text(
@@ -130,7 +147,11 @@ private fun SummaryRow(
         Text(
             text = value,
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
+            color = if (highlight) {
+                MaterialTheme.colorScheme.secondary
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
         )
     }
 }

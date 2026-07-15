@@ -152,10 +152,11 @@ Skills live in `.cursor/skills/` (project) or personal skills folder.
 |-------|------------------|-------|--------|
 | **0 — Foundation** | 1 | SQLDelight, migration, simple SRS, docs + rules | **done** |
 | **1 — Core flow** | 2–4 | Onboarding, Home, Review session → shippable debug build | **done** |
-| **2 — Deepen** | 5–11 | Firebase catalog, SM-2 lite, progress, favorites, WOTD — see tickets | pending |
-| **3 — Cohesive app** | 12+ | Delete legacy UI, notifications, release prep, AI playbook | pending |
+| **2 — Deepen** | 5–11 | Firebase catalog, SM-2 lite, progress, favorites, WOTD — see tickets | **done** |
+| **3 — Cohesive app** | 12+ | Seal legacy door, reminders, redesign, RC, AI playbook | pending |
 
-**Phase 2 tickets:** `docs/prds/phase-2-deepen-tickets.md` (6 vertical slices, forward weeks 1–7 within Phase 2).
+**Phase 2 tickets:** `docs/prds/phase-2-deepen-tickets.md` (6 vertical slices — **done**).  
+**Phase 3 tickets:** `docs/prds/phase-3-cohesive-tickets.md` (6 vertical slices; solo `1→2→3→4→5→6`, optional `2∥3` after 1).
 
 ### Week-level detail
 
@@ -165,14 +166,19 @@ Skills live in `.cursor/skills/` (project) or personal skills folder.
 | 2 | 1 | Onboarding + navigation shell | — | done |
 | 3 | 1 | Home + due queue | — | done |
 | 4 | 1 | Review session + session complete | — | done |
-| 5 | 2·W1 | Real vocabulary library (Firebase import) | 1 | pending |
-| 6 | 2·W2 | Reviews adapt to ratings (SM-2 lite) | 2 | pending |
-| 7 | 2·W3 | See my progress — activity + mastery | 3 | pending |
-| 8 | 2·W4 | See my progress (continued) | 3 | pending |
-| 9 | 2·W5 | Save and browse favorites | 4 | pending |
-| 10 | 2·W6 | Word of the day on Home | 5 | pending |
-| 11 | 2·W7 | Review favorites only + polish | 6 | pending |
-| 12 | 3·W1 | Phase 3 — TBD (separate PRD) | — | pending |
+| 5 | 2·W1 | Real vocabulary library (Firebase import) | 1 | done |
+| 6 | 2·W2 | Reviews adapt to ratings (SM-2 lite) | 2 | done |
+| 7 | 2·W3 | See my progress — activity + mastery | 3 | done |
+| 8 | 2·W4 | See my progress (continued) | 3 | done |
+| 9 | 2·W5 | Save and browse favorites | 4 | done |
+| 10 | 2·W6 | Word of the day on Home | 5 | done |
+| 11 | 2·W7 | Review favorites only + polish | 6 | done |
+| 12 | 3·W1 | Seal the legacy door + Share/Rate | 1 | pending |
+| 13 | 3·W2 | Opt-in daily reminder at 7 PM | 2 | pending |
+| 14 | 3·W3 | Warm-scholar theme + system dark | 3 | pending |
+| 15 | 3·W4 | Empty-state art + intentional motion | 4 | pending |
+| 16 | 3·W5 | Signed RC + Play listing draft | 5 | pending |
+| 17 | 3·W6 | AI playbook + case study + 2 skills | 6 | pending |
 
 Update **Status** as work completes: `pending` → `in progress` → `done`.
 

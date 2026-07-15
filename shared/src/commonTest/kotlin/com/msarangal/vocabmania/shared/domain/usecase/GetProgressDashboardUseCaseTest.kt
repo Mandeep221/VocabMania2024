@@ -37,6 +37,7 @@ class GetProgressDashboardUseCaseTest {
             current_streak = 4,
             longest_streak = 7,
             last_session_epoch_day = now / 86_400_000L,
+            daily_reminder_enabled = 0,
         )
 
         val dashboard = useCase(now)
@@ -60,6 +61,7 @@ class GetProgressDashboardUseCaseTest {
             current_streak = 1,
             longest_streak = 1,
             last_session_epoch_day = today,
+            daily_reminder_enabled = 0,
         )
 
         insertReviewedCard(database, text = "easy-mature", level = "E", intervalDays = MATURE_INTERVAL_DAYS, reviewedAt = now)
@@ -95,6 +97,7 @@ class GetProgressDashboardUseCaseTest {
             current_streak = 2,
             longest_streak = 2,
             last_session_epoch_day = today,
+            daily_reminder_enabled = 0,
         )
 
         insertReviewedCard(database, text = "recent-e", level = "E", intervalDays = 1.0, reviewedAt = now)

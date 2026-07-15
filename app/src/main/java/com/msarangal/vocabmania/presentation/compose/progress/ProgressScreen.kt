@@ -35,11 +35,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
+import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.components.motion.EnterFadeSlide
+import com.msarangal.vocabmania.presentation.compose.components.motion.animateProgressFraction
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
+import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 import com.msarangal.vocabmania.shared.domain.model.DifficultyLevel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,9 +75,11 @@ fun ProgressScreen(
     val levelProgress = uiState.levelProgress[uiState.selectedLevel] ?: LevelProgressUi()
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("Progress") },
+                colors = vocabTopAppBarColors(),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -98,9 +105,9 @@ fun ProgressScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp)
+                .padding(VocabDimens.ScreenPadding)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
         ) {
             TabRow(selectedTabIndex = selectedIndex) {
                 levels.forEachIndexed { index, (level, label) ->
@@ -112,21 +119,37 @@ fun ProgressScreen(
                 }
             }
 
-            MasteryCard(
-                masteryPercent = levelProgress.masteryPercent,
-                matureCount = levelProgress.matureCount,
-                reviewedCount = levelProgress.reviewedCount,
-            )
+            if (levelProgress.reviewedCount == 0) {
+                EnterFadeSlide {
+                    VocabEmptyState(
+                        illustration = EmptyIllustration.PROGRESS,
+                        title = "No progress yet",
+                        body = "Start reviewing words at this level to build mastery.",
+                    )
+                }
+            }
 
-            ActivityCard(
-                activityLast7Days = levelProgress.activityLast7Days,
-                dailyActivity = levelProgress.dailyActivity,
-            )
+            EnterFadeSlide(delayIndex = 1) {
+                MasteryCard(
+                    masteryPercent = levelProgress.masteryPercent,
+                    matureCount = levelProgress.matureCount,
+                    reviewedCount = levelProgress.reviewedCount,
+                )
+            }
 
-            StreakCard(
-                currentStreak = uiState.currentStreak,
-                longestStreak = uiState.longestStreak,
-            )
+            EnterFadeSlide(delayIndex = 2) {
+                ActivityCard(
+                    activityLast7Days = levelProgress.activityLast7Days,
+                    dailyActivity = levelProgress.dailyActivity,
+                )
+            }
+
+            EnterFadeSlide(delayIndex = 3) {
+                StreakCard(
+                    currentStreak = uiState.currentStreak,
+                    longestStreak = uiState.longestStreak,
+                )
+            }
 
             uiState.errorMessage?.let { message ->
                 Text(
@@ -147,8 +170,8 @@ private fun MasteryCard(
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(VocabDimens.CardPadding),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
         ) {
             Text(
                 text = "Mastery",
@@ -158,16 +181,18 @@ private fun MasteryCard(
             Text(
                 text = "$masteryPercent%",
                 style = MaterialTheme.typography.displaySmall,
-                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
             )
+            val animatedProgress = animateProgressFraction(masteryPercent / 100f)
             LinearProgressIndicator(
-                progress = masteryPercent / 100f,
+                progress = animatedProgress,
                 modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
             Text(
                 text = if (reviewedCount == 0) {
-                    "Start reviewing words to build mastery."
+                    "Review a few words to see mastery grow here."
                 } else {
                     "$matureCount of $reviewedCount reviewed words are mature (21+ day interval)."
                 },
@@ -185,8 +210,8 @@ private fun ActivityCard(
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(VocabDimens.CardPadding),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
         ) {
             Text(
                 text = "Activity",
@@ -196,7 +221,6 @@ private fun ActivityCard(
             Text(
                 text = "$activityLast7Days words reviewed in the last 7 days",
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.SemiBold,
             )
             ActivityDots(dailyActivity = dailyActivity)
             Text(
@@ -242,8 +266,8 @@ private fun StreakCard(
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(VocabDimens.CardPadding),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
         ) {
             Text(
                 text = "Streak",
@@ -271,7 +295,7 @@ private fun SummaryRow(
         Text(
             text = value,
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }

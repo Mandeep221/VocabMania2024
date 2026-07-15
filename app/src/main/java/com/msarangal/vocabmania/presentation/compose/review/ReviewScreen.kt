@@ -14,7 +14,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,12 +28,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
+import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.components.motion.FadeReveal
+import com.msarangal.vocabmania.presentation.compose.components.motion.rememberPressScale
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
+import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 import com.msarangal.vocabmania.shared.domain.model.ReviewRating
 import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
 
@@ -46,11 +56,13 @@ fun ReviewScreen(
     val currentWord = uiState.words.getOrNull(uiState.currentIndex)
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = {
                     Text(if (uiState.favoritesOnly) "Review favorites" else "Review")
                 },
+                colors = vocabTopAppBarColors(),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -99,7 +111,7 @@ fun ReviewScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
-                        .padding(24.dp),
+                        .padding(VocabDimens.ScreenPadding),
                     favoritesOnly = uiState.favoritesOnly,
                     onBack = onBack,
                 )
@@ -109,7 +121,7 @@ fun ReviewScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
-                        .padding(24.dp),
+                        .padding(VocabDimens.ScreenPadding),
                     word = currentWord!!,
                     currentIndex = uiState.currentIndex,
                     totalCount = uiState.words.size,
@@ -131,37 +143,22 @@ private fun EmptyReviewState(
     favoritesOnly: Boolean,
     onBack: () -> Unit,
 ) {
-    Column(
+    VocabEmptyState(
+        illustration = if (favoritesOnly) {
+            EmptyIllustration.NO_FAVORITES_DUE
+        } else {
+            EmptyIllustration.CAUGHT_UP
+        },
+        title = if (favoritesOnly) "No favorites due" else "All caught up!",
+        body = if (favoritesOnly) {
+            "None of your favorited words are due right now. Favorite words during review, then check back here."
+        } else {
+            "No words are due right now. Check back later."
+        },
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = if (favoritesOnly) {
-                "No favorites due"
-            } else {
-                "All caught up!"
-            },
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = if (favoritesOnly) {
-                "None of your favorited words are due right now. Favorite words during review, then check back here."
-            } else {
-                "No words are due right now. Check back later."
-            },
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onBack) {
-            Text("Back to home")
-        }
-    }
+        actionLabel = "Back to home",
+        onAction = onBack,
+    )
 }
 
 @Composable
@@ -191,7 +188,7 @@ private fun ReviewContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
 
         Card(
             modifier = Modifier
@@ -204,38 +201,44 @@ private fun ReviewContent(
                         Modifier
                     },
                 ),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
+                    .padding(VocabDimens.ScreenPadding),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = word.text,
                     style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                 )
-                if (isMeaningRevealed) {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = word.meaning,
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                    )
-                    word.usageExample?.let { example ->
-                        Spacer(modifier = Modifier.height(16.dp))
+                FadeReveal(visible = isMeaningRevealed) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Spacer(modifier = Modifier.height(VocabDimens.SectionGap + VocabDimens.TightGap))
                         Text(
-                            text = "\"$example\"",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = word.meaning,
+                            style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center,
                         )
+                        word.usageExample?.let { example ->
+                            Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
+                            Text(
+                                text = "\"$example\"",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
-                } else {
-                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                if (!isMeaningRevealed) {
+                    Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
                     Text(
                         text = "Tap to reveal meaning",
                         style = MaterialTheme.typography.bodyMedium,
@@ -246,7 +249,7 @@ private fun ReviewContent(
         }
 
         errorMessage?.let { message ->
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
             Text(
                 text = message,
                 color = MaterialTheme.colorScheme.error,
@@ -254,26 +257,27 @@ private fun ReviewContent(
             )
         }
 
-        if (isMeaningRevealed) {
-            Spacer(modifier = Modifier.height(16.dp))
-            RatingButtons(
-                enabled = !isApplyingRating && scheduleFeedback == null,
-                onRate = onRate,
-            )
-            scheduleFeedback?.let { feedback ->
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = feedback,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
+        FadeReveal(visible = isMeaningRevealed) {
+            Column {
+                Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
+                RatingButtons(
+                    enabled = !isApplyingRating && scheduleFeedback == null,
+                    onRate = onRate,
                 )
-            }
-            if (isApplyingRating) {
-                Spacer(modifier = Modifier.height(12.dp))
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                scheduleFeedback?.let { feedback ->
+                    Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+                    Text(
+                        text = feedback,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (isApplyingRating) {
+                    Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
             }
         }
     }
@@ -284,7 +288,7 @@ private fun RatingButtons(
     enabled: Boolean,
     onRate: (ReviewRating) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(VocabDimens.TightGap)) {
         Text(
             text = "How well did you know it?",
             style = MaterialTheme.typography.labelLarge,
@@ -293,52 +297,91 @@ private fun RatingButtons(
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(VocabDimens.TightGap),
         ) {
-            RatingButton(
+            RatingOutlinedButton(
                 label = "Again",
-                modifier = Modifier.weight(1f),
                 enabled = enabled,
                 onClick = { onRate(ReviewRating.AGAIN) },
-            )
-            RatingButton(
-                label = "Hard",
                 modifier = Modifier.weight(1f),
+            )
+            RatingOutlinedButton(
+                label = "Hard",
                 enabled = enabled,
                 onClick = { onRate(ReviewRating.HARD) },
+                modifier = Modifier.weight(1f),
             )
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(VocabDimens.TightGap),
         ) {
-            RatingButton(
+            RatingFilledButton(
                 label = "Good",
-                modifier = Modifier.weight(1f),
                 enabled = enabled,
                 onClick = { onRate(ReviewRating.GOOD) },
-            )
-            RatingButton(
-                label = "Easy",
                 modifier = Modifier.weight(1f),
+                secondary = false,
+            )
+            RatingFilledButton(
+                label = "Easy",
                 enabled = enabled,
                 onClick = { onRate(ReviewRating.EASY) },
+                modifier = Modifier.weight(1f),
+                secondary = true,
             )
         }
     }
 }
 
 @Composable
-private fun RatingButton(
+private fun RatingOutlinedButton(
     label: String,
-    modifier: Modifier = Modifier,
     enabled: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = rememberPressScale(interactionSource, enabled)
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier,
+        modifier = modifier.graphicsLayer {
+            scaleX = scale
+            scaleY = scale
+        },
+        interactionSource = interactionSource,
+    ) {
+        Text(label)
+    }
+}
+
+@Composable
+private fun RatingFilledButton(
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    secondary: Boolean,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = rememberPressScale(interactionSource, enabled)
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier.graphicsLayer {
+            scaleX = scale
+            scaleY = scale
+        },
+        interactionSource = interactionSource,
+        colors = if (secondary) {
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+            )
+        } else {
+            ButtonDefaults.buttonColors()
+        },
     ) {
         Text(label)
     }

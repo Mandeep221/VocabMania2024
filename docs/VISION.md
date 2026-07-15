@@ -32,7 +32,7 @@ KMP and AI workflows are **how we build**, not what we optimize for.
 
 - **New Compose screens** for the new concept
 - **Shared logic in `:shared`** (domain, SQLDelight, SRS scheduler)
-- Legacy app stays as a back door (overflow/settings) until replaced, then deleted
+- Legacy app stays in the APK until a post–Phase 3 deletion pass (Compose door sealed in Phase 3)
 
 ## Target User Flow (Phase 1)
 
@@ -48,7 +48,7 @@ Splash
        Summary · streak updated
 ```
 
-Legacy test flow: reachable from settings/overflow only until Phase 3 deletion.
+Legacy test flow: sealed from Compose (Phase 3 Ticket 1); file deletion later.
 
 ## Technical Stack
 
@@ -115,7 +115,7 @@ Legacy test flow: reachable from settings/overflow only until Phase 3 deletion.
 
 ---
 
-### Phase 2 — Deepen · Weeks 1–7 (forward) · **PENDING**
+### Phase 2 — Deepen · Weeks 1–7 (forward) · **DONE**
 
 **Goal:** Richer learning loop — Firebase catalog, SM-2 lite spaced repetition, progress dashboard, favorites, WOTD.
 
@@ -125,56 +125,64 @@ Legacy test flow: reachable from settings/overflow only until Phase 3 deletion.
 
 | Week (forward) | Focus | Ticket | Status |
 |----------------|-------|--------|--------|
-| 1 | Real vocabulary library (Firebase + seed fallback) | 1 | pending |
-| 2 | Reviews adapt to ratings (SM-2 lite) | 2 | pending |
-| 3–4 | See my progress (activity + mastery + level tabs) | 3 | pending |
-| 5 | Save and browse favorites | 4 | pending |
-| 6 | Word of the day on Home | 5 | pending |
-| 7 | Review favorites only + polish | 6 | pending |
+| 1 | Real vocabulary library (Firebase + seed fallback) | 1 | done |
+| 2 | Reviews adapt to ratings (SM-2 lite) | 2 | done |
+| 3–4 | See my progress (activity + mastery + level tabs) | 3 | done |
+| 5 | Save and browse favorites | 4 | done |
+| 6 | Word of the day on Home | 5 | done |
+| 7 | Review favorites only + polish | 6 | done |
 
 Tickets: `docs/prds/phase-2-deepen-tickets.md`
-
-**If time slips:** Defer WOTD first; never cut Firebase import.
 
 **Deliverables:**
 - Full Firebase word catalog in SQLDelight
 - SM-2 lite scheduler with ease factor + migration
 - Combined progress dashboard with level tabs
 - Compose favorites + WOTD on Home
-- Legacy favorites/progress paths replaced in new UI
+- Legacy favorites/progress paths replaced in new UI (Compose); Activities remain until Phase 3+ deletion
 
 **Done when:**
-- [ ] Catalog import works; seed fallback on offline
-- [ ] SM-2 lite tested; Phase 1 review history preserved
-- [ ] Progress dashboard shows mastery + activity per level
-- [ ] Favorites usable without legacy FavoritesActivity
-- [ ] WOTD on Home (or explicitly deferred per cut order)
+- [x] Catalog import works; seed fallback on offline
+- [x] SM-2 lite tested; Phase 1 review history preserved
+- [x] Progress dashboard shows mastery + activity per level
+- [x] Favorites usable without legacy FavoritesActivity (Compose path)
+- [x] WOTD on Home
 
 ---
 
-### Phase 3 — Cohesive app · Weeks 9–12 · **PENDING**
+### Phase 3 — Cohesive app · Weeks 1–6 (forward) · **PENDING**
 
-**Goal:** Production-ready app — legacy deleted, habit hooks, release prep.
+**Goal:** One Compose product — habit reminder, warm-scholar redesign, signed RC, AI playbook. Legacy UI unreachable (file deletion later).
 
-| Week | Focus |
-|------|-------|
-| 9 | Delete legacy test flow |
-| 10 | Notifications + habit hooks |
-| 11 | Release prep (signing, store listing draft) |
-| 12 | AI playbook finalize + skill promotions |
+**Grill decisions:** See `docs/prds/phase-3-cohesive.md` (approved July 13, 2026).
+
+**Primary order:** Seal legacy door → daily reminder → redesign (tokens/dark, then art/motion) → RC → playbook.
+
+| Slice (forward) | Focus | Status |
+|-----------------|-------|--------|
+| 1 | Seal legacy door + Share/Rate overflow | done |
+| 2 | Daily reminder (Home toggle, 7 PM) | done |
+| 3a | Theme tokens + system dark + screen pass | done |
+| 3b | Empty-state illustrations + motion | done |
+| 4 | Signed RC + Play listing draft | done |
+| 5 | AI playbook + case study + 2 skills | pending |
+
+Tickets: `docs/prds/phase-3-cohesive-tickets.md`
 
 **Deliverables:**
-- Legacy test Activities removed or unreachable
-- Daily reminder notifications
-- Release candidate build
-- `docs/AI_WORKFLOW.md` reflects what actually worked
-- 2+ patterns promoted to Cursor skills
+- No Compose path into legacy test hub
+- Opt-in local daily reminder with ShouldNotifyToday rules
+- Warm-scholar light/dark UI + illustrations + motion
+- Signed release candidate on device + listing draft
+- VISION / AI_WORKFLOW / case-study notes + 2 Cursor skills
 
 **Done when:**
-- [ ] No dependency on legacy Java/XML for core flow
-- [ ] Notification opt-in works; copy approved
-- [ ] Release build runs on real device
-- [ ] Case study notes captured in `docs/case-study-notes.md`
+- [x] No Compose dependency on legacy for core flow
+- [x] Notification opt-in works; copy + fire rules match PRD
+- [x] Release build runs on device (emulator RC smoke; see `docs/rc-smoke-checklist.md`)
+- [ ] Case study notes captured; 2 skills promoted
+
+**Explicitly later (post–Phase 3):** Delete legacy Activities/XML from the repo.
 
 ### When Time Is Tight — Cut In This Order
 
@@ -208,6 +216,6 @@ Tickets: `docs/prds/phase-2-deepen-tickets.md`
 
 Track unresolved decisions here. Resolve via grill-me before implementing.
 
-- [ ] Compose theme / color palette for new UI
-- [ ] Exact daily goal options in onboarding
-- [ ] Notification copy and timing (Phase 3)
+- [x] Notification copy and timing (Phase 3) — 7 PM; VocabMania + due-count / Words are waiting; see phase-3-cohesive.md
+- [x] Compose theme / color palette for new UI — warm scholar + system dark (Phase 3 redesign)
+- [ ] Exact daily goal options in onboarding (still open; not Phase 3)

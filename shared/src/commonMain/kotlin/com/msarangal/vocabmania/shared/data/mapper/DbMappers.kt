@@ -54,4 +54,5 @@ fun User_settings.toDomain(): UserSettings = UserSettings(
     currentStreak = current_streak.toInt(),
     longestStreak = longest_streak.toInt(),
     lastSessionEpochDay = last_session_epoch_day,
+    dailyReminderEnabled = daily_reminder_enabled == 1L,
 )

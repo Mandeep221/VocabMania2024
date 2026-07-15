@@ -49,6 +49,7 @@ data class UserSettings(
     val currentStreak: Int,
     val longestStreak: Int,
     val lastSessionEpochDay: Long?,
+    val dailyReminderEnabled: Boolean = false,
 )
 
 data class ReviewSchedule(

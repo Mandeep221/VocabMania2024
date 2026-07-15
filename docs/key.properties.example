@@ -1,0 +1,7 @@
+# Copy to project root as key.properties (gitignored) for signed release builds.
+# Paths are resolved from the repo root via rootProject.file(...).
+
+storePassword=your_store_password
+keyPassword=your_key_password
+keyAlias=your_key_alias
+storeFile=mykey.jks

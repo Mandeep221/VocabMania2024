@@ -28,14 +28,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.ExperimentalFoundationApi
+import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
+import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
+import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
@@ -55,9 +57,11 @@ fun FavoritesScreen(
     }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("Favorites") },
+                colors = vocabTopAppBarColors(),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -83,9 +87,9 @@ fun FavoritesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = VocabDimens.ScreenPadding),
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = viewModel::onSearchQueryChange,
@@ -94,7 +98,7 @@ fun FavoritesScreen(
                 label = { Text("Search favorites") },
                 placeholder = { Text("Type a word") },
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
 
             uiState.errorMessage?.let { message ->
                 Text(
@@ -102,30 +106,37 @@ fun FavoritesScreen(
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             }
 
             val filtered = uiState.filteredFavorites
             when {
                 uiState.favorites.isEmpty() -> {
-                    EmptyState(
+                    VocabEmptyState(
+                        illustration = EmptyIllustration.NO_FAVORITES,
                         title = "No favorites yet",
                         body = "Tap the heart on a word during review to save it here.",
+                        modifier = Modifier.padding(top = VocabDimens.SectionGap),
                     )
                 }
                 filtered.isEmpty() -> {
-                    EmptyState(
+                    VocabEmptyState(
+                        illustration = EmptyIllustration.NO_FAVORITES,
                         title = "No matches",
                         body = "Try a different search.",
+                        modifier = Modifier.padding(top = VocabDimens.SectionGap),
                     )
                 }
                 else -> {
                     LazyColumn(
-                        contentPadding = PaddingValues(bottom = 24.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(bottom = VocabDimens.ScreenPadding),
+                        verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
                     ) {
                         items(filtered, key = { it.id }) { word ->
-                            FavoriteWordCard(word = word)
+                            FavoriteWordCard(
+                                word = word,
+                                modifier = Modifier.animateItemPlacement(),
+                            )
                         }
                     }
                 }
@@ -135,21 +146,24 @@ fun FavoritesScreen(
 }
 
 @Composable
-private fun FavoriteWordCard(word: FavoriteWordUi) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(20.dp)) {
+private fun FavoriteWordCard(
+    word: FavoriteWordUi,
+    modifier: Modifier = Modifier,
+) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(VocabDimens.CardPadding)) {
             Text(
                 text = word.text,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             Text(
                 text = word.meaning,
                 style = MaterialTheme.typography.bodyLarge,
             )
             word.usageExample?.let { example ->
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                 Text(
                     text = "\"$example\"",
                     style = MaterialTheme.typography.bodyMedium,
@@ -157,32 +171,5 @@ private fun FavoriteWordCard(word: FavoriteWordUi) {
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun EmptyState(
-    title: String,
-    body: String,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = body,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
     }
 }

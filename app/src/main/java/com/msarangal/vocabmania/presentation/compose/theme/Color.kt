@@ -2,13 +2,46 @@ package com.msarangal.vocabmania.presentation.compose.theme
 
 import androidx.compose.ui.graphics.Color
 
-val VocabTeal = Color(0xFF117694)
-val VocabTealDark = Color(0xFF0B5065)
-val VocabTealLight = Color(0xFF5EE0E0)
-val VocabAccent = Color(0xFFF1952E)
-val VocabGreen = Color(0xFF00C161)
-val VocabBackground = Color(0xFFF6F6F6)
-val VocabSurface = Color(0xFFFFFFFF)
-val VocabOnPrimary = Color(0xFFFFFFFF)
-val VocabOnBackground = Color(0xFF212121)
-val VocabOnSurfaceVariant = Color(0xFF727272)
+// Warm-scholar light — cream/paper, deep teal, coral-amber accent
+val PaperCream = Color(0xFFF7F1E8)
+val PaperSurface = Color(0xFFFFFBF5)
+val PaperMuted = Color(0xFFE9E1D4)
+val InkBrown = Color(0xFF2C241C)
+val InkMuted = Color(0xFF6B6056)
+
+val DeepTeal = Color(0xFF0D5C63)
+val DeepTealDark = Color(0xFF084048)
+val SoftTeal = Color(0xFF7EC8C4)
+val TealMist = Color(0xFFD4EDEC)
+
+val CoralAmber = Color(0xFFE07A3D)
+val CoralAmberSoft = Color(0xFFF3C6A4)
+val ScholarGreen = Color(0xFF2F9E6E)
+
+val ErrorRed = Color(0xFFB3261E)
+val OnAccent = Color(0xFFFFFFFF)
+
+// Warm-scholar dark — dusk ink, not cold gray
+val DuskBackground = Color(0xFF1A1714)
+val DuskSurface = Color(0xFF242019)
+val DuskMuted = Color(0xFF3A342C)
+val CreamText = Color(0xFFF2EDE4)
+val CreamMuted = Color(0xFFB5A99A)
+
+val SoftTealDark = Color(0xFF6DD0CA)
+val DeepTealContainer = Color(0xFF0F4A50)
+val CoralAmberDark = Color(0xFFF0A05A)
+val ScholarGreenDark = Color(0xFF5FCF9A)
+val ErrorRedDark = Color(0xFFF2B8B5)
+
+// Legacy aliases kept for any residual references
+val VocabTeal = DeepTeal
+val VocabTealDark = DeepTealDark
+val VocabTealLight = SoftTeal
+val VocabAccent = CoralAmber
+val VocabGreen = ScholarGreen
+val VocabBackground = PaperCream
+val VocabSurface = PaperSurface
+val VocabOnPrimary = OnAccent
+val VocabOnBackground = InkBrown
+val VocabOnSurfaceVariant = InkMuted

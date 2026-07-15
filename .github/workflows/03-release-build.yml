@@ -63,7 +63,7 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
-          echo "storeFile=../keystore.jks" >> key.properties
+          echo "storeFile=keystore.jks" >> key.properties
       
       # Build release APK
       - name: Build release APK
