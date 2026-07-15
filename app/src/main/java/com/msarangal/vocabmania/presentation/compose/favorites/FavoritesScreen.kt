@@ -1,5 +1,6 @@
 package com.msarangal.vocabmania.presentation.compose.favorites
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,9 +32,10 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.foundation.ExperimentalFoundationApi
 import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
 import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.components.materials.UtilityChevron
+import com.msarangal.vocabmania.presentation.compose.components.materials.UtilityRow
 import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
 import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 
@@ -42,6 +44,7 @@ import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
     onBack: () -> Unit,
+    onPracticeFavorites: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -89,7 +92,18 @@ fun FavoritesScreen(
                 .padding(innerPadding)
                 .padding(horizontal = VocabDimens.ScreenPadding),
         ) {
-            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
+            if (uiState.favoriteDueCount > 0) {
+                UtilityRow(
+                    title = "Practice favorites",
+                    subtitle = "${uiState.favoriteDueCount} due",
+                    onClick = onPracticeFavorites,
+                    trailing = { UtilityChevron(contentDescription = "Practice favorites") },
+                )
+                Spacer(modifier = Modifier.height(VocabDimens.TightGap))
+            } else {
+                Spacer(modifier = Modifier.height(VocabDimens.TightGap))
+            }
+
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = viewModel::onSearchQueryChange,
@@ -115,7 +129,7 @@ fun FavoritesScreen(
                     VocabEmptyState(
                         illustration = EmptyIllustration.NO_FAVORITES,
                         title = "No favorites yet",
-                        body = "Tap the heart on a word during review to save it here.",
+                        body = "Tap the heart on a word during practice to save it here.",
                         modifier = Modifier.padding(top = VocabDimens.SectionGap),
                     )
                 }
@@ -130,11 +144,11 @@ fun FavoritesScreen(
                 else -> {
                     LazyColumn(
                         contentPadding = PaddingValues(bottom = VocabDimens.ScreenPadding),
-                        verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
                     ) {
-                        items(filtered, key = { it.id }) { word ->
-                            FavoriteWordCard(
+                        itemsIndexed(filtered, key = { _, word -> word.id }) { index, word ->
+                            FavoriteWordRow(
                                 word = word,
+                                showDivider = index < filtered.lastIndex,
                                 modifier = Modifier.animateItemPlacement(),
                             )
                         }
@@ -146,30 +160,35 @@ fun FavoritesScreen(
 }
 
 @Composable
-private fun FavoriteWordCard(
+private fun FavoriteWordRow(
     word: FavoriteWordUi,
+    showDivider: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(VocabDimens.CardPadding)) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(vertical = VocabDimens.MediumGap),
+            verticalArrangement = Arrangement.spacedBy(VocabDimens.TightGap),
+        ) {
             Text(
                 text = word.text,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.primary,
             )
-            Spacer(modifier = Modifier.height(VocabDimens.TightGap))
             Text(
                 text = word.meaning,
                 style = MaterialTheme.typography.bodyLarge,
             )
             word.usageExample?.let { example ->
-                Spacer(modifier = Modifier.height(VocabDimens.TightGap))
                 Text(
                     text = "\"$example\"",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
+        }
+        if (showDivider) {
+            Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.35f))
         }
     }
 }

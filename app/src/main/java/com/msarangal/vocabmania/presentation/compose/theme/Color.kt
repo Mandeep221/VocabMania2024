@@ -34,6 +34,19 @@ val CoralAmberDark = Color(0xFFF0A05A)
 val ScholarGreenDark = Color(0xFF5FCF9A)
 val ErrorRedDark = Color(0xFFF2B8B5)
 
+// Phase 4 material roles — action (hero) vs content (paper) vs chrome (utility)
+val PracticeHeroFillLight = DeepTeal
+val PracticeHeroFillDark = Color(0xFF12727A)
+val PracticeHeroOnFillLight = OnAccent
+val PracticeHeroOnFillDark = CreamText
+val PracticeHeroMetaLight = Color(0xFFB8E0DD)
+val PracticeHeroMetaDark = SoftTeal.copy(alpha = 0.88f)
+
+val PaperContentFillLight = PaperSurface
+val PaperContentFillDark = Color(0xFF2C271F)
+val PaperContentOutlineLight = PaperMuted
+val PaperContentOutlineDark = DuskMuted
+
 // Legacy aliases kept for any residual references
 val VocabTeal = DeepTeal
 val VocabTealDark = DeepTealDark

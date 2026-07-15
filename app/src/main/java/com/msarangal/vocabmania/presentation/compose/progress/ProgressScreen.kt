@@ -16,8 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,6 +41,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
 import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
+import com.msarangal.vocabmania.presentation.compose.components.materials.PaperContent
 import com.msarangal.vocabmania.presentation.compose.components.motion.EnterFadeSlide
 import com.msarangal.vocabmania.presentation.compose.components.motion.animateProgressFraction
 import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
@@ -73,6 +74,7 @@ fun ProgressScreen(
     )
     val selectedIndex = levels.indexOfFirst { it.first == uiState.selectedLevel }.coerceAtLeast(0)
     val levelProgress = uiState.levelProgress[uiState.selectedLevel] ?: LevelProgressUi()
+    val hasLevelProgress = levelProgress.reviewedCount > 0
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -119,33 +121,33 @@ fun ProgressScreen(
                 }
             }
 
-            if (levelProgress.reviewedCount == 0) {
+            if (!hasLevelProgress) {
                 EnterFadeSlide {
                     VocabEmptyState(
                         illustration = EmptyIllustration.PROGRESS,
                         title = "No progress yet",
-                        body = "Start reviewing words at this level to build mastery.",
+                        body = "Start practicing words at this level to build mastery.",
+                    )
+                }
+            } else {
+                EnterFadeSlide(delayIndex = 0) {
+                    MasterySection(
+                        masteryPercent = levelProgress.masteryPercent,
+                        matureCount = levelProgress.matureCount,
+                        reviewedCount = levelProgress.reviewedCount,
+                    )
+                }
+
+                EnterFadeSlide(delayIndex = 1) {
+                    ActivitySection(
+                        activityLast7Days = levelProgress.activityLast7Days,
+                        dailyActivity = levelProgress.dailyActivity,
                     )
                 }
             }
 
-            EnterFadeSlide(delayIndex = 1) {
-                MasteryCard(
-                    masteryPercent = levelProgress.masteryPercent,
-                    matureCount = levelProgress.matureCount,
-                    reviewedCount = levelProgress.reviewedCount,
-                )
-            }
-
-            EnterFadeSlide(delayIndex = 2) {
-                ActivityCard(
-                    activityLast7Days = levelProgress.activityLast7Days,
-                    dailyActivity = levelProgress.dailyActivity,
-                )
-            }
-
-            EnterFadeSlide(delayIndex = 3) {
-                StreakCard(
+            EnterFadeSlide(delayIndex = if (hasLevelProgress) 2 else 1) {
+                StreakSection(
                     currentStreak = uiState.currentStreak,
                     longestStreak = uiState.longestStreak,
                 )
@@ -163,72 +165,65 @@ fun ProgressScreen(
 }
 
 @Composable
-private fun MasteryCard(
+private fun MasterySection(
     masteryPercent: Int,
     matureCount: Int,
     reviewedCount: Int,
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(VocabDimens.CardPadding),
-            verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
-        ) {
-            Text(
-                text = "Mastery",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = "$masteryPercent%",
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            val animatedProgress = animateProgressFraction(masteryPercent / 100f)
-            LinearProgressIndicator(
-                progress = animatedProgress,
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            )
-            Text(
-                text = if (reviewedCount == 0) {
-                    "Review a few words to see mastery grow here."
-                } else {
-                    "$matureCount of $reviewedCount reviewed words are mature (21+ day interval)."
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+    PaperContent {
+        Text(
+            text = "Mastery",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(VocabDimens.TightGap))
+        Text(
+            text = "$masteryPercent%",
+            style = MaterialTheme.typography.displaySmall,
+            color = MaterialTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+        val animatedProgress = animateProgressFraction(masteryPercent / 100f)
+        LinearProgressIndicator(
+            progress = animatedProgress,
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+        Text(
+            text = "$matureCount of $reviewedCount practiced words are mature (21+ day interval).",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
 @Composable
-private fun ActivityCard(
+private fun ActivitySection(
     activityLast7Days: Int,
     dailyActivity: List<Int>,
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(VocabDimens.CardPadding),
-            verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
-        ) {
-            Text(
-                text = "Activity",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = "$activityLast7Days words reviewed in the last 7 days",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-            ActivityDots(dailyActivity = dailyActivity)
-            Text(
-                text = "Each dot is one day — brighter means more reviews that day.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(VocabDimens.MediumGap),
+    ) {
+        Text(
+            text = "Activity",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = "$activityLast7Days words practiced in the last 7 days",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        ActivityDots(dailyActivity = dailyActivity)
+        Text(
+            text = "Each dot is one day — brighter means more practice that day.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -260,42 +255,54 @@ private fun ActivityDots(dailyActivity: List<Int>) {
 }
 
 @Composable
-private fun StreakCard(
+private fun StreakSection(
     currentStreak: Int,
     longestStreak: Int,
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(VocabDimens.CardPadding),
-            verticalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.35f))
+        Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
+        Text(
+            text = "Streak",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.height(VocabDimens.MediumGap))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(VocabDimens.SectionGap),
         ) {
-            Text(
-                text = "Streak",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            StreakStat(
+                label = "Current",
+                value = "$currentStreak days",
+                modifier = Modifier.weight(1f),
             )
-            SummaryRow(label = "Current streak", value = "$currentStreak days")
-            SummaryRow(label = "Longest streak", value = "$longestStreak days")
+            StreakStat(
+                label = "Longest",
+                value = "$longestStreak days",
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
 
 @Composable
-private fun SummaryRow(
+private fun StreakStat(
     label: String,
     value: String,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = value,
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

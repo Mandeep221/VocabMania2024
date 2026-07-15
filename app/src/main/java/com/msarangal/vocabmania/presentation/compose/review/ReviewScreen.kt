@@ -1,6 +1,7 @@
 package com.msarangal.vocabmania.presentation.compose.review
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +15,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msarangal.vocabmania.presentation.compose.components.empty.EmptyIllustration
 import com.msarangal.vocabmania.presentation.compose.components.empty.VocabEmptyState
@@ -42,7 +41,7 @@ import com.msarangal.vocabmania.presentation.compose.components.motion.FadeRevea
 import com.msarangal.vocabmania.presentation.compose.components.motion.rememberPressScale
 import com.msarangal.vocabmania.presentation.compose.theme.VocabDimens
 import com.msarangal.vocabmania.presentation.compose.theme.vocabTopAppBarColors
-import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.model.PracticeAction
 import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +59,7 @@ fun ReviewScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(if (uiState.favoritesOnly) "Review favorites" else "Review")
+                    Text(if (uiState.favoritesOnly) "Practice favorites" else "Practice")
                 },
                 colors = vocabTopAppBarColors(),
                 navigationIcon = {
@@ -107,7 +106,7 @@ fun ReviewScreen(
                 }
             }
             uiState.isEmpty -> {
-                EmptyReviewState(
+                EmptyPracticeState(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
@@ -117,7 +116,7 @@ fun ReviewScreen(
                 )
             }
             else -> {
-                ReviewContent(
+                PracticeContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
@@ -130,7 +129,7 @@ fun ReviewScreen(
                     scheduleFeedback = uiState.scheduleFeedback,
                     errorMessage = uiState.errorMessage,
                     onRevealMeaning = viewModel::revealMeaning,
-                    onRate = { rating -> viewModel.rate(rating, onSessionComplete) },
+                    onRate = { action -> viewModel.rate(action, onSessionComplete) },
                 )
             }
         }
@@ -138,7 +137,7 @@ fun ReviewScreen(
 }
 
 @Composable
-private fun EmptyReviewState(
+private fun EmptyPracticeState(
     modifier: Modifier = Modifier,
     favoritesOnly: Boolean,
     onBack: () -> Unit,
@@ -151,18 +150,18 @@ private fun EmptyReviewState(
         },
         title = if (favoritesOnly) "No favorites due" else "All caught up!",
         body = if (favoritesOnly) {
-            "None of your favorited words are due right now. Favorite words during review, then check back here."
+            "None of your favorited words are due right now. Favorite words during practice, then check back here."
         } else {
             "No words are due right now. Check back later."
         },
         modifier = modifier,
-        actionLabel = "Back to home",
+        actionLabel = "Back to Today",
         onAction = onBack,
     )
 }
 
 @Composable
-private fun ReviewContent(
+private fun PracticeContent(
     modifier: Modifier = Modifier,
     word: ReviewWordUi,
     currentIndex: Int,
@@ -172,7 +171,7 @@ private fun ReviewContent(
     scheduleFeedback: String?,
     errorMessage: String?,
     onRevealMeaning: () -> Unit,
-    onRate: (ReviewRating) -> Unit,
+    onRate: (PracticeAction) -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(
@@ -180,13 +179,22 @@ private fun ReviewContent(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        ReviewIntervalFormatter.formatCurrentInterval(word.intervalDays)?.let { intervalLabel ->
+        if (word.isNew) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = intervalLabel,
+                text = "New word",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.primary,
             )
+        } else {
+            ReviewIntervalFormatter.formatCurrentInterval(word.intervalDays)?.let { intervalLabel ->
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = intervalLabel,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
 
@@ -260,7 +268,8 @@ private fun ReviewContent(
         FadeReveal(visible = isMeaningRevealed) {
             Column {
                 Spacer(modifier = Modifier.height(VocabDimens.SectionGap))
-                RatingButtons(
+                PracticeActions(
+                    isNew = word.isNew,
                     enabled = !isApplyingRating && scheduleFeedback == null,
                     onRate = onRate,
                 )
@@ -284,10 +293,29 @@ private fun ReviewContent(
 }
 
 @Composable
-private fun RatingButtons(
+private fun PracticeActions(
+    isNew: Boolean,
     enabled: Boolean,
-    onRate: (ReviewRating) -> Unit,
+    onRate: (PracticeAction) -> Unit,
 ) {
+    if (isNew) {
+        Column(verticalArrangement = Arrangement.spacedBy(VocabDimens.TightGap)) {
+            Text(
+                text = "Learn this word",
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+            PracticeFilledButton(
+                label = "Got it",
+                enabled = enabled,
+                onClick = { onRate(PracticeAction.GOT_IT) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        return
+    }
+
     Column(verticalArrangement = Arrangement.spacedBy(VocabDimens.TightGap)) {
         Text(
             text = "How well did you know it?",
@@ -299,43 +327,30 @@ private fun RatingButtons(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(VocabDimens.TightGap),
         ) {
-            RatingOutlinedButton(
-                label = "Again",
+            PracticeOutlinedButton(
+                label = "Missed",
                 enabled = enabled,
-                onClick = { onRate(ReviewRating.AGAIN) },
+                onClick = { onRate(PracticeAction.MISSED) },
                 modifier = Modifier.weight(1f),
             )
-            RatingOutlinedButton(
-                label = "Hard",
+            PracticeOutlinedButton(
+                label = "Almost",
                 enabled = enabled,
-                onClick = { onRate(ReviewRating.HARD) },
+                onClick = { onRate(PracticeAction.ALMOST) },
                 modifier = Modifier.weight(1f),
             )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(VocabDimens.TightGap),
-        ) {
-            RatingFilledButton(
-                label = "Good",
+            PracticeFilledButton(
+                label = "Got it",
                 enabled = enabled,
-                onClick = { onRate(ReviewRating.GOOD) },
+                onClick = { onRate(PracticeAction.GOT_IT) },
                 modifier = Modifier.weight(1f),
-                secondary = false,
-            )
-            RatingFilledButton(
-                label = "Easy",
-                enabled = enabled,
-                onClick = { onRate(ReviewRating.EASY) },
-                modifier = Modifier.weight(1f),
-                secondary = true,
             )
         }
     }
 }
 
 @Composable
-private fun RatingOutlinedButton(
+private fun PracticeOutlinedButton(
     label: String,
     enabled: Boolean,
     onClick: () -> Unit,
@@ -357,12 +372,11 @@ private fun RatingOutlinedButton(
 }
 
 @Composable
-private fun RatingFilledButton(
+private fun PracticeFilledButton(
     label: String,
     enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    secondary: Boolean,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val scale = rememberPressScale(interactionSource, enabled)
@@ -374,14 +388,6 @@ private fun RatingFilledButton(
             scaleY = scale
         },
         interactionSource = interactionSource,
-        colors = if (secondary) {
-            ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onSecondary,
-            )
-        } else {
-            ButtonDefaults.buttonColors()
-        },
     ) {
         Text(label)
     }

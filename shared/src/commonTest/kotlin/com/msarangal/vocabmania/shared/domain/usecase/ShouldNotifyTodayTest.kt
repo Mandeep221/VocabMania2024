@@ -27,8 +27,8 @@ class ShouldNotifyTodayTest {
     }
 
     @Test
-    fun reminderNotificationBodyMatchesPrdCopy() {
-        assertEquals("2 words due — keep your streak going", reminderNotificationBody(2))
-        assertEquals("Words are waiting", reminderNotificationBody(0))
+    fun reminderNotificationBodyUsesPracticeLanguage() {
+        assertEquals("2 ready to practice — keep your streak going", reminderNotificationBody(2))
+        assertEquals("Time for today's practice", reminderNotificationBody(0))
     }
 }

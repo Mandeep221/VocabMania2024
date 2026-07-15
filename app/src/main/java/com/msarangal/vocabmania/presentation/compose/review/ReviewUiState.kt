@@ -7,6 +7,7 @@ data class ReviewWordUi(
     val usageExample: String?,
     val intervalDays: Double,
     val isFavorite: Boolean = false,
+    val isNew: Boolean = false,
 )
 
 data class ReviewUiState(

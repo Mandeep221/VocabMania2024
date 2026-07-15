@@ -108,6 +108,9 @@ fun AppNavHost(
             FavoritesScreen(
                 viewModel = viewModel,
                 onBack = { navController.popBackStack() },
+                onPracticeFavorites = {
+                    navController.navigate(Routes.review(favoritesOnly = true))
+                },
             )
         }
         composable(

@@ -19,9 +19,9 @@ object ShouldNotifyToday {
 
 fun reminderNotificationBody(dueCount: Int): String =
     if (dueCount >= 1) {
-        "$dueCount words due — keep your streak going"
+        "$dueCount ready to practice — keep your streak going"
     } else {
-        "Words are waiting"
+        "Time for today's practice"
     }
 
 class SetDailyReminderEnabledUseCase(

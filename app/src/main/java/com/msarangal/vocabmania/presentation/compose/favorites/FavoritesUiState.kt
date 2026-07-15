@@ -10,6 +10,7 @@ data class FavoriteWordUi(
 data class FavoritesUiState(
     val isLoading: Boolean = true,
     val favorites: List<FavoriteWordUi> = emptyList(),
+    val favoriteDueCount: Int = 0,
     val searchQuery: String = "",
     val errorMessage: String? = null,
 ) {

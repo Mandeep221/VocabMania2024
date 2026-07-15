@@ -1,6 +1,8 @@
 package com.msarangal.vocabmania.presentation.compose.home
 
 import com.msarangal.vocabmania.shared.domain.model.WordCatalogImportState
+import com.msarangal.vocabmania.shared.domain.usecase.practiceSessionBiteSize
+import com.msarangal.vocabmania.shared.domain.usecase.practiceShowsQueueLine
 
 data class WordOfTheDayUi(
     val word: String,
@@ -16,11 +18,16 @@ data class HomeUiState(
     val favoriteDueCount: Int = 0,
     val dailyGoal: Int = 15,
     val selectedLevelLabel: String = "Easy",
-    val totalWordCount: Int = 0,
     val catalogImportState: WordCatalogImportState = WordCatalogImportState.PENDING,
     val wordOfTheDay: WordOfTheDayUi? = null,
     val isWordOfTheDayLoading: Boolean = false,
     val dailyReminderEnabled: Boolean = false,
     val isReminderUpdating: Boolean = false,
     val errorMessage: String? = null,
-)
+) {
+    val sessionBiteSize: Int
+        get() = practiceSessionBiteSize(dueCount, dailyGoal)
+
+    val showQueueLine: Boolean
+        get() = practiceShowsQueueLine(dueCount, dailyGoal)
+}

@@ -29,6 +29,7 @@ class FavoritesViewModel(
                 _uiState.update { it.copy(errorMessage = null) }
             }
             try {
+                val now = System.currentTimeMillis()
                 val favorites = shared.getFavoritesUseCase().map { word ->
                     FavoriteWordUi(
                         id = word.id,
@@ -37,10 +38,14 @@ class FavoritesViewModel(
                         usageExample = word.usageExample,
                     )
                 }
+                val favoriteDueCount = shared.getDueWordsUseCase
+                    .countDue(now, favoritesOnly = true)
+                    .toInt()
                 _uiState.update {
                     it.copy(
                         isLoading = false,
                         favorites = favorites,
+                        favoriteDueCount = favoriteDueCount,
                     )
                 }
             } catch (error: Exception) {

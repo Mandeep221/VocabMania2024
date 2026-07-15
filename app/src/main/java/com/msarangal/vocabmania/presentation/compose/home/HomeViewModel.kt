@@ -47,7 +47,6 @@ class HomeViewModel(
                         favoriteDueCount = favoriteDueCount,
                         dailyGoal = settings.dailyGoal,
                         selectedLevelLabel = settings.selectedLevel.toDisplayLabel(),
-                        totalWordCount = catalogStatus.totalWordCount.toInt(),
                         catalogImportState = catalogStatus.importState,
                         dailyReminderEnabled = settings.dailyReminderEnabled,
                     )

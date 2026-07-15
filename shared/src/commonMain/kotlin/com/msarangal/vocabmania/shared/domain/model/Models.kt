@@ -19,6 +19,13 @@ enum class ReviewRating {
     EASY,
 }
 
+/** User-facing Practice actions; map to [ReviewRating] before scheduling. */
+enum class PracticeAction {
+    MISSED,
+    ALMOST,
+    GOT_IT,
+}
+
 data class Word(
     val id: Long,
     val text: String,
@@ -41,6 +48,14 @@ data class DueWord(
     val word: Word,
     val reviewCard: ReviewCard,
 )
+
+data class PracticeCard(
+    val dueWord: DueWord,
+    val isNew: Boolean,
+) {
+    val word: Word get() = dueWord.word
+    val reviewCard: ReviewCard get() = dueWord.reviewCard
+}
 
 data class UserSettings(
     val onboardingComplete: Boolean,

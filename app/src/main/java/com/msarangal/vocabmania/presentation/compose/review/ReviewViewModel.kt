@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msarangal.vocabmania.presentation.compose.navigation.Routes
 import com.msarangal.vocabmania.shared.VocabManiaShared
-import com.msarangal.vocabmania.shared.domain.model.ReviewRating
+import com.msarangal.vocabmania.shared.domain.model.PracticeAction
 import com.msarangal.vocabmania.shared.domain.srs.ReviewIntervalFormatter
+import com.msarangal.vocabmania.shared.domain.usecase.toReviewRating
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,20 +44,19 @@ class ReviewViewModel(
             }
             try {
                 val now = System.currentTimeMillis()
-                val settings = shared.getUserSettingsUseCase()
-                val dueWords = shared.getDueWordsUseCase.getDueWords(
+                val practiceCards = shared.buildPracticeSessionUseCase(
                     nowEpochMillis = now,
-                    limit = settings.dailyGoal,
                     favoritesOnly = favoritesOnly,
                 )
-                val words = dueWords.map { dueWord ->
+                val words = practiceCards.map { card ->
                     ReviewWordUi(
-                        wordId = dueWord.word.id,
-                        text = dueWord.word.text,
-                        meaning = dueWord.word.meaning,
-                        usageExample = dueWord.word.usageExample,
-                        intervalDays = dueWord.reviewCard.intervalDays,
-                        isFavorite = dueWord.word.isFavorite,
+                        wordId = card.word.id,
+                        text = card.word.text,
+                        meaning = card.word.meaning,
+                        usageExample = card.word.usageExample,
+                        intervalDays = card.reviewCard.intervalDays,
+                        isFavorite = card.word.isFavorite,
+                        isNew = card.isNew,
                     )
                 }
                 _uiState.update {
@@ -70,7 +70,7 @@ class ReviewViewModel(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = error.message ?: "Unable to load review session.",
+                        errorMessage = error.message ?: "Unable to load practice session.",
                     )
                 }
             }
@@ -102,7 +102,7 @@ class ReviewViewModel(
     }
 
     fun rate(
-        rating: ReviewRating,
+        action: PracticeAction,
         onSessionComplete: (reviewedCount: Int, lastScheduleFeedback: String?) -> Unit,
     ) {
         val state = _uiState.value
@@ -114,7 +114,7 @@ class ReviewViewModel(
             try {
                 val schedule = shared.applyReviewRatingUseCase(
                     wordId = currentWord.wordId,
-                    rating = rating,
+                    rating = action.toReviewRating(),
                     nowEpochMillis = System.currentTimeMillis(),
                 )
                 val feedback = ReviewIntervalFormatter.formatNextReview(schedule.intervalDays)

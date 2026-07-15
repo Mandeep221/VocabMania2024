@@ -18,6 +18,7 @@ import com.msarangal.vocabmania.shared.domain.repository.WordCatalogRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordOfTheDayRepository
 import com.msarangal.vocabmania.shared.domain.repository.WordRepository
 import com.msarangal.vocabmania.shared.domain.usecase.ApplyReviewRatingUseCase
+import com.msarangal.vocabmania.shared.domain.usecase.BuildPracticeSessionUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteOnboardingUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.CompleteReviewSessionUseCase
 import com.msarangal.vocabmania.shared.domain.usecase.GetDueWordsUseCase
@@ -42,6 +43,7 @@ class VocabManiaShared private constructor(
     val wordOfTheDayRepository: WordOfTheDayRepository,
 ) {
     val getDueWordsUseCase = GetDueWordsUseCase(reviewRepository, userSettingsRepository)
+    val buildPracticeSessionUseCase = BuildPracticeSessionUseCase(reviewRepository, userSettingsRepository)
     val importWordCatalogUseCase = ImportWordCatalogUseCase(wordCatalogRepository)
     val getWordCatalogStatusUseCase = GetWordCatalogStatusUseCase(wordCatalogRepository)
     val applyReviewRatingUseCase = ApplyReviewRatingUseCase(reviewRepository)

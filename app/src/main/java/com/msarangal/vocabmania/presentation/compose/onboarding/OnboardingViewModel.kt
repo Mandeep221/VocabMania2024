@@ -50,7 +50,7 @@ class OnboardingViewModel(
                 _uiState.update {
                     it.copy(
                         isSaving = false,
-                        errorMessage = error.message ?: "Unable to save onboarding settings.",
+                        errorMessage = error.message ?: "Unable to finish setup.",
                     )
                 }
             }
